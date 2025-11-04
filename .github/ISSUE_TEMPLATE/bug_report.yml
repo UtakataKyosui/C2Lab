@@ -1,0 +1,52 @@
+name: "🐞 バグ報告"
+description: "既存のPluginやコマンドに関する不具合を報告します"
+labels: ["bug", "needs-triage"]
+body:
+  - type: input
+    id: plugin_name
+    attributes:
+      label: 🔖 Plugin名
+      placeholder: 例) ts-lint-runner
+    validations:
+      required: true
+  - type: dropdown
+    id: language
+    attributes:
+      label: 🧠 対象言語
+      options:
+        - Rust
+        - TypeScript
+        - Python
+        - Go
+        - Other
+  - type: textarea
+    id: description
+    attributes:
+      label: 💥 問題の内容
+      description: どんな問題が発生したかを具体的に説明してください。
+      placeholder: 例）`onFileSave` Hookが特定条件で二重に呼ばれています
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: 🔁 再現手順
+      description: 問題を再現する手順をステップごとに書いてください。
+      placeholder: |
+        1. Claude CodeでPluginを有効化
+        2. コマンド `run-lint` を実行
+        3. エラーが発生
+  - type: input
+    id: environment
+    attributes:
+      label: 🧩 実行環境
+      placeholder: 例) Claude Code v0.9.2 / Node.js 22 / macOS 15.1
+  - type: textarea
+    id: logs
+    attributes:
+      label: 🧾 ログ / スタックトレース
+      description: エラーメッセージやコンソール出力があれば貼り付けてください。
+  - type: textarea
+    id: additional
+    attributes:
+      label: 📘 補足情報（任意）
