@@ -1,6 +1,6 @@
 name: "Pluginに追加すべきコンテンツの提案"
 description: "既存Pluginに新しいHook/SubAgent/カスタムコマンドなどを追加する提案"
-label: ["enhancement", "plugin"]
+labels: ["enhancement", "plugin"]
 body: 
   - type: markdown
     attributes:
