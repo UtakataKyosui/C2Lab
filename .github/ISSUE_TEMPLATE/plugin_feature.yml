@@ -1,0 +1,51 @@
+name: "Pluginに追加すべきコンテンツの提案"
+description: "既存Pluginに新しいHook/SubAgent/カスタムコマンドなどを追加する提案"
+labels: ["enhancement", "plugin"]
+body: 
+  - type: markdown
+    attributes:
+      value: |
+        既存Pluginに対して、新しい機能の追加提案を行うテンプレートです。
+        「目的」「言語」「効果」について記載してください。
+  - type: input
+    id: plugin_name
+    attributes: 
+      label: 対象のPlugin
+      placeholder: 例）rust-plugin
+    validations: 
+      required: true
+  - type: dropdown
+    id: language
+    attributes:
+      label: 対象言語
+      options: 
+        - Rust
+        - TypeScript
+        - Python
+        - Go
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: 💡 概要
+      description: どんな機能を追加したいか簡潔に説明してください。
+      placeholder: 例）Rustのcargo buildを自動実行するHookを追加したい
+    validations:
+      required: true
+  - type: textarea
+    id: motivation
+    attributes:
+      label: 🧭 背景・目的
+      description: なぜこの機能が必要か、どんな課題を解決するか記述してください。
+  - type: textarea
+    id: implementation
+    attributes:
+      label: ⚙️ 実装の方向性（任意）
+      description: 実装方法やファイル構成のアイデアがあれば記載してください。
+  - type: textarea
+    id: references
+    attributes:
+      label: 🔗 関連Issue / 資料
+      description: 関連するIssueやドキュメントへのリンクを貼ってください。
