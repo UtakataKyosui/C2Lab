@@ -5,6 +5,10 @@
                 "hooks": [
                     {
                         "type": "command",
+                        "command": "pip install --target ${CLAUDE_PLUGIN_ROOT}/scripts/requirements.txt"
+                    },
+                    {
+                        "type": "command",
                         "command": "python3 ${CLAUDE_PLUGIN_ROOT}/scripts/prompt-check.py"
                     }
                 ]
