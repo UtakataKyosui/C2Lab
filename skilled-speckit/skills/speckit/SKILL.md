@@ -1,6 +1,6 @@
 ---
 name: speckit-skilled
-descripton: 機能実装や修正時に仕様を策定する際に使用する。
+descripton: 新しい機能の実装や修正、リファクタリング時に仕様を策定する際に使用する。
 ---
 
 # SpecKit Skilled
@@ -43,3 +43,12 @@ descripton: 機能実装や修正時に仕様を策定する際に使用する�
 - `.specify/memory`にあった`constitution.md`ファイルは、Skillディレクトリの直下に`memory`ディレクトリごと移動している
 
 そのため、`.specify`は`${CLAUDE_PLUGIN_ROOT}`に差し替えられている。
+
+## Agent Skillとしての実行されるSpec Kitに要求する追加の指示
+
+- `tasks`を実行すると、その成果物としてMarkdownを作成する。そのMarkdownの内容については、リポジトリにIssueとして必ず登録する。
+    - つまり、`tasks`を実行したら、`taskstoissues`も実行する流れを固定とする
+    - その際、基本的には`gh`か`GitHub MCP`を活用する。
+        - `GitHub MCP`が動かなかった場合、自動的に`gh`を利用すること。
+        - `gh`が導入されていない場合は、導入を行う指示を行うこと。
+    
