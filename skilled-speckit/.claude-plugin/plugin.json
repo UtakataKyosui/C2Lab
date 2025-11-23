@@ -1,0 +1,11 @@
+{
+  "name": "speckit-skilled-plugin",
+  "description": "SpecKit Skilled Plugin",
+  "version": "0.0.1",
+  "author": {
+    "name": "Utakata Kyosui",
+    "email": "fill.ayaextech@gmail.com"
+  },
+  "repository": "https://github.com/UtakataKyosui/UtakataClaudePlugin.git",
+  "keywords": ["development","speckit","agent-skill"]
+}
