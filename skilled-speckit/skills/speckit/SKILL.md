@@ -1,6 +1,6 @@
 ---
 name: speckit-skilled
-descripton: 新しい機能の実装や修正、リファクタリング時に仕様を策定する際に使用する。
+description: 新しい機能の実装や修正、リファクタリング時に仕様を策定する際に使用する。
 ---
 
 # SpecKit Skilled
