@@ -17,25 +17,23 @@ def run_command(cmd: List[str]) -> None:
     If the command fails or is missing, raise CargoToolError.
     """
     try:
-        result = subprocess.run(
+        subprocess.run(
             cmd,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            capture_output=True,
             text=True,
-            check=False,  # 自前でコードチェックする
+            check=True,
         )
     except FileNotFoundError:
         raise CargoToolError(f"Command not found: {cmd[0]}")
+    except subprocess.CalledProcessError as e:
+        raise CargoToolError(
+            f"Command failed: {' '.join(cmd)}\n" +
+            f"Exit code: {e.returncode}\n\n" +
+            f"stdout:\n{e.stdout}\n" +
+            f"stderr:\n{e.stderr}"
+        )
     except OSError as e:
         raise CargoToolError(f"OS error while executing {cmd}: {e}")
-
-    if result.returncode != 0:
-        raise CargoToolError(
-            f"Command failed: {' '.join(cmd)}\n"
-            f"Exit code: {result.returncode}\n\n"
-            f"stdout:\n{result.stdout}\n"
-            f"stderr:\n{result.stderr}"
-        )
 
 
 def ensure_rust_env() -> None:
