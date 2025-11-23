@@ -32,9 +32,9 @@ trait Greet {
 }
 
 /// Person struct
-pub struct Person { 
+pub struct Person {
     /// Name of the person
-    pub name: String 
+    pub name: String
 }
 
 impl Greet for Person {
