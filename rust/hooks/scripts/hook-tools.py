@@ -82,21 +82,14 @@ def main():
     try:
         ensure_rust_env()
 
-        # 個別実行
-        if args.check:
+        # 個別に実行するか、すべて実行するかを決定します
+        run_all = not any([args.check, args.clippy, args.fmt])
+        if args.check or run_all:
             cargo_check()
-            return
-        if args.clippy:
+        if args.clippy or run_all:
             cargo_clippy()
-            return
-        if args.fmt:
+        if args.fmt or run_all:
             cargo_fmt()
-            return
-
-        # 全部実行
-        cargo_check()
-        cargo_clippy()
-        cargo_fmt()
 
     except CargoToolError as e:
         print(f"\n❌ ERROR: {e}")

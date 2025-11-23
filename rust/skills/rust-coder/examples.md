@@ -47,6 +47,7 @@ impl Greet for Person {
 
 ## Example 3: Macro
 ```rust
+use serde::{Deserialize, Serialize};
 macro_rules! auto_derived {
     ( $( $item:item )+ ) => {
         $(
