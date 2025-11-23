@@ -18,6 +18,11 @@
       "name": "speckit-skilled-plugin",
       "source": "./skilled-speckit",
       "description": "SpecKit Skilled Plugin"
+    },
+    {
+      "name": "rust-development-plugin",
+      "source": "./rust",
+      "description": "Rust Development Plugin"
     }
   ]
 }
