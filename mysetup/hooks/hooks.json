@@ -5,7 +5,7 @@
 				"hooks": [
 					{
 						"type": "command",
-						"command": "$HOME/.claude/MyClaudeCodeHooks/target/release/MyClaudeCodeHooks",
+						"command": "${CLAUDE_PLUGIN_ROOT}/hooks/claude-hooks/target/release/integrated-claude-hooks",
 						"timeout": 30
 					}
 				]
@@ -16,7 +16,7 @@
 				"hooks": [
 					{
 						"type": "command",
-						"command": "$HOME/.claude/MyClaudeCodeHooks/target/release/MyClaudeCodeHooks",
+						"command": "${CLAUDE_PLUGIN_ROOT}/hooks/claude-hooks/target/release/integrated-claude-hooks",
 						"timeout": 30
 					}
 				]
@@ -27,7 +27,7 @@
 				"hooks": [
 					{
 						"type": "command",
-						"command": "$HOME/.claude/MyClaudeCodeHooks/target/release/MyClaudeCodeHooks",
+						"command": "${CLAUDE_PLUGIN_ROOT}/hooks/claude-hooks/target/release/integrated-claude-hooks",
 						"timeout": 30
 					}
 				]
@@ -38,7 +38,7 @@
 				"hooks": [
 					{
 						"type": "command",
-						"command": "$HOME/.claude/MyClaudeCodeHooks/target/release/MyClaudeCodeHooks",
+						"command": "${CLAUDE_PLUGIN_ROOT}/hooks/claude-hooks/target/release/integrated-claude-hooks",
 						"timeout": 30
 					}
 				]
