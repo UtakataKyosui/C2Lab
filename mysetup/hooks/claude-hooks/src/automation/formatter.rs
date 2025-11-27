@@ -97,8 +97,9 @@ impl Formatter {
             None => return FormatResult::error("cargo fmt", "File path is not valid UTF-8"),
         };
         match Command::new("cargo")
-            .args(["fmt", "--", file_path_str])
             .current_dir(project_root)
+            .args(["fmt", "--"])
+            .arg(file_path)
             .output()
         {
             Ok(output) if output.status.success() => {

@@ -44,7 +44,7 @@ async fn main() -> Result<(), HookError> {
             let mcp_handler = mcp_handler.clone();
 
             move |event| -> Result<(), HookError> {
-                let mut session_stats = stats.lock().unwrap();
+                let mut session_stats = stats.lock().expect("Failed to lock session stats");
 
                 // Initialize session if first event
                 if session_stats.session_id.is_empty() {

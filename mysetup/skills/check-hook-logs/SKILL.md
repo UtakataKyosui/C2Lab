@@ -29,7 +29,10 @@ Displays and analyzes the integrated Claude Code hooks logs to troubleshoot issu
 
 3. **Display recent log entries**:
    ```bash
-   tail -50 ~/.claude/hook-logs/claude-hooks-*.log
+   tail -50 ~/.claude/hook-logs/hook.log
+   # For session stats, check the JSON files:
+   # ls -lht ~/.claude/hook-logs/session-*.json | head -5
+   # cat ~/.claude/hook-logs/session-<session_id>.json | jq .
    ```
 
 4. **Search for specific events** (if requested by user):

@@ -50,7 +50,11 @@ impl PromptHandler {
                 suppress_output: Some(true),
             };
 
-            println!("{}", serde_json::to_string_pretty(&response).unwrap());
+            if let Ok(json_response) = serde_json::to_string_pretty(&response) {
+                println!("{}", json_response);
+            } else {
+                eprintln!("Error serializing response");
+            }
         } else {
             send_notification_safely(
                 "Claude Code - プロンプト受信",
