@@ -57,7 +57,7 @@ The hooks log the following events:
 
 Log files are typically named:
 ```
-claude-hooks-YYYY-MM-DD.log
+hook.log
 ```
 
 ## Troubleshooting

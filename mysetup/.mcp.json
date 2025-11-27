@@ -51,6 +51,7 @@
 			}
 		},
 		"vibe_kanban": {
+			"type": "stdio",
 			"command": "npx",
 			"args": [
 				"-y",
@@ -68,10 +69,11 @@
 			"env": {}
 		},
 		"docs-rs": {
+			"type": "stdio",
 			"command": "npx",
 			"args": [
-				"@nuskey8/docs-rs-mcp@latest",
-				"-y"
+				"-y",
+				"@nuskey8/docs-rs-mcp@latest"
 			]
 		}
 	}

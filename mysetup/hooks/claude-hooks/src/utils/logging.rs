@@ -14,13 +14,16 @@ pub fn get_log_dir() -> Result<PathBuf> {
 
 /// Log an event to file
 pub fn log_to_file(event_type: &str, details: &str) -> Result<()> {
+    use std::fs::OpenOptions;
+    use std::io::Write;
+
     let log_dir = get_log_dir()?;
     let log_file = log_dir.join("hook.log");
     let timestamp = Utc::now().format("%Y-%m-%d %H:%M:%S UTC");
     let log_entry = format!("[{timestamp}] {event_type}: {details}\n");
 
-    let existing_content = fs::read_to_string(&log_file).unwrap_or_default();
-    fs::write(&log_file, format!("{}{}", existing_content, log_entry))?;
+    let mut file = OpenOptions::new().create(true).append(true).open(log_file)?;
+    file.write_all(log_entry.as_bytes())?;
 
     Ok(())
 }

@@ -92,8 +92,12 @@ impl Formatter {
     }
 
     fn run_cargo_fmt_file(file_path: &Path, project_root: &Path) -> FormatResult {
+        let file_path_str = match file_path.to_str() {
+            Some(s) => s,
+            None => return FormatResult::error("cargo fmt", "File path is not valid UTF-8"),
+        };
         match Command::new("cargo")
-            .args(["fmt", "--", file_path.to_str().unwrap_or("")])
+            .args(["fmt", "--", file_path_str])
             .current_dir(project_root)
             .output()
         {

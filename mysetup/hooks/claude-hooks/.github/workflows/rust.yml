@@ -24,10 +24,6 @@ jobs:
       - name: Clear Cargo git cache
         run: rm -rf ~/.cargo/git
 
-      # Cargo.lockを削除して再生成
-      - name: Remove Cargo.lock
-        run: rm -f Cargo.lock
-
       - name: Configure git authentication with PAT
         run: |
           git config --global url."https://${{ secrets.GH_PAT }}@github.com/".insteadOf "https://github.com/"
@@ -67,6 +63,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: myclaudecodehooks-macos
-          path: target/release/MyClaudeCodeHooks
+          path: target/release/integrated-claude-hooks
           retention-days: 30
 
