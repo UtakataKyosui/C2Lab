@@ -19,63 +19,6 @@ echo "📋 Installing binary to ~/bin..."
 cp target/release/production-hooks ~/bin/claude-production-hooks
 chmod +x ~/bin/claude-production-hooks
 
-# Create Claude config directory
-mkdir -p ~/.claude
-
-# Check if settings.json exists
-if [ -f ~/.claude/settings.json ]; then
-    echo "⚠️  ~/.claude/settings.json already exists."
-    echo "   Please manually add the following hooks configuration:"
-    echo ""
-    echo '  "hooks": {'
-    echo '    "pre_tool_use": ['
-    echo '      {'
-    echo '        "command": "~/bin/claude-production-hooks",'
-    echo '        "timeout": 30'
-    echo '      }'
-    echo '    ],'
-    echo '    "post_tool_use": ['
-    echo '      {'
-    echo '        "command": "~/bin/claude-production-hooks",'
-    echo '        "timeout": 30'
-    echo '      }'
-    echo '    ],'
-    echo '    "stop": ['
-    echo '      {'
-    echo '        "command": "~/bin/claude-production-hooks",'
-    echo '        "timeout": 30'
-    echo '      }'
-    echo '    ]'
-    echo '  }'
-    echo ""
-else
-    echo "📝 Creating Claude Code settings..."
-    cat > ~/.claude/settings.json << 'EOF'
-{
-  "hooks": {
-    "pre_tool_use": [
-      {
-        "command": "~/bin/claude-production-hooks",
-        "timeout": 30
-      }
-    ],
-    "post_tool_use": [
-      {
-        "command": "~/bin/claude-production-hooks",
-        "timeout": 30
-      }
-    ],
-    "stop": [
-      {
-        "command": "~/bin/claude-production-hooks",
-        "timeout": 30
-      }
-    ]
-  }
-}
-EOF
-fi
-
 # Create logs directory
 mkdir -p ~/.claude/hook-logs
 
