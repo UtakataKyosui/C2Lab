@@ -160,8 +160,26 @@ impl Formatter {
         results
     }
 
-    fn format_js_file(_file_path: &Path) -> Vec<FormatResult> {
-        Self::format_nodejs()
+    fn format_js_file(file_path: &Path) -> Vec<FormatResult> {
+        // Try prettier on the specific file
+        match Command::new("npx")
+            .args(["prettier", "--write"])
+            .arg(file_path)
+            .output()
+        {
+            Ok(output) if output.status.success() => {
+                vec![FormatResult::success("prettier", &format!("Formatted with prettier: {:?}", file_path))]
+            }
+            Ok(output) => {
+                vec![FormatResult::error(
+                    "prettier",
+                    &String::from_utf8_lossy(&output.stderr),
+                )]
+            }
+            Err(_) => {
+                vec![FormatResult::not_available("prettier")]
+            }
+        }
     }
 
     fn format_python() -> Vec<FormatResult> {

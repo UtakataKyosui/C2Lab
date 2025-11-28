@@ -30,18 +30,20 @@ impl SessionStats {
     }
 
     pub fn record_bash_command(&mut self, event: &PreToolUseEvent) {
+        use crate::security::CommandValidator;
+        
         if let Some(command) = event.tool_input.get("command") {
             if let Some(cmd_str) = command.as_str() {
-                let is_destructive = self.is_destructive_command(cmd_str);
-                let is_system_level = self.is_system_level_command(cmd_str);
+                let validator = CommandValidator::new();
+                let validation = validator.validate(cmd_str);
                 
                 let bash_cmd = BashCommand {
                     timestamp: Utc::now(),
                     command: cmd_str.to_string(),
                     session_id: event.common.session_id.clone(),
                     cwd: event.common.cwd.clone(),
-                    is_destructive,
-                    is_system_level,
+                    is_destructive: validation.is_destructive,
+                    is_system_level: validation.is_system_level,
                 };
                 
                 self.bash_commands.push(bash_cmd);
@@ -114,25 +116,6 @@ impl SessionStats {
         }
     }
 
-    pub fn is_destructive_command(&self, command: &str) -> bool {
-        let destructive_patterns = [
-            "rm -rf", "rm -r", "sudo rm", "rm /", "del ", "rmdir",
-            "format ", "fdisk", "dd if=", "sudo dd", "> /dev/",
-            "sudo chmod 777", "chmod -R 777", "sudo chown -R"
-        ];
-        
-        destructive_patterns.iter().any(|pattern| command.contains(pattern))
-    }
-
-    pub fn is_system_level_command(&self, command: &str) -> bool {
-        let system_patterns = [
-            "sudo ", "su ", "doas ", "systemctl", "/etc/", "/var/",
-            "/usr/", "/bin/", "/sbin/", "mount ", "umount ",
-            "iptables", "firewall", "passwd", "useradd", "userdel"
-        ];
-        
-        system_patterns.iter().any(|pattern| command.contains(pattern))
-    }
 
     pub fn save_to_file(&self) -> Result<(), anyhow::Error> {
         let home_dir = dirs::home_dir().ok_or_else(|| anyhow::anyhow!("Could not find home directory"))?;
