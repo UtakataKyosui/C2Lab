@@ -44,7 +44,7 @@ async fn main() -> Result<(), HookError> {
             let mcp_handler = mcp_handler.clone();
 
             move |event| -> Result<(), HookError> {
-                let mut session_stats = stats.lock().expect("Failed to lock session stats");
+                let mut session_stats = stats.lock().map_err(|e| HookError::custom(format!("Session stats mutex poisoned: {}", e)))?;
 
                 // Initialize session if first event
                 if session_stats.session_id.is_empty() {
@@ -83,7 +83,7 @@ async fn main() -> Result<(), HookError> {
             let mcp_handler = mcp_handler.clone();
 
             move |event| -> Result<(), HookError> {
-                let mut session_stats = stats.lock().unwrap();
+                let mut session_stats = stats.lock().map_err(|e| HookError::custom(format!("Session stats mutex poisoned: {}", e)))?;
 
                 // Handle MCP post-processing
                 let hook_event = HookEvent::PostToolUse(event.clone());
@@ -104,7 +104,7 @@ async fn main() -> Result<(), HookError> {
             let stats = stats.clone();
 
             move |event| -> Result<(), HookError> {
-                let session_stats = stats.lock().unwrap();
+                let session_stats = stats.lock().map_err(|e| HookError::custom(format!("Session stats mutex poisoned: {}", e)))?;
 
                 println!("🛑 Session ended: {}", event.common.session_id);
                 session_stats.print_summary();
