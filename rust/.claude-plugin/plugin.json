@@ -1,13 +1,16 @@
 {
   "name": "rust-development-plugin",
-  "description": "Rust Development Plugin",
-  "version": "0.0.1",
+  "description": "Comprehensive Rust development toolkit with linting, formatting, type checking, dependency management, workspace support, and macro patterns",
+  "version": "0.2.0",
   "author": {
     "name": "Utakata Kyosui",
     "email": "fill.ayaextech@gmail.com"
   },
   "repository": "https://github.com/UtakataKyosui/UtakataClaudePlugin.git",
-  "keywords": ["development","rust","agent-skill","hooks"],
+  "keywords": ["development", "rust", "cargo", "workspace", "macro", "linting", "formatting"],
+  "commands": "./commands/",
   "agents": "./agents/",
-  "hooks": "./hooks/hooks.json"
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json",
+  "mcpServers": "./.mcp.json"
 }

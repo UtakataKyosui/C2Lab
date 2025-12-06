@@ -1,0 +1,35 @@
+---
+auto_format: true
+auto_lint: true
+auto_fix: false
+clippy_level: "warn"
+workspace_mode: "current"
+crates_io_token: ""
+---
+
+# Rust Plugin Configuration
+
+This file configures the behavior of the Rust development plugin for this project.
+
+## Configuration Options
+
+- **auto_format**: Automatically run `cargo fmt` after editing Rust files
+- **auto_lint**: Automatically run `cargo clippy` after editing Rust files
+- **auto_fix**: Automatically apply clippy suggestions (use with caution)
+- **clippy_level**: Clippy strictness level ("warn" or "deny")
+- **workspace_mode**: When running commands in a workspace
+  - "current": Only process current crate
+  - "all": Process all workspace members
+- **crates_io_token**: Optional API token for crates.io (for higher rate limits)
+
+## Usage
+
+1. Copy this file to `.claude/rust.local.md` in your project root
+2. Adjust settings as needed
+3. The plugin will read these settings automatically
+
+## Notes
+
+- This file is gitignored by default
+- Settings are project-specific
+- Changes take effect immediately (no restart needed)
