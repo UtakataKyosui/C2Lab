@@ -1,6 +1,6 @@
 ---
 name: rust-code-optimizer
-description: Optimizes Rust code for performance, memory efficiency, and clean architecture. Use when user asks to improve performance, reduce allocations, or optimize code.
+description: Optimizes Rust code for performance, memory efficiency, and clean architecture.
 whenToUse: |
   Use this agent when:
   - User asks to optimize code for performance

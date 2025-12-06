@@ -1,5 +1,5 @@
 ---
-description: This agent should be used when the user asks about workspace organization, multi-crate project structure, or how to split a monolithic crate. Triggered by workspace-related questions.
+description: Designs and recommends optimal Cargo workspace structures for multi-crate Rust projects, providing architectural patterns and migration guidance.
 whenToUse: |
   Use this agent when:
   - User asks how to structure a workspace

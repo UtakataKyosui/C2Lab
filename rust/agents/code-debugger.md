@@ -1,6 +1,6 @@
 ---
 name: rust-code-debugger
-description: Identifies the root causes of bugs, panics, or unexpected behavior in Rust code. Use when user encounters runtime errors, panics, logic bugs, or asks to debug Rust code.
+description: Identifies the root causes of bugs, panics, or unexpected behavior in Rust code.
 whenToUse: |
   Use this agent when:
   - User encounters runtime panics or errors

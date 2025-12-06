@@ -74,6 +74,7 @@ macro_rules! builder {
             $($field: $typ,)*
         }
 
+        // Note: This pattern requires the `paste` crate (e.g., `paste = "1.0"`)
         paste::paste! {
             impl $name {
                 pub fn new() -> Self {

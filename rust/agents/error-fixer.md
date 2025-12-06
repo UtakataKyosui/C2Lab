@@ -1,5 +1,5 @@
 ---
-description: This agent should be used when the user encounters compilation errors in Rust code, asks to "fix this error", "solve compilation issue", or when cargo check/build reports errors. Automatically triggered when errors are detected.
+description: Diagnoses and automatically fixes common Rust compilation errors, including issues with ownership, lifetimes, and traits.
 whenToUse: |
   Use this agent when:
   - User receives compilation errors from rustc

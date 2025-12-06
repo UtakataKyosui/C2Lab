@@ -1,5 +1,5 @@
 ---
-description: This agent should be used when the user asks for crate recommendations, library suggestions, or alternatives to existing crates. Triggered by questions like "recommend a crate", "best library for", "what should I use for".
+description: Recommends optimal Rust crates and libraries based on user requirements, comparing alternatives and providing usage guidance.
 whenToUse: |
   Use this agent when:
   - User asks for crate recommendations

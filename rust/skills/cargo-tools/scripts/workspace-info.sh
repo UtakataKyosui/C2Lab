@@ -32,7 +32,6 @@ echo -e "${BLUE}Workspace Members:${NC}"
 if command -v jq &> /dev/null; then
     cargo metadata --format-version 1 --no-deps 2>/dev/null | \
         jq -r '.workspace_members[]' | \
-        sed 's/#/ /' | \
         awk '{printf "  - %s (v%s)\n", $1, $2}'
 else
     # Fallback without jq

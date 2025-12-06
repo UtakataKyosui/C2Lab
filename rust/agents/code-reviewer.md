@@ -1,6 +1,6 @@
 ---
 name: rust-code-reviewer
-description: Reviews Rust code for correctness, readability, design, and idiomatic Rust practices. Use when user asks for code review, wants feedback on Rust code, or requests design improvements.
+description: Reviews Rust code for correctness, readability, design, and idiomatic Rust practices.
 whenToUse: |
   Use this agent when:
   - User asks for code review
