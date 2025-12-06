@@ -1,4 +1,5 @@
 ---
+name: workspace-architect
 description: Designs and recommends optimal Cargo workspace structures for multi-crate Rust projects, providing architectural patterns and migration guidance.
 whenToUse: |
   Use this agent when:

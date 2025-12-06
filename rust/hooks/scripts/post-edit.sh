@@ -43,13 +43,21 @@ fi
 # Auto-lint if enabled
 if [ "$AUTO_LINT" = true ]; then
     echo "Linting Rust code for crate containing $FILE_PATH..."
+    # Find the crate root by searching for Cargo.toml upwards from the file's directory
+    CRATE_DIR=$(dirname "$FILE_PATH")
+    while [[ "$CRATE_DIR" != "." && "$CRATE_DIR" != "/" && ! -f "$CRATE_DIR/Cargo.toml" ]]; do
+        CRATE_DIR=$(dirname "$CRATE_DIR")
+    done
+
     # Run clippy in the context of the file's crate to ensure correct scope in workspaces
-    if ! (cd "$(dirname "$FILE_PATH")" && cargo clippy --quiet -- -D warnings 2>&1); then
-        echo "! Clippy warnings/errors detected"
-        echo "Run /rust:lint to see details and apply fixes"
-        exit 1  # Block if errors found (per Phase 3 spec)
-    else
-        echo "✓ No lint issues"
+    if [[ -f "$CRATE_DIR/Cargo.toml" ]]; then
+        if ! (cd "$CRATE_DIR" && cargo clippy --quiet -- -D warnings 2>&1); then
+            echo "! Clippy warnings/errors detected"
+            echo "Run /rust:lint to see details and apply fixes"
+            exit 1  # Block if errors found (per Phase 3 spec)
+        else
+            echo "✓ No lint issues"
+        fi
     fi
 fi
 

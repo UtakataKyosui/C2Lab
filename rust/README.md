@@ -8,7 +8,7 @@ Comprehensive Rust development toolkit for Claude Code with linting, formatting,
 - `/rust:lint` - Run cargo clippy with automatic fixes
 - `/rust:format` - Format code with cargo fmt
 - `/rust:check` - Type check with cargo check
-- `/rust:deps` - Check for outdated dependencies
+- `/rust:deps` - Check for outdated dependencies and security vulnerabilities
 - `/rust:fix` - Auto-fix common errors with cargo fix
 - `/rust:build` - Build project and report errors
 - `/rust:workspace` - Analyze and manage workspace structure
@@ -83,8 +83,8 @@ Additional project-specific notes...
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `auto_format` | boolean | `true` | Automatically format Rust files on save |
-| `auto_lint` | boolean | `true` | Automatically lint Rust files on save |
+| `auto_format` | boolean | `true` | Automatically format Rust files after an edit is applied |
+| `auto_lint` | boolean | `true` | Automatically lint Rust files after an edit is applied |
 | `auto_fix` | boolean | `false` | Automatically apply fixes from clippy |
 | `clippy_level` | string | `"warn"` | Clippy lint level: "warn" or "deny" |
 | `workspace_mode` | string | `"current"` | Workspace scope: "current" or "all" |

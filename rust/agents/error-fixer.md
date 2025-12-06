@@ -1,4 +1,5 @@
 ---
+name: error-fixer
 description: Diagnoses and automatically fixes common Rust compilation errors, including issues with ownership, lifetimes, and traits.
 whenToUse: |
   Use this agent when:

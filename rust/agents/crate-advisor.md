@@ -1,4 +1,5 @@
 ---
+name: crate-advisor
 description: Recommends optimal Rust crates and libraries based on user requirements, comparing alternatives and providing usage guidance.
 whenToUse: |
   Use this agent when:
