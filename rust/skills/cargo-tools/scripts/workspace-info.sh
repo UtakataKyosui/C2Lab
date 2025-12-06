@@ -34,8 +34,15 @@ if command -v jq &> /dev/null; then
         jq -r '.workspace_members[]' | \
         awk '{printf "  - %s (v%s)\n", $1, $2}'
 else
-    # Fallback without jq
-    grep "members" Cargo.toml -A 20 | grep '"' | sed 's/.*"\(.*\)".*/  - \1/'
+    # Fallback without jq - parse members array more robustly
+    awk '/^\[workspace\]/,/^\[/ {
+        if ($0 ~ /members[[:space:]]*=/) { in_members=1; next }
+        if (in_members && $0 ~ /\]/) { exit }
+        if (in_members && $0 ~ /"/) {
+            gsub(/.*"/, ""); gsub(/".*/, "")
+            if ($0 != "") print "  - " $0
+        }
+    }' Cargo.toml
 fi
 
 echo

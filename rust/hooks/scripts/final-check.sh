@@ -14,7 +14,7 @@ echo
 
 # Check compilation
 echo "Checking compilation..."
-if cargo check --quiet 2>&1; then
+if cargo check --quiet; then
     echo "✓ Project compiles successfully"
 else
     echo "! Compilation errors detected"
@@ -24,7 +24,7 @@ fi
 
 # Check formatting
 echo "Checking formatting..."
-if cargo fmt -- --check 2>&1; then
+if cargo fmt -- --check; then
     echo "✓ Code is properly formatted"
 else
     echo "! Code formatting issues detected"

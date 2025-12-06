@@ -207,6 +207,7 @@ cargo build -p specific-crate        # Build specific member
 
 **List workspace members:**
 ```bash
+# Note: jq is optional but recommended for easier parsing
 cargo metadata --format-version 1 | jq '.workspace_members'
 ```
 
