@@ -1,5 +1,8 @@
 # UtakataClaudeCodePluginMarketPlace
 
+[![Run in Smithery](https://smithery.ai/badge/skills/utakatakyosui)](https://smithery.ai/skills?ns=utakatakyosui&utm_source=github&utm_medium=badge)
+
+
 UtakataのClaudeCodeのPlugin MarketPlaceです。
 Claude Codeでいちいち
 
