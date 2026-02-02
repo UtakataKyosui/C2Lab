@@ -1,23 +1,48 @@
 {
-  "name": "utakata-marketplace",
-  "metadata": {
-    "description": "Utakata Kyosui's marketplace",
-    "version": "0.0.1"
-  },
+  "name": "utakata-plugins",
   "owner": {
-    "name": "Utakata Kyosui",
+    "name": "UtakataKyosui",
     "email": "fill.ayaextech@gmail.com"
+  },
+  "metadata": {
+    "description": "Claude Code用のプラグインマーケットプレイス。VCS、開発ツール、ワークフロー自動化などのプラグインを提供。",
+    "version": "1.0.0"
   },
   "plugins": [
     {
-      "name": "code-review-plugin",
-      "source": "./code-review",
-      "description": "Code Review Plugin"
+      "name": "jj-vcs",
+      "source": "./plugins/jj-vcs",
+      "description": "Jujutsu (jj) VCSを使用する際のコマンドガイド。GitからJJへの移行、jjコマンドの使い方、バージョン管理操作を行う際に参照する。",
+      "version": "1.0.0",
+      "author": {
+        "name": "UtakataKyosui"
+      },
+      "keywords": ["jj", "jujutsu", "vcs", "version-control", "git"],
+      "category": "version-control"
     },
     {
-      "name": "rust-development-plugin",
+      "name": "rust-development",
       "source": "./rust",
-      "description": "Rust Development Plugin"
+      "description": "Rust開発用プラグイン。エージェントとフックを提供。",
+      "version": "0.0.1",
+      "author": {
+        "name": "UtakataKyosui",
+        "email": "fill.ayaextech@gmail.com"
+      },
+      "keywords": ["development", "rust", "agent-skill", "hooks"],
+      "category": "development"
+    },
+    {
+      "name": "code-review",
+      "source": "./code-review",
+      "description": "コードレビュー用プラグイン。レビュー原則とチェックリストコマンドを提供。",
+      "version": "0.0.1",
+      "author": {
+        "name": "UtakataKyosui",
+        "email": "fill.ayaextech@gmail.com"
+      },
+      "keywords": ["development", "code-review", "commands"],
+      "category": "development"
     }
   ]
 }
