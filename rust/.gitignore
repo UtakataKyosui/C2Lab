@@ -1,0 +1,16 @@
+# Plugin settings (user-specific)
+.claude/*.local.md
+
+# Python cache from old hooks
+__pycache__/
+*.pyc
+*.pyo
+
+# Temporary files
+*.tmp
+*.swp
+*~
+
+# IDE
+.vscode/
+.idea/

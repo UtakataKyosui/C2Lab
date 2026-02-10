@@ -1,6 +1,20 @@
 ---
 name: rust-code-debugger
-description: Identifies the root causes of bugs, panics, or unexpected behavior in Rust code
+description: Identifies the root causes of bugs, panics, or unexpected behavior in Rust code.
+whenToUse: |
+  Use this agent when:
+  - User encounters runtime panics or errors
+  - User reports unexpected behavior in Rust code
+  - User asks to debug or troubleshoot code
+  - User experiences borrow checker issues at runtime
+  - User has logic bugs that need investigation
+
+  Examples:
+  - "Why is my code panicking here?"
+  - "This function returns wrong results, help debug"
+  - "My program crashes at runtime, can you find the bug?"
+  - "Debug this borrow checker error"
+  - "Help me trace why this fails"
 tools: inherit
 model: inherit
 ---

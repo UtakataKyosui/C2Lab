@@ -1,39 +1,27 @@
 {
-    "hooks": {
-        "UserPromptSubmit": [
-            {
-                "hooks": [
-                    {
-                        "type": "command",
-                        "command": "pip install -r ${CLAUDE_PLUGIN_ROOT}/scripts/requirements.txt"
-                    },
-                    {
-                        "type": "command",
-                        "command": "python3 ${CLAUDE_PLUGIN_ROOT}/scripts/prompt-check.py"
-                    }
-                ]
-            }
-        ],
-        "PostToolUse": [
-            {
-                "matcher": "Edit | Write",
-                "hooks": [
-                    {
-                        "type": "command",
-                        "command": "python3 ${CLAUDE_PLUGIN_ROOT}/scripts/hook-tools.py"
-                    }
-                ]
-            }
-        ],
-        "Stop": [
-            {
-                "hooks": [
-                    {
-                        "type": "command",
-                        "command": "python3 ${CLAUDE_PLUGIN_ROOT}/scripts/hook-tools.py"
-                    }
-                ]
-            }
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit | Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/post-edit.sh \"$TOOL_RESULT\"",
+            "timeout": 30
+          }
         ]
-    }
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/final-check.sh",
+            "timeout": 60
+          }
+        ]
+      }
+    ]
+  }
 }

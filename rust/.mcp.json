@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "crates-io": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-fetch"
+      ],
+      "env": {
+        "ALLOWED_DOMAINS": "crates.io,docs.rs,lib.rs"
+      }
+    }
+  }
+}
