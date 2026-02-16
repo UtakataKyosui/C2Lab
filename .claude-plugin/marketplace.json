@@ -43,6 +43,18 @@
       },
       "keywords": ["development", "code-review", "commands"],
       "category": "development"
+    },
+    {
+      "name": "scaffdog-colocation",
+      "source": "./scaffdog-colocation",
+      "description": "scaffdogを使ったコロケーションパターンによるファイル分割支援プラグイン。テンプレート生成、スキャフォールディング、構造検証を提供。",
+      "version": "1.0.0",
+      "author": {
+        "name": "UtakataKyosui",
+        "email": "fill.ayaextech@gmail.com"
+      },
+      "keywords": ["scaffdog", "colocation", "scaffolding", "template", "file-structure"],
+      "category": "development"
     }
   ]
 }

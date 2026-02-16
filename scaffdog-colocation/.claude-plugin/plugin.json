@@ -1,0 +1,24 @@
+{
+  "name": "scaffdog-colocation",
+  "description": "scaffdogを使ったコロケーションパターンによるファイル分割支援プラグイン。テンプレート生成、スキャフォールディング、構造検証を提供。",
+  "version": "1.0.0",
+  "author": {
+    "name": "UtakataKyosui",
+    "email": "fill.ayaextech@gmail.com"
+  },
+  "repository": "https://github.com/UtakataKyosui/C2Lab",
+  "keywords": ["scaffdog", "colocation", "scaffolding", "template", "file-structure"],
+  "license": "MIT",
+  "commands": [
+    "./commands/scaffdog-colocation/init.md",
+    "./commands/scaffdog-colocation/generate-template.md",
+    "./commands/scaffdog-colocation/scaffold.md",
+    "./commands/scaffdog-colocation/validate.md",
+    "./commands/scaffdog-colocation/add-file-type.md"
+  ],
+  "agents": [
+    "./agents/colocation-validator.md",
+    "./agents/scaffdog-template-generator.md"
+  ],
+  "hooks": "./hooks/hooks.json"
+}
