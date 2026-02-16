@@ -55,6 +55,18 @@
       },
       "keywords": ["scaffdog", "colocation", "scaffolding", "template", "file-structure"],
       "category": "development"
+    },
+    {
+      "name": "tdd-enforce",
+      "source": "./tdd-enforce",
+      "description": "テスト駆動開発（TDD）を強制するプラグイン。実装コードに対応するテストの存在を検証し、テストなしの実装をブロックする。多言語対応。",
+      "version": "1.0.0",
+      "author": {
+        "name": "UtakataKyosui",
+        "email": "fill.ayaextech@gmail.com"
+      },
+      "keywords": ["tdd", "test-driven-development", "testing", "quality", "enforcement"],
+      "category": "development"
     }
   ]
 }

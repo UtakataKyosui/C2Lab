@@ -1,0 +1,21 @@
+{
+  "name": "tdd-enforce",
+  "description": "テスト駆動開発（TDD）を強制するプラグイン。実装コードに対応するテストの存在を検証し、テストなしの実装をブロックする。多言語対応。",
+  "version": "1.0.0",
+  "author": {
+    "name": "UtakataKyosui",
+    "email": "fill.ayaextech@gmail.com"
+  },
+  "repository": "https://github.com/UtakataKyosui/C2Lab",
+  "keywords": ["tdd", "test-driven-development", "testing", "quality", "enforcement"],
+  "license": "MIT",
+  "commands": [
+    "./commands/tdd-enforce/init.md",
+    "./commands/tdd-enforce/cycle.md",
+    "./commands/tdd-enforce/suggest-framework.md"
+  ],
+  "agents": [
+    "./agents/tdd-compliance-checker.md"
+  ],
+  "hooks": "./hooks/hooks.json"
+}
