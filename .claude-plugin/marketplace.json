@@ -67,6 +67,18 @@
       },
       "keywords": ["tdd", "test-driven-development", "testing", "quality", "enforcement"],
       "category": "development"
+    },
+    {
+      "name": "wasm-optimizer",
+      "source": "./wasm-optimizer",
+      "description": "JS/TSコードの重い処理パターンを検出し、WebAssemblyベースのライブラリへの置き換えを提案するプラグイン。画像処理、暗号化、大量データ操作などのパターンを静的解析で検出する。",
+      "version": "1.0.0",
+      "author": {
+        "name": "UtakataKyosui",
+        "email": "fill.ayaextech@gmail.com"
+      },
+      "keywords": ["wasm", "webassembly", "optimization", "performance", "js", "typescript"],
+      "category": "development"
     }
   ]
 }
