@@ -1,0 +1,22 @@
+{
+    "name": "protobuf-tools",
+    "description": "Protocol Buffers (protobuf) の使用支援プラグイン。`.proto`ファイルの書き方、スタイルガイド、protoc/bufコマンドの使用例を提供する。",
+    "version": "1.0.0",
+    "author": {
+        "name": "UtakataKyosui",
+        "email": "fill.ayaextech@gmail.com"
+    },
+    "repository": "https://github.com/UtakataKyosui/C2Lab",
+    "keywords": [
+        "protobuf",
+        "protocol-buffers",
+        "grpc",
+        "serialization",
+        "interface-definition",
+        "schema"
+    ],
+    "license": "MIT",
+    "commands": [],
+    "agents": [],
+    "hooks": ""
+}
