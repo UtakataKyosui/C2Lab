@@ -1,0 +1,16 @@
+#:schema https://docs.jj-vcs.dev/latest/config-schema.json
+
+[revset-aliases]
+"trunk()" = "main@origin"
+
+# ruff format: jj fix 統合
+[fix.tools.ruff-format]
+command = ["uvx", "ruff", "format", "--stdin-filename={name}", "-"]
+enabled = true
+patterns = ["glob:**/*.py"]
+
+# ruff check + auto-fix: jj fix 統合
+[fix.tools.ruff-check]
+command = ["uvx", "ruff", "check", "--fix", "--stdin-filename={name}", "-"]
+enabled = true
+patterns = ["glob:**/*.py"]

@@ -1,0 +1,47 @@
+[project]
+name = "utakata-claude-plugins"
+version = "1.0.0"
+requires-python = ">=3.12"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+include = ["**/*.py"]
+exclude = [".git", ".jj", "__pycache__"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes（未使用import等）
+    "I",    # isort（import順序）
+    "B",    # flake8-bugbear
+    "UP",   # pyupgrade（構文の近代化）
+    "S",    # bandit（セキュリティ）
+    "C4",   # flake8-comprehensions
+    "SIM",  # flake8-simplify
+    "RUF",  # Ruff固有ルール
+]
+ignore = [
+    "T201",   # print文（hookスクリプトは必須）
+    "EM101",  # exception message literal
+    "EM102",  # f-string in exception
+    "TRY003", # long messages in raise
+    "RUF002", # 日本語docstringの全角括弧（意図的）
+    "RUF003", # 日本語コメントの全角括弧（意図的）
+]
+
+[tool.ruff.lint.per-file-ignores]
+"rust/hooks/scripts/hook-tools.py" = ["S603", "S607"]
+"session-saver/hooks/scripts/save-session-id.py" = ["S603", "S108"]
+"wasm-optimizer/hooks/scripts/detect-heavy-patterns.py" = ["E501"]
+"scaffdog-colocation/hooks/scripts/validate-colocation.py" = ["E501"]
+"rust/hooks/scripts/prompt-check.py" = ["E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+
+[tool.ruff.lint.isort]
+known-first-party = []
