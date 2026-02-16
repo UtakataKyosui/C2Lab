@@ -20,6 +20,7 @@ An Actor represents a user, group, organization, or application.
 
 ```json
 {
+  "@context": "https://www.w3.org/ns/activitystreams",
   "type": "Person",
   "id": "https://social.example/users/alice",
   "name": "Alice",
