@@ -33,10 +33,10 @@ JujutsuはGit互換のバックエンドを使用しているため、GitHubやG
 現在のChangeをリモートにプッシュします。
 
 ```bash
-# 現在のBookmarkをプッシュ
-jj git push
+# 特定のBookmarkをプッシュ（推奨：意図しないBookmarkのpushを防ぐ）
+jj git push -b <bookmark-name>
 
-# 全てのBookmarkをプッシュ
+# 全てのBookmarkをプッシュ（注意：意図しないBookmarkも含まれる場合がある）
 jj git push --all
 ```
 

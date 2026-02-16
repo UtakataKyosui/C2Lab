@@ -61,9 +61,9 @@ jj <command> [options]
 
 詳細なワークフローは以下を参照してください：
 
-- [PR Review Workflow](../../../skills/jj-evolution/guides/pr-review-workflow.md) — Bookmark の基本操作から複数PR管理まで
-- [Parallel Workflows](../../../skills/jj-evolution/guides/parallel-work.md) — 並列開発の基本
-- [Conflict & Collaboration](../../../skills/jj-evolution/guides/conflict-collab.md) — コンフリクト解消と Git 連携
+- [PR Review Workflow](../../../jj-evolution/skills/jj-evolution/guides/pr-review-workflow.md) — Bookmark の基本操作から複数PR管理まで
+- [Parallel Workflows](../../../jj-evolution/skills/jj-evolution/guides/parallel-work.md) — 並列開発の基本
+- [Conflict & Collaboration](../../../jj-evolution/skills/jj-evolution/guides/conflict-collab.md) — コンフリクト解消と Git 連携
 
 ## 注意事項
 
