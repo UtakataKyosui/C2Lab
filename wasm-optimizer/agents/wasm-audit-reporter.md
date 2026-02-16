@@ -26,7 +26,6 @@ color: green
 
 - `crypto-js` / `CryptoJS` の import
 - `getImageData` / `putImageData` のピクセルループ
-- 3重以上のネストループ
 - `pako` / `zlib` の import
 
 #### 中優先度パターン (Medium)

@@ -90,7 +90,7 @@ PATTERNS = [
     },
     {
         "name": "ループ内 JSON.parse",
-        "regex": r"""(?:for|while|\.(?:map|forEach|reduce))\s*\(.*?\{.*?JSON\.parse""",
+        "regex": r"""(?:for|while|\.(?:map|forEach|reduce))\s*\(.*?(?:\{|=>).*?JSON\.parse""",
         "suggestion": "simd_json_wasm",
         "detail": "大量データの JSON パースは SIMD WASM で 2-5x 高速化可能",
     },
@@ -102,7 +102,7 @@ PATTERNS = [
     },
     {
         "name": "3重ネストループ (行列演算候補)",
-        "regex": r"""for\s*\([^)]{0,200}\)\s*\{[^}]{0,500}for\s*\([^)]{0,200}\)\s*\{[^}]{0,500}for\s*\([^)]{0,200}\)""",
+        "regex": r"""for\s*\([^)]{0,200}\)\s*\{.*?for\s*\([^)]{0,200}\)\s*\{.*?for\s*\([^)]{0,200}\)""",
         "suggestion": "@stdlib/stdlib WASM または wasm-pack Rust ビルド",
         "detail": "行列演算パターンは WASM で 5-20x 高速化可能",
     },
