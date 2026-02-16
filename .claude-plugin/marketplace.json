@@ -124,6 +124,17 @@
       },
       "keywords": ["moonrepo", "proto", "monorepo", "task-runner", "toolchain", "build-system"],
       "category": "development"
+    },
+    {
+      "name": "jj-evolution",
+      "source": "./jj-evolution",
+      "description": "Jujutsu (jj) の高度なワークフロースキル。並列開発・履歴書き換え・コンフリクト解決・PRレビュー対応の4ガイドを提供。",
+      "version": "1.1.0",
+      "author": {
+        "name": "UtakataKyosui"
+      },
+      "keywords": ["jj", "jujutsu", "vcs", "parallel-development", "history-rewriting", "pr-review"],
+      "category": "version-control"
     }
   ]
 }
