@@ -23,7 +23,7 @@ description: scaffdogとコロケーションパターンをプロジェクト�
 
 | ファイル | パッケージマネージャー |
 |---|---|
-| `bun.lockb` / `bun.lock` | bun |
+| `bun.lockb` | bun |
 | `pnpm-lock.yaml` | pnpm |
 | `yarn.lock` | yarn |
 | `package-lock.json` | npm |

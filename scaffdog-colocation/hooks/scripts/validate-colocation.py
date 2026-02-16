@@ -29,18 +29,7 @@ def extract_file_path(data):
     """ツール実行データからファイルパスを抽出する"""
     if not data:
         return None
-
-    tool_input = data.get("tool_input", {})
-
-    # Write tool
-    if "file_path" in tool_input:
-        return tool_input["file_path"]
-
-    # Edit tool
-    if "file_path" in tool_input:
-        return tool_input["file_path"]
-
-    return None
+    return data.get("tool_input", {}).get("file_path")
 
 
 def is_in_component_dir(file_path):
@@ -83,7 +72,7 @@ def check_naming_convention(component_dir, file_path):
 
     # index.ts 以外のファイルがディレクトリ名を接頭辞に持つかチェック
     if file_name != "index.ts" and file_name != "index.tsx":
-        base_name = file_name.split(".")[0]
+        base_name = file_name.split('.', 1)[0]
         # use* プレフィックスのフックファイルは除外
         if not base_name.startswith("use"):
             if base_name != dir_name and "/components/" in component_dir:
