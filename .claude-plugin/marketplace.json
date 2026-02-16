@@ -79,6 +79,18 @@
       },
       "keywords": ["wasm", "webassembly", "optimization", "performance", "js", "typescript"],
       "category": "development"
+    },
+    {
+      "name": "session-saver",
+      "source": "./session-saver",
+      "description": "Claude CodeのセッションIDを自動保存するプラグイン。セッション開始時にIDをプロジェクトルートの.claude-sessions.jsonに記録し、過去セッションへの復帰を容易にする。",
+      "version": "1.0.0",
+      "author": {
+        "name": "UtakataKyosui",
+        "email": "fill.ayaextech@gmail.com"
+      },
+      "keywords": ["session", "resume", "history", "workflow"],
+      "category": "workflow"
     }
   ]
 }
