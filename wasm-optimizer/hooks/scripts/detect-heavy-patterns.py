@@ -15,6 +15,8 @@ import os
 import re
 import sys
 
+MAX_FILE_SIZE = 1 * 1024 * 1024  # 1MB
+
 
 def read_input():
     """stdin から PostToolUse の JSON データを読み取る"""
@@ -115,6 +117,8 @@ PATTERNS = [
 
 def detect_patterns(file_path):
     """ファイル内容からパターンを検出する"""
+    if os.path.getsize(file_path) > MAX_FILE_SIZE:
+        return []
     try:
         with open(file_path, "r", encoding="utf-8") as f:
             content = f.read()
