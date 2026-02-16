@@ -11,7 +11,7 @@
   "plugins": [
     {
       "name": "jj-vcs",
-      "source": "./plugins/jj-vcs",
+      "source": "./jj-vcs",
       "description": "Jujutsu (jj) VCSを使用する際のコマンドガイド。GitからJJへの移行、jjコマンドの使い方、バージョン管理操作を行う際に参照する。",
       "version": "1.0.0",
       "author": {
