@@ -6,7 +6,7 @@
     "name": "Utakata Kyosui",
     "email": "fill.ayaextech@gmail.com"
   },
-  "repository": "https://github.com/UtakataKyosui/UtakataClaudePlugin.git",
+  "repository": "https://github.com/UtakataKyosui/C2Lab",
   "keywords": ["development","rust","agent-skill","hooks"],
   "agents": "./agents/",
   "hooks": "./hooks/hooks.json"
