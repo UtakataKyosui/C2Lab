@@ -40,10 +40,20 @@ def load_sessions(file_path):
 
 
 def save_sessions(file_path, data):
-    """セッションファイルを書き出す"""
-    with open(file_path, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
-        f.write("\n")
+    """セッションファイルを書き出す（ロックファイルによる排他制御付き）"""
+    lock_path = file_path + ".lock"
+    try:
+        lock_fd = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+        try:
+            with open(file_path, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=2, ensure_ascii=False)
+                f.write("\n")
+        finally:
+            os.close(lock_fd)
+            os.remove(lock_path)
+    except FileExistsError:
+        # 別プロセスが書き込み中のためスキップ
+        pass
 
 
 def main():
@@ -91,9 +101,9 @@ def main():
                 file=sys.stderr,
             )
 
-    except Exception:
+    except Exception as e:
         # 何があっても絶対にブロックしない
-        pass
+        print(f"[session-saver] 予期しないエラーが発生しました: {e}", file=sys.stderr)
 
     sys.exit(0)
 
