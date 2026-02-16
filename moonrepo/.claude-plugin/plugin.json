@@ -16,7 +16,11 @@
         "build-system"
     ],
     "license": "MIT",
-    "commands": [],
+    "commands": [
+        "./skills/moon-proto/guides/proto-management.md",
+        "./skills/moon-proto/guides/moon-tasks.md",
+        "./skills/moon-proto/guides/workspace-config.md"
+    ],
     "agents": [],
     "hooks": ""
 }
