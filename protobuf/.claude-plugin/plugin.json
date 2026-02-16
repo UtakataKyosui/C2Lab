@@ -16,7 +16,11 @@
         "schema"
     ],
     "license": "MIT",
-    "commands": [],
+    "commands": [
+        "./skills/protobuf-tools/guides/style-guide.md",
+        "./skills/protobuf-tools/guides/best-practices.md",
+        "./skills/protobuf-tools/guides/tools.md"
+    ],
     "agents": [],
     "hooks": ""
 }
