@@ -1,0 +1,22 @@
+{
+    "name": "moon-proto",
+    "description": "Moonrepo (Task Runner) と proto (Toolchain Manager) の統合利用支援プラグイン。環境構築、タスク管理、ワークスペース設定のガイドを提供する。",
+    "version": "1.0.0",
+    "author": {
+        "name": "UtakataKyosui",
+        "email": "fill.ayaextech@gmail.com"
+    },
+    "repository": "https://github.com/UtakataKyosui/C2Lab",
+    "keywords": [
+        "moonrepo",
+        "proto",
+        "monorepo",
+        "task-runner",
+        "toolchain",
+        "build-system"
+    ],
+    "license": "MIT",
+    "commands": [],
+    "agents": [],
+    "hooks": ""
+}
