@@ -15,6 +15,25 @@ import os
 import re
 import sys
 
+# 除外ディレクトリ（ビルド成果物・依存パッケージ等）
+EXCLUDED_DIRS = ("node_modules", "dist", "build", ".next", ".nuxt")
+
+# コンポーネント系ディレクトリ名
+COMPONENT_DIR_NAMES = (
+    f"{os.sep}components{os.sep}",
+    f"{os.sep}features{os.sep}",
+    f"{os.sep}hooks{os.sep}",
+)
+
+# barrel チェックを省略するディレクトリ名
+IGNORED_BARREL_CHECK_DIRS = {
+    "components", "features", "hooks", "utils", "types",
+    "constants", "scripts", "styles", "pages", "app",
+}
+
+# PascalCase チェックを省略するディレクトリ名
+IGNORED_PASCALCASE_DIRS = {"components", "hooks", "utils", "types", "constants"}
+
 
 def read_input():
     """stdin から PostToolUse の JSON データを読み取る"""
@@ -34,12 +53,10 @@ def extract_file_path(data):
 
 def is_in_component_dir(file_path):
     """ファイルがコンポーネントディレクトリ内にあるかチェック"""
-    excluded_dirs = ("node_modules", "dist", "build", ".next", ".nuxt")
-    for d in excluded_dirs:
-        if f"/{d}/" in file_path or file_path.startswith(f"{d}/"):
+    for d in EXCLUDED_DIRS:
+        if f"{os.sep}{d}{os.sep}" in file_path or file_path.startswith(f"{d}{os.sep}"):
             return False
-    component_dirs = ["/components/", "/features/", "/hooks/"]
-    return any(d in file_path for d in component_dirs)
+    return any(d in file_path for d in COMPONENT_DIR_NAMES)
 
 
 def get_component_dir(file_path):
@@ -63,9 +80,9 @@ def check_naming_convention(component_dir, file_path):
     file_name = os.path.basename(file_path)
 
     # コンポーネントディレクトリがPascalCaseかチェック
-    if "/components/" in component_dir:
+    if f"{os.sep}components{os.sep}" in component_dir:
         if not re.match(r"^[A-Z][a-zA-Z0-9]*$", dir_name):
-            if dir_name not in ("components", "hooks", "utils", "types", "constants"):
+            if dir_name not in IGNORED_PASCALCASE_DIRS:
                 warnings.append(
                     f"ディレクトリ名 '{dir_name}' が PascalCase ではありません"
                 )
@@ -75,7 +92,7 @@ def check_naming_convention(component_dir, file_path):
         base_name = file_name.split('.', 1)[0]
         # use* プレフィックスのフックファイルは除外
         if not base_name.startswith("use"):
-            if base_name != dir_name and "/components/" in component_dir:
+            if base_name != dir_name and f"{os.sep}components{os.sep}" in component_dir:
                 # サブディレクトリ内のファイルは除外
                 parent_of_dir = os.path.basename(os.path.dirname(component_dir))
                 if parent_of_dir == "components":
@@ -104,18 +121,7 @@ def main():
     if not check_barrel_exists(component_dir):
         dir_name = os.path.basename(component_dir)
         # コンポーネントディレクトリ直下の場合のみ警告
-        if dir_name not in (
-            "components",
-            "features",
-            "hooks",
-            "utils",
-            "types",
-            "constants",
-            "scripts",
-            "styles",
-            "pages",
-            "app",
-        ):
+        if dir_name not in IGNORED_BARREL_CHECK_DIRS:
             warnings.append(
                 f"[colocation] {component_dir} に barrel file (index.ts/tsx/js/jsx) がありません"
             )
