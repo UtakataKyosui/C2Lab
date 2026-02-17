@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PLUGIN_DIR\"/hooks/scripts/jj-safe-push.sh"
+            "command": "\"$CLAUDE_PLUGIN_ROOT\"/hooks/scripts/jj-safe-push.sh"
           }
         ]
       }

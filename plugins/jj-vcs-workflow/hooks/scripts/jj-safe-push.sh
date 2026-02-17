@@ -4,9 +4,16 @@
 
 set -euo pipefail
 
+if ! command -v jq >/dev/null 2>&1; then
+  echo 'Error: required dependency "jq" is not installed or not found in PATH.' >&2
+  exit 1
+fi
+
 INPUT=$(cat)
 COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command')
 SESSION_ID=$(echo "$INPUT" | jq -r '.session_id')
+# Sanitize SESSION_ID to prevent path traversal by removing directory components.
+SANITIZED_SESSION_ID=$(basename "$SESSION_ID")
 
 # jj git push を含むコマンドかどうかを判定
 if ! echo "$COMMAND" | grep -qE '(^|&&\s*|;\s*)jj\s+git\s+push'; then
@@ -14,7 +21,7 @@ if ! echo "$COMMAND" | grep -qE '(^|&&\s*|;\s*)jj\s+git\s+push'; then
 fi
 
 STATE_DIR="${TMPDIR:-/tmp}/jj-safe-push"
-STATE_FILE="${STATE_DIR}/${SESSION_ID}"
+STATE_FILE="${STATE_DIR}/${SANITIZED_SESSION_ID}"
 
 # --dry-run を含む場合: 実行を許可し、状態を記録
 if echo "$COMMAND" | grep -qE 'jj\s+git\s+push\s+.*--dry-run|jj\s+git\s+push\s+--dry-run'; then
