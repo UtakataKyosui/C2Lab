@@ -10,15 +10,15 @@
   "keywords": ["scaffdog", "colocation", "scaffolding", "template", "file-structure"],
   "license": "MIT",
   "commands": [
-    "./commands/scaffdog-colocation/init.md",
-    "./commands/scaffdog-colocation/generate-template.md",
-    "./commands/scaffdog-colocation/scaffold.md",
-    "./commands/scaffdog-colocation/validate.md",
-    "./commands/scaffdog-colocation/add-file-type.md"
+    "../commands/scaffdog-colocation/init.md",
+    "../commands/scaffdog-colocation/generate-template.md",
+    "../commands/scaffdog-colocation/scaffold.md",
+    "../commands/scaffdog-colocation/validate.md",
+    "../commands/scaffdog-colocation/add-file-type.md"
   ],
   "agents": [
-    "./agents/colocation-validator.md",
-    "./agents/scaffdog-template-generator.md"
+    "../agents/colocation-validator.md",
+    "../agents/scaffdog-template-generator.md"
   ],
-  "hooks": "./hooks/hooks.json"
+  "hooks": "../hooks/hooks.json"
 }

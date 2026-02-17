@@ -13,7 +13,7 @@
         "history-rewriting",
         "pr-review"
     ],
-    "agents": "../../.agents/skills/",
+    "agents": "../../../.agents/skills/",
     "license": "MIT",
     "repository": "https://github.com/UtakataKyosui/C2Lab"
 }

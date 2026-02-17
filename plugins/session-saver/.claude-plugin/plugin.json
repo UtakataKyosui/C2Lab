@@ -9,5 +9,5 @@
   "repository": "https://github.com/UtakataKyosui/C2Lab",
   "keywords": ["session", "resume", "history", "workflow"],
   "license": "MIT",
-  "hooks": "./hooks/hooks.json"
+  "hooks": "../hooks/hooks.json"
 }

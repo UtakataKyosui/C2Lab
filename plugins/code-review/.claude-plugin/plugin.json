@@ -7,12 +7,16 @@
     "email": "fill.ayaextech@gmail.com"
   },
   "repository": "https://github.com/UtakataKyosui/C2Lab",
-  "keywords": ["development","code-review","commands"],
+  "keywords": [
+    "development",
+    "code-review",
+    "commands"
+  ],
   "commands": [
-	"./commands/principles.md",
-	"./commands/checklist.md"
+    "../commands/principles.md",
+    "../commands/checklist.md"
   ],
   "agents": [
-    "./agents/reviewer.md"
+    "../agents/reviewer.md"
   ]
 }

@@ -10,12 +10,12 @@
   "keywords": ["tdd", "test-driven-development", "testing", "quality", "enforcement"],
   "license": "MIT",
   "commands": [
-    "./commands/tdd-enforce/init.md",
-    "./commands/tdd-enforce/cycle.md",
-    "./commands/tdd-enforce/suggest-framework.md"
+    "../commands/tdd-enforce/init.md",
+    "../commands/tdd-enforce/cycle.md",
+    "../commands/tdd-enforce/suggest-framework.md"
   ],
   "agents": [
-    "./agents/tdd-compliance-checker.md"
+    "../agents/tdd-compliance-checker.md"
   ],
-  "hooks": "./hooks/hooks.json"
+  "hooks": "../hooks/hooks.json"
 }
