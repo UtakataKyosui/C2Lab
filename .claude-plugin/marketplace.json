@@ -11,7 +11,7 @@
   "plugins": [
     {
       "name": "jj-vcs",
-      "source": "./jj-vcs",
+      "source": "./plugins/jj-vcs",
       "description": "Jujutsu (jj) VCSを使用する際のコマンドガイド。GitからJJへの移行、jjコマンドの使い方、バージョン管理操作を行う際に参照する。",
       "version": "1.0.0",
       "author": {
@@ -22,7 +22,7 @@
     },
     {
       "name": "rust-development",
-      "source": "./rust",
+      "source": "./plugins/rust",
       "description": "Rust開発用プラグイン。エージェントとフックを提供。",
       "version": "0.0.1",
       "author": {
@@ -34,7 +34,7 @@
     },
     {
       "name": "code-review",
-      "source": "./code-review",
+      "source": "./plugins/code-review",
       "description": "コードレビュー用プラグイン。レビュー原則とチェックリストコマンドを提供。",
       "version": "0.0.1",
       "author": {
@@ -46,7 +46,7 @@
     },
     {
       "name": "scaffdog-colocation",
-      "source": "./scaffdog-colocation",
+      "source": "./plugins/scaffdog-colocation",
       "description": "scaffdogを使ったコロケーションパターンによるファイル分割支援プラグイン。テンプレート生成、スキャフォールディング、構造検証を提供。",
       "version": "1.0.0",
       "author": {
@@ -58,7 +58,7 @@
     },
     {
       "name": "tdd-enforce",
-      "source": "./tdd-enforce",
+      "source": "./plugins/tdd-enforce",
       "description": "テスト駆動開発（TDD）を強制するプラグイン。実装コードに対応するテストの存在を検証し、テストなしの実装をブロックする。多言語対応。",
       "version": "1.0.0",
       "author": {
@@ -70,7 +70,7 @@
     },
     {
       "name": "wasm-optimizer",
-      "source": "./wasm-optimizer",
+      "source": "./plugins/wasm-optimizer",
       "description": "JS/TSコードの重い処理パターンを検出し、WebAssemblyベースのライブラリへの置き換えを提案するプラグイン。画像処理、暗号化、大量データ操作などのパターンを静的解析で検出する。",
       "version": "1.0.0",
       "author": {
@@ -82,7 +82,7 @@
     },
     {
       "name": "session-saver",
-      "source": "./session-saver",
+      "source": "./plugins/session-saver",
       "description": "Claude CodeのセッションIDを自動保存するプラグイン。セッション開始時にIDをプロジェクトルートの.claude-sessions.jsonに記録し、過去セッションへの復帰を容易にする。",
       "version": "1.0.0",
       "author": {
@@ -94,7 +94,7 @@
     },
     {
       "name": "activitypub-c2s",
-      "source": "./activitypub",
+      "source": "./plugins/activitypub",
       "description": "ActivityPub Client-to-Server (C2S) インタラクションの実装支援プラグイン。JSON-LD Context、Activity Types、Inbox/Outboxの挙動に関するガイドを提供する。",
       "version": "1.0.0",
       "author": {
@@ -105,7 +105,7 @@
     },
     {
       "name": "protobuf-tools",
-      "source": "./protobuf",
+      "source": "./plugins/protobuf",
       "description": "Protocol Buffers (protobuf) の使用支援プラグイン。`.proto`ファイルの書き方、スタイルガイド、protoc/bufコマンドの使用例を提供する。",
       "version": "1.0.0",
       "author": {
@@ -116,7 +116,7 @@
     },
     {
       "name": "moon-proto",
-      "source": "./moonrepo",
+      "source": "./plugins/moonrepo",
       "description": "Moonrepo (Task Runner) と proto (Toolchain Manager) の統合利用支援プラグイン。環境構築、タスク管理、ワークスペース設定のガイドを提供する。",
       "version": "1.0.0",
       "author": {
@@ -127,7 +127,7 @@
     },
     {
       "name": "jj-evolution",
-      "source": "./jj-evolution",
+      "source": "./plugins/jj-evolution",
       "description": "Jujutsu (jj) の高度なワークフロースキル。並列開発・履歴書き換え・コンフリクト解決・PRレビュー対応の4ガイドを提供。",
       "version": "1.1.0",
       "author": {
