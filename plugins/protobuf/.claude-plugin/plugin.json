@@ -17,8 +17,8 @@
   ],
   "license": "MIT",
   "commands": [
-    "./skills/protobuf-tools/guides/style-guide.md",
-    "./skills/protobuf-tools/guides/best-practices.md",
-    "./skills/protobuf-tools/guides/tools.md"
+    "../skills/protobuf-tools/guides/style-guide.md",
+    "../skills/protobuf-tools/guides/best-practices.md",
+    "../skills/protobuf-tools/guides/tools.md"
   ]
 }

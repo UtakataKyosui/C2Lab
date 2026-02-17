@@ -33,12 +33,12 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 # S603/S607: cargo コマンドは信頼された固定パスから実行しており、入力検証済み
-"rust/hooks/scripts/hook-tools.py" = ["S603", "S607"]
+"plugins/rust/hooks/scripts/hook-tools.py" = ["S603", "S607"]
 # S603: subprocess 呼び出しなし（ファイルの原子的書き込みに os.open を使用）
-"session-saver/hooks/scripts/save-session-id.py" = ["S603"]
-"wasm-optimizer/hooks/scripts/detect-heavy-patterns.py" = ["E501"]
-"scaffdog-colocation/hooks/scripts/validate-colocation.py" = ["E501"]
-"rust/hooks/scripts/prompt-check.py" = ["E501"]
+"plugins/session-saver/hooks/scripts/save-session-id.py" = ["S603"]
+"plugins/wasm-optimizer/hooks/scripts/detect-heavy-patterns.py" = ["E501"]
+"plugins/scaffdog-colocation/hooks/scripts/validate-colocation.py" = ["E501"]
+"plugins/rust/hooks/scripts/prompt-check.py" = ["E501"]
 
 [tool.ruff.format]
 quote-style = "double"

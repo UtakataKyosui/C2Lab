@@ -17,8 +17,8 @@
   ],
   "license": "MIT",
   "commands": [
-    "./skills/activitypub-c2s/guides/concepts.md",
-    "./skills/activitypub-c2s/guides/messaging.md",
-    "./skills/activitypub-c2s/guides/activities.md"
+    "../skills/activitypub-c2s/guides/concepts.md",
+    "../skills/activitypub-c2s/guides/messaging.md",
+    "../skills/activitypub-c2s/guides/activities.md"
   ]
 }
