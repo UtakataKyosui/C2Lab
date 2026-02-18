@@ -59,3 +59,15 @@ jj log -r "all()"
 > [!NOTE]
 > `jj new` 直後のChangeは空ですが、ファイルを編集すると自動的にそのコンテンツが含まれます。
 > Description（コミットメッセージ）は `jj describe` でいつでも変更可能です。
+
+---
+
+## ファイルシステムレベルの分離が必要な場合
+
+`jj new` / `jj edit` は軽量で高速ですが、以下のケースでは **`jj workspace`** による分離が適しています:
+
+- 長時間のビルド/テスト中に別の作業を進めたい
+- 各タスクで独立した依存関係（`node_modules` 等）が必要
+- 複数の Claude Code セッションを並列実行したい
+
+詳細は **[workspace.md](./workspace.md)** を参照。

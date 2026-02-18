@@ -56,7 +56,8 @@ hook とシェルガードにより、dry-run を経由しない push は自動�
 
 ### 高度な操作
 
-- **[guides/parallel-work.md](./guides/parallel-work.md)**: 並列開発ワークフロー
+- **[guides/parallel-work.md](./guides/parallel-work.md)**: 並列開発ワークフロー（`jj new` / `jj edit`）
+- **[guides/workspace.md](./guides/workspace.md)**: Workspace を使った並列開発（ファイルシステム分離）
 - **[guides/history-maintenance.md](./guides/history-maintenance.md)**: 履歴の書き換え（squash, split, rebase）
 - **[guides/conflict-collab.md](./guides/conflict-collab.md)**: コンフリクト解消と Git 連携
 - **[guides/pr-review-workflow.md](./guides/pr-review-workflow.md)**: Bookmark を活用した PR レビュー対応
