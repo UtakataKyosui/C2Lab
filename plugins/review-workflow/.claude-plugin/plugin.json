@@ -1,0 +1,18 @@
+{
+  "name": "review-workflow",
+  "description": "PR レビュー対応ワークフローの自動化。レビューコメント取得から修正・検証・コミット・Push までを Python オーケストレーターで制御する。VCS は .jj ディレクトリの有無で jj/git を自動検出。",
+  "version": "0.1.0",
+  "author": {
+    "name": "UtakataKyosui"
+  },
+  "keywords": [
+    "code-review",
+    "pr-review",
+    "workflow",
+    "jj",
+    "git",
+    "automation"
+  ],
+  "license": "MIT",
+  "repository": "https://github.com/UtakataKyosui/C2Lab"
+}
