@@ -1,14 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(# jj 0.37.0 のhooks設定を確認 jj help -k config)",
-      "WebFetch(domain:microsoft.github.io)",
-      "WebFetch(domain:github.com)",
-      "WebFetch(domain:arxiv.org)",
-      "WebFetch(domain:techcommunity.microsoft.com)",
-      "WebFetch(domain:gist.github.com)",
-      "WebFetch(domain:pypi.org)",
-      "Bash(echo:*)"
+      "Bash(source:*)"
     ]
   }
 }
