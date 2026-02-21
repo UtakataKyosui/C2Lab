@@ -1,0 +1,19 @@
+{
+  "name": "zenn-review",
+  "description": "Zenn（技術記事プラットフォーム）の記事・書籍コンテンツに対するレビュープラグイン。内容レビュー・誤字脱字チェック・構文チェック・フロントマター検証・書籍の章間整合性チェックを個別コマンドとして提供し、統合レビューエージェントも備える。",
+  "version": "1.0.0",
+  "author": {
+    "name": "UtakataKyosui"
+  },
+  "keywords": ["zenn", "review", "markdown", "japanese", "technical-writing"],
+  "license": "MIT",
+  "commands": [
+    "../commands/zenn-review/content-review.md",
+    "../commands/zenn-review/typo-check.md",
+    "../commands/zenn-review/syntax-check.md",
+    "../commands/zenn-review/frontmatter-check.md",
+    "../commands/zenn-review/book-consistency.md"
+  ],
+  "agents": ["../agents/zenn-reviewer.md"],
+  "hooks": "../hooks/hooks.json"
+}
