@@ -122,18 +122,23 @@ def parse_frontmatter(content):
             key = kv_match.group(1)
             value = kv_match.group(2).strip()
             if " #" in value and not (
-                (value.startswith('"') and value.endswith('"') and value.count('"') <= 2) or
-                (value.startswith("'") and value.endswith("'") and value.count("'") <= 2)
+                (
+                    value.startswith('"')
+                    and value.endswith('"')
+                    and value.count('"') <= 2
+                )
+                or (
+                    value.startswith("'")
+                    and value.endswith("'")
+                    and value.count("'") <= 2
+                )
             ):
                 value = value.split(" #", 1)[0].strip()
             # 配列の簡易パース
             if value.startswith("[") and value.endswith("]"):
                 inner = value[1:-1].strip()
                 if inner:
-                    items = [
-                        item.strip().strip("\"'")
-                        for item in inner.split(",")
-                    ]
+                    items = [item.strip().strip("\"'") for item in inner.split(",")]
                     result[key] = items
                 else:
                     result[key] = []
@@ -170,8 +175,16 @@ def parse_yaml_simple(content):
             key = kv_match.group(1)
             value = kv_match.group(2).strip()
             if " #" in value and not (
-                (value.startswith('"') and value.endswith('"') and value.count('"') <= 2) or
-                (value.startswith("'") and value.endswith("'") and value.count("'") <= 2)
+                (
+                    value.startswith('"')
+                    and value.endswith('"')
+                    and value.count('"') <= 2
+                )
+                or (
+                    value.startswith("'")
+                    and value.endswith("'")
+                    and value.count("'") <= 2
+                )
             ):
                 value = value.split(" #", 1)[0].strip()
             if not value:
@@ -181,10 +194,7 @@ def parse_yaml_simple(content):
             elif value.startswith("[") and value.endswith("]"):
                 inner = value[1:-1].strip()
                 if inner:
-                    items = [
-                        item.strip().strip("\"'")
-                        for item in inner.split(",")
-                    ]
+                    items = [item.strip().strip("\"'") for item in inner.split(",")]
                     result[key] = items
                 else:
                     result[key] = []
@@ -211,7 +221,9 @@ def validate_article_frontmatter(file_path, content):
 
     fm = parse_frontmatter(content)
     if fm is None:
-        errors.append("フロントマターが見つかりません(--- で囲まれた YAML ブロックが必要)")
+        errors.append(
+            "フロントマターが見つかりません(--- で囲まれた YAML ブロックが必要)"
+        )
         return errors, warnings
 
     # 必須フィールドチェック
@@ -239,12 +251,16 @@ def validate_article_frontmatter(file_path, content):
     # published チェック(必須: boolean)
     if "published" in fm:
         if not isinstance(fm["published"], bool):
-            errors.append("`published` が boolean ではありません(true / false を指定してください)")
+            errors.append(
+                "`published` が boolean ではありません(true / false を指定してください)"
+            )
 
     # type チェック
     if "type" in fm:
         if fm["type"] not in ("tech", "idea"):
-            errors.append(f"`type` が不正です: \"{fm['type']}\"(\"tech\" または \"idea\" のみ)")
+            errors.append(
+                f'`type` が不正です: "{fm["type"]}"("tech" または "idea" のみ)'
+            )
 
     # topics チェック
     if "topics" in fm:
@@ -259,16 +275,16 @@ def validate_article_frontmatter(file_path, content):
             for topic in topics:
                 if not re.match(r"^[a-z0-9][a-z0-9-]*$", str(topic)):
                     errors.append(
-                        f"`topics` の値 \"{topic}\" が不正です(小文字英数字・ハイフンのみ)"
+                        f'`topics` の値 "{topic}" が不正です(小文字英数字・ハイフンのみ)'
                     )
 
     # スラッグチェック
     slug = os.path.splitext(os.path.basename(file_path))[0]
     if not re.match(r"^[a-z0-9][a-z0-9_-]*$", slug):
-        warnings.append(f"スラッグ \"{slug}\" に使用不可の文字が含まれています")
+        warnings.append(f'スラッグ "{slug}" に使用不可の文字が含まれています')
     elif len(slug) < 12 or len(slug) > 50:
         warnings.append(
-            f"スラッグ \"{slug}\" の長さが {len(slug)} 文字です(12〜50文字推奨)"
+            f'スラッグ "{slug}" の長さが {len(slug)} 文字です(12〜50文字推奨)'
         )
 
     return errors, warnings
@@ -298,14 +314,14 @@ def validate_book_config(content):
     if "summary" in config:
         summary = str(config["summary"])
         if len(summary) > 200:
-            warnings.append(
-                f"`summary` が {len(summary)} 文字です(200文字以内推奨)"
-            )
+            warnings.append(f"`summary` が {len(summary)} 文字です(200文字以内推奨)")
 
     # published チェック(必須: boolean)
     if "published" in config:
         if not isinstance(config["published"], bool):
-            errors.append("`published` が boolean ではありません(true / false を指定してください)")
+            errors.append(
+                "`published` が boolean ではありません(true / false を指定してください)"
+            )
 
     # topics チェック
     if "topics" in config:
@@ -320,7 +336,7 @@ def validate_book_config(content):
             for topic in topics:
                 if not re.match(r"^[a-z0-9][a-z0-9-]*$", str(topic)):
                     errors.append(
-                        f"`topics` の値 \"{topic}\" が不正です(小文字英数字・ハイフンのみ)"
+                        f'`topics` の値 "{topic}" が不正です(小文字英数字・ハイフンのみ)'
                     )
 
     # price チェック
@@ -406,7 +422,9 @@ def main():
                 msg_parts.append(f"  WARNING: {warn}")
             print("\n".join(msg_parts), file=sys.stderr)
         else:
-            print(f"[Zenn validate] ✓ {basename} のフロントマター検証に問題はありません。")
+            print(
+                f"[Zenn validate] ✓ {basename} のフロントマター検証に問題はありません。"
+            )
 
         sys.exit(0)
     except Exception as e:
