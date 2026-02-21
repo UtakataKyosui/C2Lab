@@ -1,5 +1,5 @@
-# ruff: noqa: E501, SIM102, SIM114
 #!/usr/bin/env python3
+# ruff: noqa: E501
 """
 PostToolUse hook: Zenn フロントマター / config.yaml バリデーション(Advisory のみ)
 
@@ -43,9 +43,10 @@ def is_target_file(file_path):
     if normalized.startswith("./"):
         normalized = normalized[2:]
 
-    # articles/*.md
+    # articles/*.md (ネストしたパスは対象外)
     if normalized.startswith("articles/"):
-        return normalized.endswith(".md")
+        parts = normalized.split("/")
+        return len(parts) == 2 and parts[1].endswith(".md")
 
     # books/*/config.yaml および books/*/*.md
     if normalized.startswith("books/"):
@@ -67,7 +68,8 @@ def get_file_type(file_path):
         normalized = normalized[2:]
 
     if normalized.startswith("articles/"):
-        if normalized.endswith(".md"):
+        parts = normalized.split("/")
+        if len(parts) == 2 and parts[1].endswith(".md"):
             return "article"
         return None
 
@@ -84,13 +86,13 @@ def get_file_type(file_path):
 
 def check_file_safety(file_path):
     """ファイルのサイズとパスを検証する"""
-    normalized = os.path.normpath(file_path)
-    if ".." in normalized.split(os.sep):
-        return False, "パストラバーサルが検出されました"
-
     real_path = os.path.realpath(file_path)
     project_root = os.path.realpath(os.getcwd())
-    if not real_path.startswith(project_root):
+    try:
+        common_root = os.path.commonpath([real_path, project_root])
+    except ValueError:
+        return False, "プロジェクト外のパスが検出されました"
+    if common_root != project_root:
         return False, "プロジェクト外のパスが検出されました"
 
     if not os.path.isfile(real_path):
@@ -101,6 +103,17 @@ def check_file_safety(file_path):
         return False, f"ファイルサイズが上限(512KB)を超えています: {file_size} bytes"
 
     return True, None
+
+
+def _strip_inline_comment(value):
+    """クォートされていない文字列からインラインコメントを除去する"""
+    if " #" not in value:
+        return value
+    if (value.startswith('"') and value.endswith('"') and value.count('"') == 2) or (
+        value.startswith("'") and value.endswith("'") and value.count("'") == 2
+    ):
+        return value
+    return value.split(" #", 1)[0].strip()
 
 
 def parse_frontmatter(content):
@@ -144,9 +157,9 @@ def parse_frontmatter(content):
                     result[key] = []
             elif value.lower() in ("true", "false"):
                 result[key] = value.lower() == "true"
-            elif value.startswith('"') and value.endswith('"'):
-                result[key] = value[1:-1]
-            elif value.startswith("'") and value.endswith("'"):
+            elif (value.startswith('"') and value.endswith('"')) or (
+                value.startswith("'") and value.endswith("'")
+            ):
                 result[key] = value[1:-1]
             else:
                 result[key] = value
@@ -202,14 +215,14 @@ def parse_yaml_simple(content):
                 result[key] = value.lower() == "true"
             elif re.match(r"^\d+$", value):
                 result[key] = int(value)
-            elif value.startswith('"') and value.endswith('"'):
-                result[key] = value[1:-1]
-            elif value.startswith("'") and value.endswith("'"):
+            elif (value.startswith('"') and value.endswith('"')) or (
+                value.startswith("'") and value.endswith("'")
+            ):
                 result[key] = value[1:-1]
             else:
                 result[key] = value
-    # 最後のリストを保存
-    if current_list_key and current_list:
+    # 最後のリストを保存(空リストも保存する)
+    if current_list_key is not None:
         result[current_list_key] = current_list
     return result
 
@@ -240,27 +253,27 @@ def validate_article_frontmatter(file_path, content):
         elif len(title) > 70:
             warnings.append(f"`title` が {len(title)} 文字です(70文字以内推奨)")
 
-    # emoji チェック(必須: 絵文字)
+    # emoji チェック(必須: 絵文字1文字)
     if "emoji" in fm:
         emoji_value = fm["emoji"]
         if not isinstance(emoji_value, str):
             errors.append("`emoji` が文字列ではありません(絵文字を指定してください)")
-        elif not emoji_value.strip():
-            errors.append("`emoji` が空です(絵文字を指定してください)")
+        else:
+            emoji_stripped = emoji_value.strip()
+            if not emoji_stripped:
+                errors.append("`emoji` が空です(絵文字を指定してください)")
+            elif len(emoji_stripped) != 1:
+                errors.append("`emoji` は1文字の絵文字を指定してください")
 
     # published チェック(必須: boolean)
-    if "published" in fm:
-        if not isinstance(fm["published"], bool):
-            errors.append(
-                "`published` が boolean ではありません(true / false を指定してください)"
-            )
+    if "published" in fm and not isinstance(fm["published"], bool):
+        errors.append(
+            "`published` が boolean ではありません(true / false を指定してください)"
+        )
 
     # type チェック
-    if "type" in fm:
-        if fm["type"] not in ("tech", "idea"):
-            errors.append(
-                f'`type` が不正です: "{fm["type"]}"("tech" または "idea" のみ)'
-            )
+    if "type" in fm and fm["type"] not in ("tech", "idea"):
+        errors.append(f'`type` が不正です: "{fm["type"]}"("tech" または "idea" のみ)')
 
     # topics チェック
     if "topics" in fm:
@@ -317,11 +330,10 @@ def validate_book_config(content):
             warnings.append(f"`summary` が {len(summary)} 文字です(200文字以内推奨)")
 
     # published チェック(必須: boolean)
-    if "published" in config:
-        if not isinstance(config["published"], bool):
-            errors.append(
-                "`published` が boolean ではありません(true / false を指定してください)"
-            )
+    if "published" in config and not isinstance(config["published"], bool):
+        errors.append(
+            "`published` が boolean ではありません(true / false を指定してください)"
+        )
 
     # topics チェック
     if "topics" in config:
