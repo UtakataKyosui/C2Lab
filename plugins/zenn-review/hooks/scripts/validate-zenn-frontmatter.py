@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# ruff: noqa: E501
 """
 PostToolUse hook: Zenn フロントマター / config.yaml バリデーション(Advisory のみ)
 
@@ -8,7 +7,6 @@ Write/Edit ツール使用後に実行され、以下を検証する:
 - books/*/config.yaml: 書籍設定の必須フィールドと値の妥当性
 
 - 対象外のファイルはスキップ
-- stdlib のみ使用(外部依存なし)
 - 常に exit 0(advisory のみ、ブロックしない)
 """
 
@@ -16,6 +14,8 @@ import json
 import os
 import re
 import sys
+
+import yaml
 
 MAX_FILE_SIZE = 512 * 1024  # 512KB
 
@@ -39,7 +39,6 @@ def extract_file_path(data):
 def is_target_file(file_path):
     """Zenn コンテンツファイルかどうか判定する"""
     normalized = file_path.replace("\\", "/")
-    # 先頭の "./" を許容しつつ、ルート直下の articles/ / books/ に限定
     if normalized.startswith("./"):
         normalized = normalized[2:]
 
@@ -51,13 +50,9 @@ def is_target_file(file_path):
     # books/*/config.yaml および books/*/*.md
     if normalized.startswith("books/"):
         parts = normalized.split("/")
-        # ["books", "<book-slug>", "<file>"] 以上を要求
         if len(parts) >= 3:
             filename = parts[-1]
-            if filename == "config.yaml":
-                return True
-            if filename.endswith(".md"):
-                return True
+            return filename == "config.yaml" or filename.endswith(".md")
     return False
 
 
@@ -88,11 +83,7 @@ def check_file_safety(file_path):
     """ファイルのサイズとパスを検証する"""
     real_path = os.path.realpath(file_path)
     project_root = os.path.realpath(os.getcwd())
-    try:
-        common_root = os.path.commonpath([real_path, project_root])
-    except ValueError:
-        return False, "プロジェクト外のパスが検出されました"
-    if common_root != project_root:
+    if not (real_path.startswith(project_root + os.sep) or real_path == project_root):
         return False, "プロジェクト外のパスが検出されました"
 
     if not os.path.isfile(real_path):
@@ -100,131 +91,32 @@ def check_file_safety(file_path):
 
     file_size = os.path.getsize(real_path)
     if file_size > MAX_FILE_SIZE:
-        return False, f"ファイルサイズが上限(512KB)を超えています: {file_size} bytes"
+        return (
+            False,
+            f"ファイルサイズが上限(512KB)を超えています: {file_size} bytes",
+        )
 
     return True, None
 
 
-def _strip_inline_comment(value):
-    """クォートされていない文字列からインラインコメントを除去する"""
-    if " #" not in value:
-        return value
-    if (value.startswith('"') and value.endswith('"') and value.count('"') == 2) or (
-        value.startswith("'") and value.endswith("'") and value.count("'") == 2
-    ):
-        return value
-    return value.split(" #", 1)[0].strip()
-
-
 def parse_frontmatter(content):
-    """Markdown ファイルからフロントマターを正規表現で解析する"""
-    # 改行を正規化してからフロントマターを解析する(\r\n / \r -> \n)
+    """Markdown ファイルからフロントマターを PyYAML で解析する"""
     normalized = content.replace("\r\n", "\n").replace("\r", "\n")
-    # 末尾が EOF の場合もマッチするように、終了 --- の後は改行または文字列終端を許可する
     match = re.match(r"\A---\s*\n(.*?)\n---\s*(?:\n|\Z)", normalized, re.DOTALL)
     if not match:
         return None
-    fm_text = match.group(1)
-    result = {}
-    for line in fm_text.split("\n"):
-        line = line.strip()
-        if not line or line.startswith("#"):
-            continue
-        kv_match = re.match(r"^(\w+)\s*:\s*(.*)$", line)
-        if kv_match:
-            key = kv_match.group(1)
-            value = kv_match.group(2).strip()
-            if " #" in value and not (
-                (
-                    value.startswith('"')
-                    and value.endswith('"')
-                    and value.count('"') <= 2
-                )
-                or (
-                    value.startswith("'")
-                    and value.endswith("'")
-                    and value.count("'") <= 2
-                )
-            ):
-                value = value.split(" #", 1)[0].strip()
-            # 配列の簡易パース
-            if value.startswith("[") and value.endswith("]"):
-                inner = value[1:-1].strip()
-                if inner:
-                    items = [item.strip().strip("\"'") for item in inner.split(",")]
-                    result[key] = items
-                else:
-                    result[key] = []
-            elif value.lower() in ("true", "false"):
-                result[key] = value.lower() == "true"
-            elif (value.startswith('"') and value.endswith('"')) or (
-                value.startswith("'") and value.endswith("'")
-            ):
-                result[key] = value[1:-1]
-            else:
-                result[key] = value
-    return result
+    try:
+        return yaml.safe_load(match.group(1))
+    except yaml.YAMLError:
+        return None
 
 
-def parse_yaml_simple(content):
-    """config.yaml を正規表現で簡易パースする(PyYAML 不要)"""
-    result = {}
-    current_list_key = None
-    current_list = []
-    for line in content.split("\n"):
-        # リスト項目
-        list_match = re.match(r"^\s+-\s+(.+)$", line)
-        if list_match and current_list_key:
-            current_list.append(list_match.group(1).strip().strip("\"'"))
-            continue
-        # 前のリストを保存
-        if current_list_key and current_list:
-            result[current_list_key] = current_list
-            current_list_key = None
-            current_list = []
-        # キー: 値
-        kv_match = re.match(r"^(\w+)\s*:\s*(.*)$", line)
-        if kv_match:
-            key = kv_match.group(1)
-            value = kv_match.group(2).strip()
-            if " #" in value and not (
-                (
-                    value.startswith('"')
-                    and value.endswith('"')
-                    and value.count('"') <= 2
-                )
-                or (
-                    value.startswith("'")
-                    and value.endswith("'")
-                    and value.count("'") <= 2
-                )
-            ):
-                value = value.split(" #", 1)[0].strip()
-            if not value:
-                # 次の行がリスト項目かもしれない
-                current_list_key = key
-                current_list = []
-            elif value.startswith("[") and value.endswith("]"):
-                inner = value[1:-1].strip()
-                if inner:
-                    items = [item.strip().strip("\"'") for item in inner.split(",")]
-                    result[key] = items
-                else:
-                    result[key] = []
-            elif value.lower() in ("true", "false"):
-                result[key] = value.lower() == "true"
-            elif re.match(r"^\d+$", value):
-                result[key] = int(value)
-            elif (value.startswith('"') and value.endswith('"')) or (
-                value.startswith("'") and value.endswith("'")
-            ):
-                result[key] = value[1:-1]
-            else:
-                result[key] = value
-    # 最後のリストを保存(空リストも保存する)
-    if current_list_key is not None:
-        result[current_list_key] = current_list
-    return result
+def parse_yaml_config(content):
+    """config.yaml を PyYAML で解析する"""
+    try:
+        return yaml.safe_load(content)
+    except yaml.YAMLError:
+        return None
 
 
 def validate_article_frontmatter(file_path, content):
@@ -237,6 +129,10 @@ def validate_article_frontmatter(file_path, content):
         errors.append(
             "フロントマターが見つかりません(--- で囲まれた YAML ブロックが必要)"
         )
+        return errors, warnings
+
+    if not isinstance(fm, dict):
+        errors.append("フロントマターが不正な形式です")
         return errors, warnings
 
     # 必須フィールドチェック
@@ -288,7 +184,8 @@ def validate_article_frontmatter(file_path, content):
             for topic in topics:
                 if not re.match(r"^[a-z0-9][a-z0-9-]*$", str(topic)):
                     errors.append(
-                        f'`topics` の値 "{topic}" が不正です(小文字英数字・ハイフンのみ)'
+                        f'`topics` の値 "{topic}" が不正です'
+                        "(小文字英数字・ハイフンのみ)"
                     )
 
     # スラッグチェック
@@ -308,9 +205,13 @@ def validate_book_config(content):
     errors = []
     warnings = []
 
-    config = parse_yaml_simple(content)
+    config = parse_yaml_config(content)
     if not config:
         errors.append("config.yaml のパースに失敗しました")
+        return errors, warnings
+
+    if not isinstance(config, dict):
+        errors.append("config.yaml が不正な形式です")
         return errors, warnings
 
     # 必須フィールドチェック
@@ -348,7 +249,8 @@ def validate_book_config(content):
             for topic in topics:
                 if not re.match(r"^[a-z0-9][a-z0-9-]*$", str(topic)):
                     errors.append(
-                        f'`topics` の値 "{topic}" が不正です(小文字英数字・ハイフンのみ)'
+                        f'`topics` の値 "{topic}" が不正です'
+                        "(小文字英数字・ハイフンのみ)"
                     )
 
     # price チェック
@@ -371,6 +273,9 @@ def validate_chapter_frontmatter(content):
     if fm is None:
         errors.append("フロントマターが見つかりません")
         return errors
+    if not isinstance(fm, dict):
+        errors.append("フロントマターが不正な形式です")
+        return errors
     if "title" not in fm or not str(fm.get("title", "")):
         errors.append("チャプターの `title` がありません")
     return errors
@@ -391,7 +296,10 @@ def main():
         # ファイル安全性チェック
         is_safe, error_msg = check_file_safety(file_path)
         if not is_safe:
-            print(f"[Zenn validate] スキップ: {error_msg}", file=sys.stderr)
+            print(
+                f"[Zenn validate] スキップ: {error_msg}",
+                file=sys.stderr,
+            )
             sys.exit(0)
 
         file_type = get_file_type(file_path)
@@ -403,7 +311,10 @@ def main():
             with open(file_path, encoding="utf-8") as f:
                 content = f.read()
         except (OSError, UnicodeDecodeError) as e:
-            print(f"[Zenn validate] ファイル読み込みエラー: {e}", file=sys.stderr)
+            print(
+                f"[Zenn validate] ファイル読み込みエラー: {e}",
+                file=sys.stderr,
+            )
             sys.exit(0)
 
         errors = []
@@ -425,7 +336,9 @@ def main():
             for warn in warnings:
                 msg_parts.append(f"  WARNING: {warn}")
             msg_parts.append(
-                "\n  詳細な検証は `/zenn-review:frontmatter-check` コマンドを使用してください。"
+                "\n  詳細な検証は"
+                " `/zenn-review:frontmatter-check`"
+                " コマンドを使用してください。"
             )
             print("\n".join(msg_parts), file=sys.stderr)
         elif warnings:
@@ -440,7 +353,10 @@ def main():
 
         sys.exit(0)
     except Exception as e:
-        print(f"[Zenn validate] 予期しないエラーが発生しました: {e}", file=sys.stderr)
+        print(
+            f"[Zenn validate] 予期しないエラーが発生しました: {e}",
+            file=sys.stderr,
+        )
         sys.exit(0)
 
 
