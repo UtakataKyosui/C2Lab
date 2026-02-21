@@ -1,14 +1,15 @@
+# ruff: noqa: E501, SIM102, SIM114
 #!/usr/bin/env python3
 """
-PostToolUse hook: Zenn フロントマター / config.yaml バリデーション（Advisory のみ）
+PostToolUse hook: Zenn フロントマター / config.yaml バリデーション(Advisory のみ)
 
 Write/Edit ツール使用後に実行され、以下を検証する:
 - articles/*.md: フロントマターの必須フィールドと値の妥当性
 - books/*/config.yaml: 書籍設定の必須フィールドと値の妥当性
 
 - 対象外のファイルはスキップ
-- stdlib のみ使用（外部依存なし）
-- 常に exit 0（advisory のみ、ブロックしない）
+- stdlib のみ使用(外部依存なし)
+- 常に exit 0(advisory のみ、ブロックしない)
 """
 
 import json
@@ -97,14 +98,14 @@ def check_file_safety(file_path):
 
     file_size = os.path.getsize(real_path)
     if file_size > MAX_FILE_SIZE:
-        return False, f"ファイルサイズが上限（512KB）を超えています: {file_size} bytes"
+        return False, f"ファイルサイズが上限(512KB)を超えています: {file_size} bytes"
 
     return True, None
 
 
 def parse_frontmatter(content):
     """Markdown ファイルからフロントマターを正規表現で解析する"""
-    # 改行を正規化してからフロントマターを解析する（\r\n / \r -> \n）
+    # 改行を正規化してからフロントマターを解析する(\r\n / \r -> \n)
     normalized = content.replace("\r\n", "\n").replace("\r", "\n")
     # 末尾が EOF の場合もマッチするように、終了 --- の後は改行または文字列終端を許可する
     match = re.match(r"\A---\s*\n(.*?)\n---\s*(?:\n|\Z)", normalized, re.DOTALL)
@@ -148,7 +149,7 @@ def parse_frontmatter(content):
 
 
 def parse_yaml_simple(content):
-    """config.yaml を正規表現で簡易パースする（PyYAML 不要）"""
+    """config.yaml を正規表現で簡易パースする(PyYAML 不要)"""
     result = {}
     current_list_key = None
     current_list = []
@@ -210,7 +211,7 @@ def validate_article_frontmatter(file_path, content):
 
     fm = parse_frontmatter(content)
     if fm is None:
-        errors.append("フロントマターが見つかりません（--- で囲まれた YAML ブロックが必要）")
+        errors.append("フロントマターが見つかりません(--- で囲まれた YAML ブロックが必要)")
         return errors, warnings
 
     # 必須フィールドチェック
@@ -225,25 +226,25 @@ def validate_article_frontmatter(file_path, content):
         if not title:
             errors.append("`title` が空です")
         elif len(title) > 70:
-            warnings.append(f"`title` が {len(title)} 文字です（70文字以内推奨）")
+            warnings.append(f"`title` が {len(title)} 文字です(70文字以内推奨)")
 
-    # emoji チェック（必須: 絵文字）
+    # emoji チェック(必須: 絵文字)
     if "emoji" in fm:
         emoji_value = fm["emoji"]
         if not isinstance(emoji_value, str):
-            errors.append("`emoji` が文字列ではありません（絵文字を指定してください）")
+            errors.append("`emoji` が文字列ではありません(絵文字を指定してください)")
         elif not emoji_value.strip():
-            errors.append("`emoji` が空です（絵文字を指定してください）")
+            errors.append("`emoji` が空です(絵文字を指定してください)")
 
-    # published チェック（必須: boolean）
+    # published チェック(必須: boolean)
     if "published" in fm:
         if not isinstance(fm["published"], bool):
-            errors.append("`published` が boolean ではありません（true / false を指定してください）")
+            errors.append("`published` が boolean ではありません(true / false を指定してください)")
 
     # type チェック
     if "type" in fm:
         if fm["type"] not in ("tech", "idea"):
-            errors.append(f"`type` が不正です: \"{fm['type']}\"（\"tech\" または \"idea\" のみ）")
+            errors.append(f"`type` が不正です: \"{fm['type']}\"(\"tech\" または \"idea\" のみ)")
 
     # topics チェック
     if "topics" in fm:
@@ -251,14 +252,14 @@ def validate_article_frontmatter(file_path, content):
         if not isinstance(topics, list):
             errors.append("`topics` が配列ではありません")
         elif len(topics) == 0:
-            errors.append("`topics` が空です（1〜5個必要）")
+            errors.append("`topics` が空です(1〜5個必要)")
         elif len(topics) > 5:
-            errors.append(f"`topics` が {len(topics)} 個あります（最大5個）")
+            errors.append(f"`topics` が {len(topics)} 個あります(最大5個)")
         else:
             for topic in topics:
                 if not re.match(r"^[a-z0-9][a-z0-9-]*$", str(topic)):
                     errors.append(
-                        f"`topics` の値 \"{topic}\" が不正です（小文字英数字・ハイフンのみ）"
+                        f"`topics` の値 \"{topic}\" が不正です(小文字英数字・ハイフンのみ)"
                     )
 
     # スラッグチェック
@@ -267,7 +268,7 @@ def validate_article_frontmatter(file_path, content):
         warnings.append(f"スラッグ \"{slug}\" に使用不可の文字が含まれています")
     elif len(slug) < 12 or len(slug) > 50:
         warnings.append(
-            f"スラッグ \"{slug}\" の長さが {len(slug)} 文字です（12〜50文字推奨）"
+            f"スラッグ \"{slug}\" の長さが {len(slug)} 文字です(12〜50文字推奨)"
         )
 
     return errors, warnings
@@ -298,13 +299,13 @@ def validate_book_config(content):
         summary = str(config["summary"])
         if len(summary) > 200:
             warnings.append(
-                f"`summary` が {len(summary)} 文字です（200文字以内推奨）"
+                f"`summary` が {len(summary)} 文字です(200文字以内推奨)"
             )
 
-    # published チェック（必須: boolean）
+    # published チェック(必須: boolean)
     if "published" in config:
         if not isinstance(config["published"], bool):
-            errors.append("`published` が boolean ではありません（true / false を指定してください）")
+            errors.append("`published` が boolean ではありません(true / false を指定してください)")
 
     # topics チェック
     if "topics" in config:
@@ -312,24 +313,24 @@ def validate_book_config(content):
         if not isinstance(topics, list):
             errors.append("`topics` が配列ではありません")
         elif len(topics) == 0:
-            errors.append("`topics` が空です（1〜5個必要）")
+            errors.append("`topics` が空です(1〜5個必要)")
         elif len(topics) > 5:
-            errors.append(f"`topics` が {len(topics)} 個あります（最大5個）")
+            errors.append(f"`topics` が {len(topics)} 個あります(最大5個)")
         else:
             for topic in topics:
                 if not re.match(r"^[a-z0-9][a-z0-9-]*$", str(topic)):
                     errors.append(
-                        f"`topics` の値 \"{topic}\" が不正です（小文字英数字・ハイフンのみ）"
+                        f"`topics` の値 \"{topic}\" が不正です(小文字英数字・ハイフンのみ)"
                     )
 
     # price チェック
     if "price" in config:
         price = config["price"]
         if not isinstance(price, int):
-            errors.append(f"`price` が整数ではありません")
+            errors.append("`price` が整数ではありません")
         elif price != 0 and (price < 200 or price > 5000 or price % 100 != 0):
             errors.append(
-                f"`price` が不正です: {price}（0 または 200〜5000 の100円単位）"
+                f"`price` が不正です: {price}(0 または 200〜5000 の100円単位)"
             )
 
     return errors, warnings
@@ -371,7 +372,7 @@ def main():
 
         # ファイル読み込み
         try:
-            with open(file_path, "r", encoding="utf-8") as f:
+            with open(file_path, encoding="utf-8") as f:
                 content = f.read()
         except (OSError, UnicodeDecodeError) as e:
             print(f"[Zenn validate] ファイル読み込みエラー: {e}", file=sys.stderr)
