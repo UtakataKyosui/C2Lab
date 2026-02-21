@@ -44,6 +44,11 @@ ignore = [
 # RUF001: 日本語文字列内の全角括弧は意図的
 "plugins/poml-assist/hooks/scripts/validate-poml.py" = ["S603", "S607", "E501", "RUF001"]
 "plugins/poml-assist/hooks/scripts/render-poml.py" = ["S603", "S607", "E501", "RUF001"]
+# S603: subprocess 呼び出しなし
+"plugins/dev-cost-tracker/hooks/scripts/stop_reminder.py" = ["S603"]
+# S101: テストファイルの assert は pytest の標準パターン
+# S108: テストでの /tmp 使用は安全
+"plugins/dev-cost-tracker/hooks/scripts/test_stop_reminder.py" = ["S101", "S108"]
 
 [tool.ruff.format]
 quote-style = "double"

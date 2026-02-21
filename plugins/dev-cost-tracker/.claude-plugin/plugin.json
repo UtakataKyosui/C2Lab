@@ -1,0 +1,14 @@
+{
+  "name": "dev-cost-tracker",
+  "description": "Claude Codeの開発コスト（トークン使用量・費用）を機能単位で記録するプラグイン。セッション終了時にコスト記録のリマインダーを表示し、/record-cost コマンドで詳細な費用情報を .dev-costs.json に保存する。",
+  "version": "1.0.0",
+  "author": {
+    "name": "UtakataKyosui",
+    "email": "fill.ayaextech@gmail.com"
+  },
+  "repository": "https://github.com/UtakataKyosui/C2Lab",
+  "keywords": ["cost", "token-usage", "tracking", "budgeting", "analytics"],
+  "license": "MIT",
+  "commands": ["../commands/dev-cost-tracker/record-cost.md"],
+  "hooks": "../hooks/hooks.json"
+}
