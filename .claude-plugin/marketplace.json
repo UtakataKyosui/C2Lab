@@ -17,7 +17,17 @@
       "author": {
         "name": "UtakataKyosui"
       },
-      "keywords": ["jj", "jujutsu", "vcs", "version-control", "git", "parallel-development", "history-rewriting", "pr-review", "safe-push"],
+      "keywords": [
+        "jj",
+        "jujutsu",
+        "vcs",
+        "version-control",
+        "git",
+        "parallel-development",
+        "history-rewriting",
+        "pr-review",
+        "safe-push"
+      ],
       "category": "version-control"
     },
     {
@@ -29,7 +39,12 @@
         "name": "UtakataKyosui",
         "email": "fill.ayaextech@gmail.com"
       },
-      "keywords": ["development", "rust", "agent-skill", "hooks"],
+      "keywords": [
+        "development",
+        "rust",
+        "agent-skill",
+        "hooks"
+      ],
       "category": "development"
     },
     {
@@ -41,7 +56,11 @@
         "name": "UtakataKyosui",
         "email": "fill.ayaextech@gmail.com"
       },
-      "keywords": ["development", "code-review", "commands"],
+      "keywords": [
+        "development",
+        "code-review",
+        "commands"
+      ],
       "category": "development"
     },
     {
@@ -53,7 +72,13 @@
         "name": "UtakataKyosui",
         "email": "fill.ayaextech@gmail.com"
       },
-      "keywords": ["scaffdog", "colocation", "scaffolding", "template", "file-structure"],
+      "keywords": [
+        "scaffdog",
+        "colocation",
+        "scaffolding",
+        "template",
+        "file-structure"
+      ],
       "category": "development"
     },
     {
@@ -65,7 +90,13 @@
         "name": "UtakataKyosui",
         "email": "fill.ayaextech@gmail.com"
       },
-      "keywords": ["tdd", "test-driven-development", "testing", "quality", "enforcement"],
+      "keywords": [
+        "tdd",
+        "test-driven-development",
+        "testing",
+        "quality",
+        "enforcement"
+      ],
       "category": "development"
     },
     {
@@ -77,7 +108,14 @@
         "name": "UtakataKyosui",
         "email": "fill.ayaextech@gmail.com"
       },
-      "keywords": ["wasm", "webassembly", "optimization", "performance", "js", "typescript"],
+      "keywords": [
+        "wasm",
+        "webassembly",
+        "optimization",
+        "performance",
+        "js",
+        "typescript"
+      ],
       "category": "development"
     },
     {
@@ -89,7 +127,12 @@
         "name": "UtakataKyosui",
         "email": "fill.ayaextech@gmail.com"
       },
-      "keywords": ["session", "resume", "history", "workflow"],
+      "keywords": [
+        "session",
+        "resume",
+        "history",
+        "workflow"
+      ],
       "category": "workflow"
     },
     {
@@ -100,7 +143,14 @@
       "author": {
         "name": "UtakataKyosui"
       },
-      "keywords": ["activitypub", "federation", "c2s", "activitystreams", "social-web", "json-ld"],
+      "keywords": [
+        "activitypub",
+        "federation",
+        "c2s",
+        "activitystreams",
+        "social-web",
+        "json-ld"
+      ],
       "category": "development"
     },
     {
@@ -111,7 +161,14 @@
       "author": {
         "name": "UtakataKyosui"
       },
-      "keywords": ["protobuf", "protocol-buffers", "grpc", "serialization", "interface-definition", "schema"],
+      "keywords": [
+        "protobuf",
+        "protocol-buffers",
+        "grpc",
+        "serialization",
+        "interface-definition",
+        "schema"
+      ],
       "category": "development"
     },
     {
@@ -122,7 +179,14 @@
       "author": {
         "name": "UtakataKyosui"
       },
-      "keywords": ["moonrepo", "proto", "monorepo", "task-runner", "toolchain", "build-system"],
+      "keywords": [
+        "moonrepo",
+        "proto",
+        "monorepo",
+        "task-runner",
+        "toolchain",
+        "build-system"
+      ],
       "category": "development"
     },
     {
@@ -133,7 +197,48 @@
       "author": {
         "name": "UtakataKyosui"
       },
-      "keywords": ["poml", "prompt-engineering", "llm", "markup", "microsoft"],
+      "keywords": [
+        "poml",
+        "prompt-engineering",
+        "llm",
+        "markup",
+        "microsoft"
+      ],
+      "category": "development"
+    },
+    {
+      "name": "dev-cost-tracker",
+      "source": "./plugins/dev-cost-tracker",
+      "description": "Claude Codeの開発コスト（トークン使用量・費用）を機能単位で記録するプラグイン。セッション終了時にコスト記録のリマインダーを表示し、/record-cost コマンドで詳細な費用情報を .dev-costs.json に保存する。",
+      "version": "1.0.0",
+      "author": {
+        "name": "UtakataKyosui",
+        "email": "fill.ayaextech@gmail.com"
+      },
+      "keywords": [
+        "cost",
+        "token-usage",
+        "tracking",
+        "budgeting",
+        "analytics"
+      ],
+      "category": "workflow"
+    },
+    {
+      "name": "zenn-review",
+      "source": "./plugins/zenn-review",
+      "description": "Zenn（技術記事プラットフォーム）の記事・書籍コンテンツに対するレビュープラグイン。内容レビュー・誤字脱字チェック・構文チェック・フロントマター検証・書籍の章間整合性チェックを個別コマンドとして提供し、統合レビューエージェントも備える。",
+      "version": "1.0.0",
+      "author": {
+        "name": "UtakataKyosui"
+      },
+      "keywords": [
+        "zenn",
+        "review",
+        "markdown",
+        "japanese",
+        "technical-writing"
+      ],
       "category": "development"
     }
   ]
