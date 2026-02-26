@@ -5,7 +5,7 @@ import json
 import sys
 from pathlib import Path
 
-from vcs import VCSInfo, VCSType, commit_changes, detect_vcs, get_changed_files
+from vcs import VCSInfo, commit_changes, detect_vcs, get_changed_files
 
 
 def load_fix_plan(plan_path: str) -> list[dict]:
@@ -46,7 +46,10 @@ def commit_by_review_comment(vcs_info: VCSInfo, fix_plan: list[dict]) -> dict:
         return results
 
     for fix in fix_plan:
-        message = fix.get("commit_message", fix.get("summary", "fix: address review feedback"))
+        default_msg = "fix: address review feedback"
+        message = fix.get(
+            "commit_message", fix.get("summary", default_msg),
+        )
         files = fix.get("files", [])
 
         # Filter to only files that actually changed
@@ -95,7 +98,7 @@ def main():
     if len(sys.argv) < 2:
         print(json.dumps({
             "error": "Usage: committer.py <fix_plan.json> [project_dir]",
-            "hint": "fix_plan.json should contain the mapping of review comments to files",
+            "hint": "fix_plan.json maps review comments to files",
         }))
         sys.exit(1)
 

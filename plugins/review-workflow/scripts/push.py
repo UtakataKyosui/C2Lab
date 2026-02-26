@@ -35,8 +35,9 @@ def get_push_info(project_dir: str | None = None) -> dict:
             }
 
         # Check if branch has upstream
-        result = subprocess.run(
-            ["git", "rev-parse", "--abbrev-ref", f"{branch}@{{u}}"],
+        upstream_ref = f"{branch}@{{u}}"
+        result = subprocess.run(  # noqa: S603
+            ["git", "rev-parse", "--abbrev-ref", upstream_ref],  # noqa: S607
             capture_output=True,
             text=True,
             cwd=vcs_info.root_dir,
@@ -47,14 +48,18 @@ def get_push_info(project_dir: str | None = None) -> dict:
 
         # Count unpushed commits
         if has_upstream:
-            count_result = subprocess.run(
-                ["git", "rev-list", "--count", f"origin/{branch}..HEAD"],
+            rev_range = f"origin/{branch}..HEAD"
+            count_result = subprocess.run(  # noqa: S603
+                ["git", "rev-list", "--count", rev_range],  # noqa: S607
                 capture_output=True,
                 text=True,
                 cwd=vcs_info.root_dir,
                 check=False,
             )
-            unpushed = int(count_result.stdout.strip()) if count_result.returncode == 0 else "unknown"
+            if count_result.returncode == 0:
+                unpushed = int(count_result.stdout.strip())
+            else:
+                unpushed = "unknown"
         else:
             unpushed = "all (new branch)"
 

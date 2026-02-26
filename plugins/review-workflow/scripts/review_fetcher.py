@@ -6,7 +6,6 @@ import re
 import subprocess
 import sys
 from dataclasses import asdict, dataclass
-from typing import Optional
 
 
 @dataclass
@@ -14,25 +13,25 @@ class ReviewComment:
     id: int
     author: str
     body: str
-    path: Optional[str]
-    line: Optional[int]
-    diff_hunk: Optional[str]
-    state: Optional[str]
+    path: str | None
+    line: int | None
+    diff_hunk: str | None
+    state: str | None
     created_at: str
-    in_reply_to_id: Optional[int] = None
+    in_reply_to_id: int | None = None
 
 
 @dataclass
 class ReviewThread:
     """A group of review comments forming a conversation thread."""
     thread_id: int
-    path: Optional[str]
-    line: Optional[int]
+    path: str | None
+    line: int | None
     comments: list[ReviewComment]
     resolved: bool = False
 
 
-def parse_pr_reference(pr_ref: str) -> tuple[Optional[str], str]:
+def parse_pr_reference(pr_ref: str) -> tuple[str | None, str]:
     """Parse PR reference into (repo, pr_number).
 
     Accepts:
@@ -58,42 +57,57 @@ def parse_pr_reference(pr_ref: str) -> tuple[Optional[str], str]:
     sys.exit(1)
 
 
-def fetch_pr_info(repo: Optional[str], pr_number: str) -> dict:
+def fetch_pr_info(repo: str | None, pr_number: str) -> dict:
     """Fetch basic PR information."""
     cmd = ["gh", "pr", "view", pr_number, "--json",
            "number,title,state,headRefName,baseRefName,author,url"]
     if repo:
         cmd.extend(["--repo", repo])
 
-    result = subprocess.run(cmd, capture_output=True, text=True, check=False)
+    result = subprocess.run(  # noqa: S603
+        cmd, capture_output=True, text=True, check=False,
+    )
     if result.returncode != 0:
-        print(json.dumps({"error": f"Failed to fetch PR info: {result.stderr}"}))
+        err = f"Failed to fetch PR info: {result.stderr}"
+        print(json.dumps({"error": err}))
         sys.exit(1)
 
     return json.loads(result.stdout)
 
 
-def fetch_review_comments(repo: Optional[str], pr_number: str) -> list[ReviewComment]:
+def _detect_repo() -> str | None:
+    """Detect repo name from current directory via gh CLI."""
+    detect_result = subprocess.run(
+        ["gh", "repo", "view", "--json",  # noqa: S607
+         "nameWithOwner", "-q", ".nameWithOwner"],
+        capture_output=True, text=True, check=False,
+    )
+    if detect_result.returncode != 0:
+        return None
+    return detect_result.stdout.strip()
+
+
+def fetch_review_comments(repo: str | None, pr_number: str) -> list[ReviewComment]:
     """Fetch all review comments on a PR."""
     # Fetch review comments (inline comments on code)
     cmd = ["gh", "api"]
     if repo:
         cmd.append(f"repos/{repo}/pulls/{pr_number}/comments")
     else:
-        # Need to detect repo from current directory
-        detect_result = subprocess.run(
-            ["gh", "repo", "view", "--json", "nameWithOwner", "-q", ".nameWithOwner"],
-            capture_output=True, text=True, check=False,
-        )
-        if detect_result.returncode != 0:
-            print(json.dumps({"error": "Cannot detect repository. Specify full PR URL."}))
+        detected_repo = _detect_repo()
+        if not detected_repo:
+            msg = "Cannot detect repository. Specify full PR URL."
+            print(json.dumps({"error": msg}))
             sys.exit(1)
-        detected_repo = detect_result.stdout.strip()
-        cmd.append(f"repos/{detected_repo}/pulls/{pr_number}/comments")
+        cmd.append(
+            f"repos/{detected_repo}/pulls/{pr_number}/comments",
+        )
 
     cmd.extend(["--paginate"])
 
-    result = subprocess.run(cmd, capture_output=True, text=True, check=False)
+    result = subprocess.run(  # noqa: S603
+        cmd, capture_output=True, text=True, check=False,
+    )
     if result.returncode != 0:
         return []
 
@@ -115,22 +129,22 @@ def fetch_review_comments(repo: Optional[str], pr_number: str) -> list[ReviewCom
     return comments
 
 
-def fetch_review_bodies(repo: Optional[str], pr_number: str) -> list[ReviewComment]:
+def fetch_review_bodies(repo: str | None, pr_number: str) -> list[ReviewComment]:
     """Fetch top-level review bodies (not inline comments)."""
     cmd = ["gh", "api"]
     if repo:
         cmd.append(f"repos/{repo}/pulls/{pr_number}/reviews")
     else:
-        detect_result = subprocess.run(
-            ["gh", "repo", "view", "--json", "nameWithOwner", "-q", ".nameWithOwner"],
-            capture_output=True, text=True, check=False,
-        )
-        if detect_result.returncode != 0:
+        detected_repo = _detect_repo()
+        if not detected_repo:
             return []
-        detected_repo = detect_result.stdout.strip()
-        cmd.append(f"repos/{detected_repo}/pulls/{pr_number}/reviews")
+        cmd.append(
+            f"repos/{detected_repo}/pulls/{pr_number}/reviews",
+        )
 
-    result = subprocess.run(cmd, capture_output=True, text=True, check=False)
+    result = subprocess.run(  # noqa: S603
+        cmd, capture_output=True, text=True, check=False,
+    )
     if result.returncode != 0:
         return []
 

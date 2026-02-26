@@ -6,12 +6,11 @@ import os
 import subprocess
 import sys
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 from pathlib import Path
-from typing import Optional
 
 
-class VCSType(str, Enum):
+class VCSType(StrEnum):
     JJ = "jj"
     GIT = "git"
 
@@ -20,13 +19,17 @@ class VCSType(str, Enum):
 class VCSInfo:
     vcs_type: VCSType
     root_dir: str
-    current_branch: Optional[str]
-    remote_url: Optional[str]
+    current_branch: str | None
+    remote_url: str | None
 
 
-def run_cmd(cmd: list[str], cwd: Optional[str] = None, check: bool = True) -> subprocess.CompletedProcess:
+def run_cmd(
+    cmd: list[str],
+    cwd: str | None = None,
+    check: bool = True,
+) -> subprocess.CompletedProcess:
     """Run a command and return the result."""
-    return subprocess.run(
+    return subprocess.run(  # noqa: S603
         cmd,
         capture_output=True,
         text=True,
@@ -35,7 +38,7 @@ def run_cmd(cmd: list[str], cwd: Optional[str] = None, check: bool = True) -> su
     )
 
 
-def detect_vcs(directory: Optional[str] = None) -> VCSInfo:
+def detect_vcs(directory: str | None = None) -> VCSInfo:
     """Detect VCS type by checking for .jj directory first, then .git."""
     search_dir = Path(directory) if directory else Path.cwd()
 
@@ -48,7 +51,10 @@ def detect_vcs(directory: Optional[str] = None) -> VCSInfo:
             return _build_git_info(str(current))
         current = current.parent
 
-    print(json.dumps({"error": "No VCS repository found", "searched_from": str(search_dir)}))
+    print(json.dumps({
+        "error": "No VCS repository found",
+        "searched_from": str(search_dir),
+    }))
     sys.exit(1)
 
 
@@ -76,7 +82,8 @@ def _build_jj_info(root: str) -> VCSInfo:
         if result.returncode == 0:
             for line in result.stdout.strip().split("\n"):
                 if line.startswith("origin"):
-                    remote_url = line.split(None, 1)[1] if len(line.split()) > 1 else None
+                    parts = line.split(None, 1)
+                    remote_url = parts[1] if len(parts) > 1 else None
                     break
     except FileNotFoundError:
         pass
@@ -147,7 +154,7 @@ def get_changed_files(vcs_info: VCSInfo) -> list[str]:
 def commit_changes(
     vcs_info: VCSInfo,
     message: str,
-    files: Optional[list[str]] = None,
+    files: list[str] | None = None,
 ) -> dict:
     """Commit changes with the given message."""
     if vcs_info.vcs_type == VCSType.JJ:
@@ -156,7 +163,7 @@ def commit_changes(
         return _git_commit(vcs_info, message, files)
 
 
-def _jj_commit(vcs_info: VCSInfo, message: str, files: Optional[list[str]]) -> dict:
+def _jj_commit(vcs_info: VCSInfo, message: str, files: list[str] | None) -> dict:
     """Commit using jj."""
     cwd = vcs_info.root_dir
 
@@ -167,7 +174,7 @@ def _jj_commit(vcs_info: VCSInfo, message: str, files: Optional[list[str]]) -> d
         env = os.environ.copy()
         env["EDITOR"] = "true"
         env["JJ_EDITOR"] = "true"
-        result = subprocess.run(
+        result = subprocess.run(  # noqa: S603
             split_cmd,
             capture_output=True,
             text=True,
@@ -203,12 +210,12 @@ def _jj_commit(vcs_info: VCSInfo, message: str, files: Optional[list[str]]) -> d
     }
 
 
-def _git_commit(vcs_info: VCSInfo, message: str, files: Optional[list[str]]) -> dict:
+def _git_commit(vcs_info: VCSInfo, message: str, files: list[str] | None) -> dict:
     """Commit using git."""
     cwd = vcs_info.root_dir
 
     if files:
-        result = run_cmd(["git", "add"] + files, cwd=cwd, check=False)
+        result = run_cmd(["git", "add", *files], cwd=cwd, check=False)
         if result.returncode != 0:
             return {"success": False, "error": f"git add failed: {result.stderr}"}
     else:

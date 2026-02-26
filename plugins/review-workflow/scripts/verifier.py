@@ -6,10 +6,9 @@ import re
 import subprocess
 import sys
 from pathlib import Path
-from typing import Optional
 
 
-def find_config_file(start_dir: Optional[str] = None) -> Optional[Path]:
+def find_config_file(start_dir: str | None = None) -> Path | None:
     """Find .claude/review-workflow.local.md in the project."""
     search_dir = Path(start_dir) if start_dir else Path.cwd()
     current = search_dir.resolve()
@@ -78,7 +77,7 @@ def run_verification(commands: dict[str, str], cwd: str) -> dict:
         print(f"Running: {name} ({cmd})...", file=sys.stderr)
 
         try:
-            result = subprocess.run(
+            result = subprocess.run(  # noqa: S602
                 cmd,
                 shell=True,
                 capture_output=True,
@@ -92,7 +91,7 @@ def run_verification(commands: dict[str, str], cwd: str) -> dict:
                 "command": cmd,
                 "success": False,
                 "returncode": -1,
-                "stderr": f"Command timed out after 300 seconds",
+                "stderr": "Command timed out after 300 seconds",
             }
             results["failed"] += 1
             results["steps"].append(step)
@@ -129,7 +128,10 @@ def main():
         print(json.dumps({
             "error": "Config file not found",
             "hint": "Create .claude/review-workflow.local.md with verify commands",
-            "example": "---\nverify:\n  typecheck: \"npx tsc --noEmit\"\n  test: \"npm test\"\n---",
+            "example": (
+                '---\nverify:\n  typecheck: "npx tsc --noEmit"'
+                '\n  test: "npm test"\n---'
+            ),
         }, indent=2))
         sys.exit(1)
 
