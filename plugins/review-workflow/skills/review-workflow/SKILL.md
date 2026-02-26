@@ -70,7 +70,7 @@ Push に必要な情報を出力する（実際の Push は行わない）。
 python3 ${CLAUDE_PLUGIN_ROOT}/scripts/push.py [project_dir]
 ```
 
-- jj: safe-push skill の使用を推奨
+- jj: `jj-safe-push` スキルの使用を推奨
 - git: Push コマンドを出力し、ユーザー確認後に実行
 
 ## 設定ファイル
@@ -99,7 +99,7 @@ YAML frontmatter の `verify` セクションがスクリプトから読み取�
 | 操作 | jj | git |
 |------|-----|-----|
 | コミット | `jj split` + `jj describe` | `git add` + `git commit` |
-| Push | safe-push skill 経由 | ユーザー確認後に `git push` |
+| Push | `jj-safe-push` スキル経由 | ユーザー確認後に `git push` |
 | ブランチ検出 | `jj log` bookmarks | `git branch --show-current` |
 
 ## fix-plan.json の形式

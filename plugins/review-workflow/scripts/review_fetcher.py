@@ -24,6 +24,7 @@ class ReviewComment:
 @dataclass
 class ReviewThread:
     """A group of review comments forming a conversation thread."""
+
     thread_id: int
     path: str | None
     line: int | None
@@ -59,28 +60,50 @@ def parse_pr_reference(pr_ref: str) -> tuple[str | None, str]:
 
 def fetch_pr_info(repo: str | None, pr_number: str) -> dict:
     """Fetch basic PR information."""
-    cmd = ["gh", "pr", "view", pr_number, "--json",
-           "number,title,state,headRefName,baseRefName,author,url"]
+    cmd = [
+        "gh",
+        "pr",
+        "view",
+        pr_number,
+        "--json",
+        "number,title,state,headRefName,baseRefName,author,url",
+    ]
     if repo:
         cmd.extend(["--repo", repo])
 
     result = subprocess.run(  # noqa: S603
-        cmd, capture_output=True, text=True, check=False,
+        cmd,
+        capture_output=True,
+        text=True,
+        check=False,
     )
     if result.returncode != 0:
         err = f"Failed to fetch PR info: {result.stderr}"
         print(json.dumps({"error": err}))
         sys.exit(1)
 
-    return json.loads(result.stdout)
+    try:
+        return json.loads(result.stdout)
+    except json.JSONDecodeError as e:
+        print(json.dumps({"error": f"Invalid JSON from gh CLI: {e}"}))
+        sys.exit(1)
 
 
 def _detect_repo() -> str | None:
     """Detect repo name from current directory via gh CLI."""
     detect_result = subprocess.run(
-        ["gh", "repo", "view", "--json",  # noqa: S607
-         "nameWithOwner", "-q", ".nameWithOwner"],
-        capture_output=True, text=True, check=False,
+        [  # noqa: S607
+            "gh",
+            "repo",
+            "view",
+            "--json",
+            "nameWithOwner",
+            "-q",
+            ".nameWithOwner",
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
     )
     if detect_result.returncode != 0:
         return None
@@ -106,25 +129,33 @@ def fetch_review_comments(repo: str | None, pr_number: str) -> list[ReviewCommen
     cmd.extend(["--paginate"])
 
     result = subprocess.run(  # noqa: S603
-        cmd, capture_output=True, text=True, check=False,
+        cmd,
+        capture_output=True,
+        text=True,
+        check=False,
     )
     if result.returncode != 0:
         return []
 
-    raw_comments = json.loads(result.stdout)
+    try:
+        raw_comments = json.loads(result.stdout)
+    except json.JSONDecodeError:
+        return []
     comments = []
     for c in raw_comments:
-        comments.append(ReviewComment(
-            id=c["id"],
-            author=c.get("user", {}).get("login", "unknown"),
-            body=c.get("body", ""),
-            path=c.get("path"),
-            line=c.get("original_line") or c.get("line"),
-            diff_hunk=c.get("diff_hunk"),
-            state=c.get("state"),
-            created_at=c.get("created_at", ""),
-            in_reply_to_id=c.get("in_reply_to_id"),
-        ))
+        comments.append(
+            ReviewComment(
+                id=c["id"],
+                author=c.get("user", {}).get("login", "unknown"),
+                body=c.get("body", ""),
+                path=c.get("path"),
+                line=c.get("original_line") or c.get("line"),
+                diff_hunk=c.get("diff_hunk"),
+                state=c.get("state"),
+                created_at=c.get("created_at", ""),
+                in_reply_to_id=c.get("in_reply_to_id"),
+            )
+        )
 
     return comments
 
@@ -143,26 +174,34 @@ def fetch_review_bodies(repo: str | None, pr_number: str) -> list[ReviewComment]
         )
 
     result = subprocess.run(  # noqa: S603
-        cmd, capture_output=True, text=True, check=False,
+        cmd,
+        capture_output=True,
+        text=True,
+        check=False,
     )
     if result.returncode != 0:
         return []
 
-    raw_reviews = json.loads(result.stdout)
+    try:
+        raw_reviews = json.loads(result.stdout)
+    except json.JSONDecodeError:
+        return []
     comments = []
     for r in raw_reviews:
         body = r.get("body", "").strip()
         if body:
-            comments.append(ReviewComment(
-                id=r["id"],
-                author=r.get("user", {}).get("login", "unknown"),
-                body=body,
-                path=None,
-                line=None,
-                diff_hunk=None,
-                state=r.get("state"),
-                created_at=r.get("submitted_at", ""),
-            ))
+            comments.append(
+                ReviewComment(
+                    id=r["id"],
+                    author=r.get("user", {}).get("login", "unknown"),
+                    body=body,
+                    path=None,
+                    line=None,
+                    diff_hunk=None,
+                    state=r.get("state"),
+                    created_at=r.get("submitted_at", ""),
+                )
+            )
 
     return comments
 

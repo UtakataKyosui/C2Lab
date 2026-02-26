@@ -3,6 +3,7 @@
 
 import json
 import os
+import re
 import subprocess
 import sys
 from dataclasses import dataclass
@@ -51,10 +52,14 @@ def detect_vcs(directory: str | None = None) -> VCSInfo:
             return _build_git_info(str(current))
         current = current.parent
 
-    print(json.dumps({
-        "error": "No VCS repository found",
-        "searched_from": str(search_dir),
-    }))
+    print(
+        json.dumps(
+            {
+                "error": "No VCS repository found",
+                "searched_from": str(search_dir),
+            }
+        )
+    )
     sys.exit(1)
 
 
@@ -148,7 +153,8 @@ def get_changed_files(vcs_info: VCSInfo) -> list[str]:
         elif "|" in line:
             # jj stat format: "file | N +++---"
             files.append(line.split("|")[0].strip())
-    return [f for f in files if f and not f.endswith("changed")]
+    # Filter out jj summary line (e.g. "3 files changed, 10 insertions")
+    return [f for f in files if f and not re.match(r"^\d+ files? changed", f)]
 
 
 def commit_changes(
@@ -200,7 +206,18 @@ def _jj_commit(vcs_info: VCSInfo, message: str, files: list[str] | None) -> dict
         )
         if result.returncode == 0:
             # Create new empty change on top
-            run_cmd(["jj", "new"], cwd=cwd, check=False)
+            new_result = run_cmd(
+                ["jj", "new"],
+                cwd=cwd,
+                check=False,
+            )
+            if new_result.returncode != 0:
+                return {
+                    "success": True,
+                    "vcs": "jj",
+                    "message": message,
+                    "warning": f"jj new failed: {new_result.stderr}",
+                }
 
     return {
         "success": result.returncode == 0,
@@ -235,9 +252,14 @@ def _git_commit(vcs_info: VCSInfo, message: str, files: list[str] | None) -> dic
 if __name__ == "__main__":
     directory = sys.argv[1] if len(sys.argv) > 1 else None
     info = detect_vcs(directory)
-    print(json.dumps({
-        "vcs_type": info.vcs_type.value,
-        "root_dir": info.root_dir,
-        "current_branch": info.current_branch,
-        "remote_url": info.remote_url,
-    }, indent=2))
+    print(
+        json.dumps(
+            {
+                "vcs_type": info.vcs_type.value,
+                "root_dir": info.root_dir,
+                "current_branch": info.current_branch,
+                "remote_url": info.remote_url,
+            },
+            indent=2,
+        )
+    )

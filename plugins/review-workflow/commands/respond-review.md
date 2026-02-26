@@ -24,6 +24,8 @@ PR のレビューコメントを取得し、SubAgent で修正を実施、検�
 
 引数が未指定の場合は AskUserQuestion でユーザーに入力を求める。
 
+**引数のバリデーション**: `$ARGUMENTS` は PR URL または数値のみを受け付ける。URL の場合は `https://github.com/` で始まること、番号の場合は数字のみであることを確認してから使用する。不正な入力はエラーとして拒否する。
+
 ## 実行手順
 
 ### Step 1: VCS 検出
@@ -56,7 +58,7 @@ python3 ${CLAUDE_PLUGIN_ROOT}/scripts/review_fetcher.py "$ARGUMENTS"
 
 ### Step 4: SubAgent でコード修正
 
-Task ツールで `general-purpose` SubAgent を起動し、レビューコメントへの修正を実施する。
+Task ツールで `review-fixer` SubAgent を起動し、レビューコメントへの修正を実施する。
 
 SubAgent に渡す情報:
 - レビューコメントの内容（スレッド単位）
@@ -65,7 +67,7 @@ SubAgent に渡す情報:
 
 SubAgent への指示:
 - 各レビューコメントに対応するコード修正を実施する
-- 修正完了後、修正内容を以下の JSON 形式で `/tmp/review-fix-plan.json` に書き出す:
+- 修正完了後、修正内容を以下の JSON 形式で `/tmp/review-fix-plan-<PR番号>.json` に書き出す:
 
 ```json
 [
@@ -95,7 +97,7 @@ python3 ${CLAUDE_PLUGIN_ROOT}/scripts/verifier.py
 ### Step 6: コミット
 
 ```bash
-python3 ${CLAUDE_PLUGIN_ROOT}/scripts/committer.py /tmp/review-fix-plan.json
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/committer.py /tmp/review-fix-plan-<PR番号>.json
 ```
 
 レビューコメント単位でコミットが作成される。

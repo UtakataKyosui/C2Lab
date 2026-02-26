@@ -27,7 +27,18 @@ def load_fix_plan(plan_path: str) -> list[dict]:
         print(json.dumps({"error": f"Fix plan not found: {plan_path}"}))
         sys.exit(1)
 
-    return json.loads(path.read_text(encoding="utf-8"))
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as e:
+        print(
+            json.dumps(
+                {
+                    "error": f"Invalid JSON in fix plan: {e}",
+                    "path": plan_path,
+                }
+            )
+        )
+        sys.exit(1)
 
 
 def commit_by_review_comment(vcs_info: VCSInfo, fix_plan: list[dict]) -> dict:
@@ -48,7 +59,8 @@ def commit_by_review_comment(vcs_info: VCSInfo, fix_plan: list[dict]) -> dict:
     for fix in fix_plan:
         default_msg = "fix: address review feedback"
         message = fix.get(
-            "commit_message", fix.get("summary", default_msg),
+            "commit_message",
+            fix.get("summary", default_msg),
         )
         files = fix.get("files", [])
 
@@ -56,21 +68,37 @@ def commit_by_review_comment(vcs_info: VCSInfo, fix_plan: list[dict]) -> dict:
         actual_files = [f for f in files if f in changed_files]
 
         if not actual_files and not files:
-            # No specific files - skip this commit group
+            # No specific files listed - skip
+            continue
+
+        if files and not actual_files:
+            # Files were specified but none actually changed - skip
+            results["commits"].append(
+                {
+                    "thread_id": fix.get("thread_id"),
+                    "message": message,
+                    "files": files,
+                    "success": True,
+                    "skipped": True,
+                    "reason": "Specified files not in changed files",
+                }
+            )
             continue
 
         result = commit_changes(
             vcs_info,
             message=message,
-            files=actual_files if actual_files else None,
+            files=actual_files,
         )
 
-        results["commits"].append({
-            "thread_id": fix.get("thread_id"),
-            "message": message,
-            "files": actual_files or files,
-            **result,
-        })
+        results["commits"].append(
+            {
+                "thread_id": fix.get("thread_id"),
+                "message": message,
+                "files": actual_files or files,
+                **result,
+            }
+        )
 
         if result["success"]:
             results["successful"] += 1
@@ -96,10 +124,14 @@ def commit_all_at_once(vcs_info: VCSInfo, message: str) -> dict:
 
 def main():
     if len(sys.argv) < 2:
-        print(json.dumps({
-            "error": "Usage: committer.py <fix_plan.json> [project_dir]",
-            "hint": "fix_plan.json maps review comments to files",
-        }))
+        print(
+            json.dumps(
+                {
+                    "error": "Usage: committer.py <fix_plan.json> [project_dir]",
+                    "hint": "fix_plan.json maps review comments to files",
+                }
+            )
+        )
         sys.exit(1)
 
     plan_path = sys.argv[1]

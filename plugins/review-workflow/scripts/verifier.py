@@ -3,6 +3,7 @@
 
 import json
 import re
+import shlex
 import subprocess
 import sys
 from pathlib import Path
@@ -56,7 +57,12 @@ def parse_config(config_path: Path) -> dict:
             config[current_section] = {}
         elif current_section and ":" in stripped:
             key, _, value = stripped.partition(":")
-            value = value.strip().strip('"').strip("'")
+            value = value.strip()
+            # Strip outer quotes (preserving colons inside)
+            if (value.startswith('"') and value.endswith('"')) or (
+                value.startswith("'") and value.endswith("'")
+            ):
+                value = value[1:-1]
             config[current_section][key.strip()] = value
 
     return config
@@ -71,19 +77,32 @@ def run_verification(commands: dict[str, str], cwd: str) -> dict:
         "steps": [],
     }
 
+    timeout_sec = 300
+
     for name, cmd in commands.items():
-        # Security note: commands come from the user's local config file
-        # (.claude/review-workflow.local.md). This is trusted user input.
         print(f"Running: {name} ({cmd})...", file=sys.stderr)
 
         try:
-            result = subprocess.run(  # noqa: S602
-                cmd,
-                shell=True,
+            cmd_list = shlex.split(cmd)
+        except ValueError as e:
+            step = {
+                "name": name,
+                "command": cmd,
+                "success": False,
+                "returncode": -1,
+                "stderr": f"Failed to parse command: {e}",
+            }
+            results["failed"] += 1
+            results["steps"].append(step)
+            continue
+
+        try:
+            result = subprocess.run(  # noqa: S603
+                cmd_list,
                 capture_output=True,
                 text=True,
                 cwd=cwd,
-                timeout=300,
+                timeout=timeout_sec,
             )
         except subprocess.TimeoutExpired:
             step = {
@@ -91,7 +110,7 @@ def run_verification(commands: dict[str, str], cwd: str) -> dict:
                 "command": cmd,
                 "success": False,
                 "returncode": -1,
-                "stderr": "Command timed out after 300 seconds",
+                "stderr": f"Command timed out after {timeout_sec} seconds",
             }
             results["failed"] += 1
             results["steps"].append(step)
@@ -125,26 +144,36 @@ def main():
 
     config_path = find_config_file(project_dir)
     if not config_path:
-        print(json.dumps({
-            "error": "Config file not found",
-            "hint": "Create .claude/review-workflow.local.md with verify commands",
-            "example": (
-                '---\nverify:\n  typecheck: "npx tsc --noEmit"'
-                '\n  test: "npm test"\n---'
-            ),
-        }, indent=2))
+        print(
+            json.dumps(
+                {
+                    "error": "Config file not found",
+                    "hint": "Create .claude/review-workflow.local.md with verify commands",  # noqa: E501
+                    "example": (
+                        '---\nverify:\n  typecheck: "npx tsc --noEmit"'
+                        '\n  test: "npm test"\n---'
+                    ),
+                },
+                indent=2,
+            )
+        )
         sys.exit(1)
 
     config = parse_config(config_path)
     verify_commands = config.get("verify", {})
 
     if not verify_commands:
-        print(json.dumps({
-            "warning": "No verify commands found in config",
-            "config_path": str(config_path),
-            "all_passed": True,
-            "steps": [],
-        }, indent=2))
+        print(
+            json.dumps(
+                {
+                    "warning": "No verify commands found in config",
+                    "config_path": str(config_path),
+                    "all_passed": True,
+                    "steps": [],
+                },
+                indent=2,
+            )
+        )
         sys.exit(0)
 
     cwd = str(config_path.parent.parent)  # .claude/ -> project root
