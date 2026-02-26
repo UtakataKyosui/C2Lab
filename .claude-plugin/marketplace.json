@@ -240,6 +240,17 @@
         "technical-writing"
       ],
       "category": "development"
+    },
+    {
+      "name": "review-workflow",
+      "source": "./plugins/review-workflow",
+      "description": "PRレビュー対応ワークフローの自動化プラグイン。レビューコメント取得からコード修正・検証・コミット・Pushまでを Python オーケストレーターで制御する。VCSは .jj の有無で jj/git を自動検出。",
+      "version": "0.1.0",
+      "author": {
+        "name": "UtakataKyosui"
+      },
+      "keywords": ["code-review", "pr-review", "workflow", "jj", "git", "automation"],
+      "category": "workflow"
     }
   ]
 }
