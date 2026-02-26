@@ -16,6 +16,5 @@
   ],
   "agents": [
     "./agents/tdd-compliance-checker.md"
-  ],
-  "hooks": "./hooks/hooks.json"
+  ]
 }

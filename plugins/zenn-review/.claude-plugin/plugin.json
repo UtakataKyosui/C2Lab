@@ -14,6 +14,5 @@
     "./commands/zenn-review/frontmatter-check.md",
     "./commands/zenn-review/book-consistency.md"
   ],
-  "agents": ["./agents/zenn-reviewer.md"],
-  "hooks": "./hooks/hooks.json"
+  "agents": ["./agents/zenn-reviewer.md"]
 }

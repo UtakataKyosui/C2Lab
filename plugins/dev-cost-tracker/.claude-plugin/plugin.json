@@ -9,6 +9,5 @@
   "repository": "https://github.com/UtakataKyosui/C2Lab",
   "keywords": ["cost", "token-usage", "tracking", "budgeting", "analytics"],
   "license": "MIT",
-  "commands": ["./commands/dev-cost-tracker/record-cost.md"],
-  "hooks": "./hooks/hooks.json"
+  "commands": ["./commands/dev-cost-tracker/record-cost.md"]
 }

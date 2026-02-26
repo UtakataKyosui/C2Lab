@@ -18,6 +18,5 @@
   "agents": [
     "./agents/wasm-pattern-detector.md",
     "./agents/wasm-audit-reporter.md"
-  ],
-  "hooks": "./hooks/hooks.json"
+  ]
 }

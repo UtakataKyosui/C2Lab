@@ -19,6 +19,5 @@
   "agents": [
     "./agents/colocation-validator.md",
     "./agents/scaffdog-template-generator.md"
-  ],
-  "hooks": "./hooks/hooks.json"
+  ]
 }

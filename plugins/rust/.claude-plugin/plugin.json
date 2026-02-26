@@ -8,6 +8,5 @@
   },
   "repository": "https://github.com/UtakataKyosui/C2Lab",
   "keywords": ["development","rust","agent-skill","hooks"],
-  "agents": "./agents/",
-  "hooks": "./hooks/hooks.json"
+  "agents": "./agents/"
 }

@@ -8,6 +8,5 @@
   "keywords": ["poml", "prompt-engineering", "llm", "markup", "microsoft"],
   "license": "MIT",
   "commands": ["./commands/poml-assist/create-poml.md"],
-  "agents": ["./agents/poml-architect.md", "./agents/poml-reviewer.md"],
-  "hooks": "./hooks/hooks.json"
+  "agents": ["./agents/poml-architect.md", "./agents/poml-reviewer.md"]
 }
