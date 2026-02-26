@@ -1,15 +1,13 @@
 {
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Edit | Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/check-test-exists.py\""
-          }
-        ]
-      }
-    ]
-  }
+  "PreToolUse": [
+    {
+      "matcher": "Edit | Write",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/check-test-exists.py\""
+        }
+      ]
+    }
+  ]
 }

@@ -1,15 +1,13 @@
 {
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"$CLAUDE_PLUGIN_ROOT\"/hooks/scripts/jj-safe-push.sh"
-          }
-        ]
-      }
-    ]
-  }
+  "PreToolUse": [
+    {
+      "matcher": "Bash",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "\"$CLAUDE_PLUGIN_ROOT\"/hooks/scripts/jj-safe-push.sh"
+        }
+      ]
+    }
+  ]
 }

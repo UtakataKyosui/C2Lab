@@ -1,15 +1,13 @@
 {
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Edit | Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/validate-colocation.py\""
-          }
-        ]
-      }
-    ]
-  }
+  "PostToolUse": [
+    {
+      "matcher": "Edit | Write",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/validate-colocation.py\""
+        }
+      ]
+    }
+  ]
 }
