@@ -31,7 +31,7 @@
       "category": "version-control"
     },
     {
-      "name": "rust-development",
+      "name": "rust",
       "source": "./plugins/rust",
       "description": "Rust開発用プラグイン。エージェントとフックを提供。",
       "version": "0.0.1",
