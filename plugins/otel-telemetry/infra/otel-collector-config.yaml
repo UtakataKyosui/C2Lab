@@ -1,0 +1,53 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: "0.0.0.0:4317"
+      http:
+        endpoint: "0.0.0.0:4318"
+
+connectors:
+  count:
+    claude_code_commit_count:
+      description: "Total Git Commits from Claude Code"
+      conditions:
+        - 'body == "claude_code.tool_result" and attributes["tool_name"] == "Bash" and attributes["tool_parameters"] != nil and IsMatch(attributes["tool_parameters"], "^git commit")'
+    claude_code_pr_count:
+      description: "Total GitHub PRs created from Claude Code"
+      conditions:
+        - 'body == "claude_code.tool_result" and attributes["tool_name"] == "Bash" and attributes["tool_parameters"] != nil and IsMatch(attributes["tool_parameters"], "^gh pr create")'
+
+exporters:
+  debug:
+    verbosity: detailed
+
+  otlphttp/openobserve-http:
+    endpoint: "http://openobserve:5080/api/default"
+    headers:
+      Authorization: "${env:OPENOBSERVE_AUTH}"
+
+processors:
+  batch:
+
+extensions:
+  health_check:
+  pprof:
+    endpoint: :1888
+  zpages:
+    endpoint: :55679
+
+service:
+  extensions: [pprof, zpages, health_check]
+  pipelines:
+    metrics:
+      receivers: [otlp, count]
+      processors: [batch]
+      exporters: [debug, otlphttp/openobserve-http]
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [count, debug, otlphttp/openobserve-http]
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [debug, otlphttp/openobserve-http]

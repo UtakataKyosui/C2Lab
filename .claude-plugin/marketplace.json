@@ -119,19 +119,20 @@
       "category": "development"
     },
     {
-      "name": "session-saver",
-      "source": "./plugins/session-saver",
-      "description": "Claude CodeのセッションIDを自動保存するプラグイン。セッション開始時にIDをプロジェクトルートの.claude-sessions.jsonに記録し、過去セッションへの復帰を容易にする。",
+      "name": "otel-telemetry",
+      "source": "./plugins/otel-telemetry",
+      "description": "Claude CodeのOpenTelemetryテレメトリを自動設定するプラグイン。セッション開始時にプロジェクト名をOTELリソース属性に設定し、OTLPエクスポーター経由でOpenObserveにメトリクス・ログを送信する。",
       "version": "1.0.0",
       "author": {
         "name": "UtakataKyosui",
         "email": "fill.ayaextech@gmail.com"
       },
       "keywords": [
-        "session",
-        "resume",
-        "history",
-        "workflow"
+        "opentelemetry",
+        "otel",
+        "telemetry",
+        "observability",
+        "openobserve"
       ],
       "category": "workflow"
     },
