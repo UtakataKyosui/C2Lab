@@ -1,0 +1,46 @@
+services:
+  # OpenTelemetry Collector
+  otel-collector:
+    container_name: otel-collector
+    image: ${OTELCOL_IMG:-otel/opentelemetry-collector-contrib:0.103.0}
+    restart: unless-stopped
+    command: >-
+      --config=/etc/otel-collector-config.yaml ${OTELCOL_ARGS:-}
+    environment:
+      - OPENOBSERVE_AUTH=${OPENOBSERVE_AUTH}
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
+    ports:
+      - "4317:4317" # OTLP gRPC receiver
+      - "4318:4318" # OTLP HTTP receiver
+    networks:
+      - otel_default
+    depends_on:
+      - openobserve
+
+  # OpenObserve - Log/Metrics/Traces backend
+  openobserve:
+    container_name: openobserve
+    image: openobserve/openobserve:v0.60.1
+    restart: unless-stopped
+    ports:
+      - "5080:5080" # Web UI
+      - "5081:5081" # gRPC API (OTLP)
+    volumes:
+      - openobserve-data:/data
+    networks:
+      - otel_default
+    environment:
+      - ZO_DATA_DIR=/data
+      - ZO_ROOT_USER_EMAIL=${OPENOBSERVE_ROOT_USER_EMAIL}
+      - ZO_ROOT_USER_PASSWORD=${OPENOBSERVE_ROOT_PASSWORD}
+      - ZO_GRPC_PORT=5081
+      - ZO_GRPC_ENABLED=true
+
+networks:
+  otel_default:
+    name: otel_default
+    driver: bridge
+
+volumes:
+  openobserve-data:
