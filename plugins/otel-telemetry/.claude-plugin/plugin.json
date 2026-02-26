@@ -1,0 +1,12 @@
+{
+  "name": "otel-telemetry",
+  "description": "Claude CodeのOpenTelemetryテレメトリを自動設定するプラグイン。セッション開始時にプロジェクト名をOTELリソース属性に設定し、OTLPエクスポーター経由でOpenObserveにメトリクス・ログを送信する。",
+  "version": "1.0.0",
+  "author": {
+    "name": "UtakataKyosui",
+    "email": "fill.ayaextech@gmail.com"
+  },
+  "repository": "https://github.com/UtakataKyosui/C2Lab",
+  "keywords": ["opentelemetry", "otel", "telemetry", "observability", "openobserve"],
+  "license": "MIT"
+}
