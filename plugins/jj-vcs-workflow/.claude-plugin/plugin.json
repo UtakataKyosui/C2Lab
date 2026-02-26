@@ -16,7 +16,7 @@
     "pr-review",
     "safe-push"
   ],
-  "hooks": "../hooks/hooks.json",
+  "hooks": "./hooks/hooks.json",
   "license": "MIT",
   "repository": "https://github.com/UtakataKyosui/C2Lab"
 }

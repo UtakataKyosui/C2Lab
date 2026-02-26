@@ -13,10 +13,10 @@
     "commands"
   ],
   "commands": [
-    "../commands/principles.md",
-    "../commands/checklist.md"
+    "./commands/principles.md",
+    "./commands/checklist.md"
   ],
   "agents": [
-    "../agents/reviewer.md"
+    "./agents/reviewer.md"
   ]
 }

@@ -10,14 +10,14 @@
   "keywords": ["wasm", "webassembly", "optimization", "performance", "js", "typescript"],
   "license": "MIT",
   "commands": [
-    "../commands/wasm-optimizer/init.md",
-    "../commands/wasm-optimizer/scan.md",
-    "../commands/wasm-optimizer/suggest.md",
-    "../commands/wasm-optimizer/integrate.md"
+    "./commands/wasm-optimizer/init.md",
+    "./commands/wasm-optimizer/scan.md",
+    "./commands/wasm-optimizer/suggest.md",
+    "./commands/wasm-optimizer/integrate.md"
   ],
   "agents": [
-    "../agents/wasm-pattern-detector.md",
-    "../agents/wasm-audit-reporter.md"
+    "./agents/wasm-pattern-detector.md",
+    "./agents/wasm-audit-reporter.md"
   ],
-  "hooks": "../hooks/hooks.json"
+  "hooks": "./hooks/hooks.json"
 }
