@@ -5,11 +5,13 @@ import sys
 
 # Rustプロジェクト以外ではスキップ
 if not pathlib.Path("Cargo.toml").exists():
+    print("{}")
     sys.exit(0)
 
 try:
     import mistune
 except ImportError:
+    print("{}")
     sys.exit(0)
 
 

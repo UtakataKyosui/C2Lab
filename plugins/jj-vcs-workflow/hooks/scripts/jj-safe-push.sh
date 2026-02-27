@@ -17,6 +17,7 @@ SANITIZED_SESSION_ID=$(basename "$SESSION_ID")
 
 # jj git push を含むコマンドかどうかを判定
 if ! echo "$COMMAND" | grep -qE '(^|&&\s*|;\s*)jj\s+git\s+push'; then
+  echo '{}'
   exit 0
 fi
 
@@ -27,6 +28,7 @@ STATE_FILE="${STATE_DIR}/${SANITIZED_SESSION_ID}"
 if echo "$COMMAND" | grep -qE 'jj\s+git\s+push\s+.*--dry-run|jj\s+git\s+push\s+--dry-run'; then
   mkdir -p "$STATE_DIR"
   date +%s > "$STATE_FILE"
+  echo '{}'
   exit 0
 fi
 
@@ -34,6 +36,7 @@ fi
 if [ -f "$STATE_FILE" ]; then
   # dry-run 実行済み → 許可し、状態をクリア（次回の push でも再度 dry-run を要求）
   rm -f "$STATE_FILE"
+  echo '{}'
   exit 0
 fi
 
