@@ -1,16 +1,41 @@
-# ActivityPub C2S Plugin
+# activitypub-c2s
 
-Claude Code で ActivityPub Client-to-Server (C2S) インタラクションを効率的に実装するためのプラグインです。
+ActivityPub Client-to-Server (C2S) インタラクションの実装を支援するプラグイン。
 
-## 特徴
+## 概要
 
-- **段階的な情報提供**: 基本概念、メッセージング、アクティビティ仕様の3つの詳細ガイドに分かれています。
-- **実装ガイド**: JSON-LD Context や Actor モデル、Inbox/Outbox の挙動について詳しく解説しています。
+ActivityPub プロトコルの C2S 仕様に基づいた実装ガイドを提供する。Actor の構造設計、Inbox/Outbox の動作、Activity Types の実装などをカバーする。
 
-## 構成
+## 提供コンポーネント
 
-- `skills/activitypub-c2s/SKILL.md`: メインエントリポイント
-- `skills/activitypub-c2s/guides/`: 詳細ガイドディレクトリ
-    - `concepts.md`: 基本概念（JSON-LD, Actor, ID等）
-    - `messaging.md`: メッセージング（Inbox, Outbox, Side Effects）
-    - `activities.md`: 主要なアクティビティ定義と例
+### Skills
+
+| スキル名 | 説明 |
+|----------|------|
+| `activitypub-c2s` | ActivityPub C2S インタラクションの実装ガイド。概要とリファレンスを提供し、詳細はサブファイルを参照。 |
+
+**スキルが自動ロードされるファイルパターン**:
+- `**/*activitypub*/**`
+- `**/ap/**`
+- `**/*federation*/**`
+
+### ガイド
+
+| ファイル | 内容 |
+|----------|------|
+| `guides/concepts.md` | JSON-LD & Context、Actor 構造、ID & URI の設計 |
+| `guides/messaging.md` | Inbox/Outbox の動作、Side Effects |
+| `guides/activities.md` | Activity Types（Create, Update, Delete 等）の実装 |
+
+## 使い方
+
+ActivityPub 関連のファイルを開いているとき、またはスキル名でメンションすると参照情報が自動的に提供される。
+
+```
+ActivityPub の Outbox に投稿する実装を教えて
+Actor の JSON-LD 構造を設計したい
+```
+
+## フック
+
+なし

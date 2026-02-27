@@ -1,17 +1,43 @@
-# Protocol Buffers (ProtoBuf) Tools Plugin
+# protobuf-tools
 
-Protocol Buffers (protobuf) の使用と管理をサポートするプラグインです。
+Protocol Buffers (protobuf) の設計・実装を支援するプラグイン。
 
-## 特徴
+## 概要
 
-- **スタイルガイド**: Google および Uber の提供するベストプラクティスに基づいた命名規則とファイル構成のガイド。
-- **ツール活用**: `protoc` および `buf` CLI の効果的な使用方法を解説。
-- **バージョン管理**: 破壊的変更を避けるためのバージョニングとフィールド管理のヒント。
+protobuf のスタイルガイド、ベストプラクティス、ツール活用方法を提供する。`.proto` ファイルの設計から gRPC サービスの実装まで幅広くカバーする。
 
-## 構成
+## 提供コンポーネント
 
-- `skills/protobuf-tools/SKILL.md`: メインエントリポイント
-- `skills/protobuf-tools/guides/`: 詳細ガイドディレクトリ
-    - `style-guide.md`: 命名規則、ファイル構成
-    - `best-practices.md`: バージョニング、フィールド管理、共通パターン
-    - `tools.md`: CLIツール (protoc, buf) の使用法
+### Skills
+
+| スキル名 | 説明 |
+|----------|------|
+| `protobuf-tools` | Protocol Buffers の使用ガイド。概要と各ガイドへのリンクを提供する。詳細はサブファイルを参照。 |
+
+**スキルが自動ロードされるファイルパターン**:
+- `**/*.proto`
+- `**/gen/**`
+- `**/*protobuf*/**`
+- `**/*grpc*/**`
+
+### ガイド
+
+| ファイル | 内容 |
+|----------|------|
+| `guides/style-guide.md` | protobuf スタイルガイド（命名規則、フィールド番号、コメント等） |
+| `guides/best-practices.md` | 後方互換性、バージョニング、フィールド設計のベストプラクティス |
+| `guides/tools.md` | protoc、buf、grpc-gateway 等のツール活用方法 |
+
+## 使い方
+
+`.proto` ファイルや gRPC 関連ファイルを開いているとき、参照情報が自動的に提供される。
+
+```
+protobuf でページネーションを設計したい
+gRPC サービスのベストプラクティスは？
+buf でスキーマを検証する方法は？
+```
+
+## フック
+
+なし
