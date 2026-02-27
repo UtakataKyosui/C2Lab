@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import pathlib
 import shutil
 import subprocess
 import sys
@@ -71,6 +72,10 @@ def cargo_fmt() -> None:
 
 
 def main():
+    # Rustプロジェクト以外ではスキップ
+    if not pathlib.Path("Cargo.toml").exists():
+        sys.exit(0)
+
     parser = argparse.ArgumentParser(description="Unified cargo check tools")
     parser.add_argument("--check", action="store_true", help="Run cargo check only")
     parser.add_argument("--clippy", action="store_true", help="Run cargo clippy only")

@@ -1,15 +1,21 @@
 {
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "pip3 install -q -r \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/requirements.txt\" 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
     "UserPromptSubmit": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "pip install -r ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/requirements.txt"
-          },
-          {
-            "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/prompt-check.py"
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/prompt-check.py\""
           }
         ]
       }

@@ -1,8 +1,16 @@
 #!/usr/bin/env python3
 import json
+import pathlib
 import sys
 
-import mistune
+# Rustプロジェクト以外ではスキップ
+if not pathlib.Path("Cargo.toml").exists():
+    sys.exit(0)
+
+try:
+    import mistune
+except ImportError:
+    sys.exit(0)
 
 
 # ---------------------------------------
