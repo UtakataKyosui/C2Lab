@@ -5,11 +5,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "pip install -r ${CLAUDE_PLUGIN_ROOT}/scripts/requirements.txt"
+            "command": "pip install -r ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/requirements.txt"
           },
           {
             "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/scripts/prompt-check.py"
+            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/prompt-check.py"
           }
         ]
       }
@@ -20,7 +20,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/scripts/hook-tools.py"
+            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/hook-tools.py"
           }
         ]
       }
@@ -30,7 +30,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/scripts/hook-tools.py"
+            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/hook-tools.py"
           }
         ]
       }
