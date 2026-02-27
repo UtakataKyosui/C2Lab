@@ -252,6 +252,24 @@
       },
       "keywords": ["code-review", "pr-review", "workflow", "jj", "git", "automation"],
       "category": "workflow"
+    },
+    {
+      "name": "tauri-dev",
+      "source": "./plugins/tauri-dev",
+      "description": "Tauri v2プラグイン開発を支援するプラグイン。新規プラグインのスキャフォールド、エコシステム調査、実装パターン（Rust/TypeScript）、テスト・デバッグガイドを提供する。",
+      "version": "0.1.0",
+      "author": {
+        "name": "taiki.amo"
+      },
+      "keywords": [
+        "tauri",
+        "rust",
+        "plugin",
+        "desktop",
+        "typescript",
+        "scaffolding"
+      ],
+      "category": "development"
     }
   ]
 }

@@ -1,0 +1,11 @@
+{
+  "name": "tauri-dev",
+  "version": "0.1.0",
+  "description": "Tauri v2プラグイン開発を支援するプラグイン。新規プラグインのスキャフォールド、エコシステム調査、実装パターン（Rust/TypeScript）、テスト・デバッグガイドを提供する。",
+  "author": {
+    "name": "taiki.amo"
+  },
+  "keywords": ["tauri", "rust", "plugin", "desktop", "typescript", "scaffolding"],
+  "license": "MIT",
+  "repository": "https://github.com/UtakataKyosui/C2Lab"
+}

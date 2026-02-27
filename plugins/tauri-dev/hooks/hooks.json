@@ -1,0 +1,22 @@
+{
+  "description": "Tauri v2プラグイン開発のパターン検証フック。lib.rsおよびmobile.rsの編集時に必須構造が存在するかを確認します。",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write | Edit",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "You are a Tauri v2 plugin code validator. Analyze the file write/edit operation and determine if it requires validation.\n\nTool input: $TOOL_INPUT\n\nSTEP 1: Check if this operation is writing to a Tauri plugin's lib.rs file.\n- The file path must end with '/src/lib.rs' or be named 'lib.rs'\n- The content (new_string or content) must reference Tauri types like 'Runtime', 'TauriPlugin', 'Builder', or 'tauri::'\n- If this is NOT a Tauri plugin lib.rs file, output: {\"decision\": \"approve\", \"reason\": \"Not a Tauri plugin lib.rs file\"}\n\nSTEP 2: If this IS a Tauri plugin lib.rs, validate these REQUIRED elements:\n1. Plugin builder: The content must contain `Builder::new(` - the core plugin initialization\n2. invoke_handler: The content must contain `invoke_handler(` or `generate_handler![` - command registration\n3. Plugin return type: The content must contain `TauriPlugin<R>` or `-> TauriPlugin` - correct return type\n4. Plugin macro or init function: Content must have a public `pub fn init` or `pub fn plugin` function\n\nSTEP 3: If all 4 required elements are present:\n- Output: {\"decision\": \"approve\", \"reason\": \"All required Tauri v2 plugin patterns found\"}\n\nSTEP 4: If any required elements are MISSING:\n- Identify specifically what is missing\n- Output: {\"decision\": \"deny\", \"reason\": \"Missing required Tauri v2 plugin patterns: [list what is missing]\", \"systemMessage\": \"The lib.rs is missing: [detailed explanation of what to add and why each element is required for a valid Tauri v2 plugin]\"}\n\nIMPORTANT: Only deny writes where the file is clearly a Tauri plugin lib.rs AND is missing critical structural elements. Never deny non-Tauri files or partial edits that are clearly work-in-progress additions.",
+            "timeout": 30
+          },
+          {
+            "type": "prompt",
+            "prompt": "You are a Tauri v2 mobile plugin code validator. Analyze the file write/edit operation and determine if it requires validation.\n\nTool input: $TOOL_INPUT\n\nSTEP 1: Check if this operation is writing to a Tauri plugin's mobile.rs file.\n- The file path must end with '/src/mobile.rs' or be named 'mobile.rs'\n- The content (new_string or content) must reference Tauri types like 'Runtime', 'PluginHandle', 'PluginApi', or 'tauri::'\n- If this is NOT a Tauri plugin mobile.rs file, output: {\"decision\": \"approve\", \"reason\": \"Not a Tauri plugin mobile.rs file\"}\n\nSTEP 2: If this IS a Tauri plugin mobile.rs, validate these REQUIRED elements:\n1. PluginHandle usage: The content must contain `PluginHandle<R>` or `PluginHandle` - the mobile proxy type\n2. run_mobile_plugin call: The content must contain `run_mobile_plugin(` - the method that bridges to native code\n\nSTEP 3: If both required elements are present:\n- Output: {\"decision\": \"approve\", \"reason\": \"Required Tauri v2 mobile plugin patterns found\"}\n\nSTEP 4: If any required elements are MISSING:\n- Identify specifically what is missing\n- Output: {\"decision\": \"deny\", \"reason\": \"Missing required Tauri v2 mobile plugin patterns: [list what is missing]\", \"systemMessage\": \"The mobile.rs is missing: [detailed explanation]. A valid Tauri v2 mobile.rs must wrap a PluginHandle<R> and call run_mobile_plugin to proxy commands to the native Android/iOS layer.\"}\n\nIMPORTANT: Only deny writes where the file is clearly a Tauri plugin mobile.rs AND is missing critical structural elements. Never deny non-Tauri files or partial edits that are clearly work-in-progress additions.",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
