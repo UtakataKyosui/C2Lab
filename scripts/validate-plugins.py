@@ -303,7 +303,9 @@ class PluginValidator:
                     continue
 
                 for j, hook in enumerate(hooks_list):
-                    self._validate_hook_entry(plugin, plugin_dir, event_name, i, j, hook)
+                    self._validate_hook_entry(
+                        plugin, plugin_dir, event_name, i, j, hook
+                    )
 
     def _validate_hook_entry(
         self,
@@ -548,7 +550,9 @@ class PluginValidator:
 
         mcp_servers = data.get("mcpServers")
         if mcp_servers is not None and not isinstance(mcp_servers, dict):
-            self.error(plugin, ".mcp.json", "mcpServers はオブジェクトである必要があります")
+            self.error(
+                plugin, ".mcp.json", "mcpServers はオブジェクトである必要があります"
+            )
 
     # ── ユーティリティ ────────────────────────────────────────────
 

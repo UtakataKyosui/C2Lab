@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # jj safe-push: jj git push の直接実行を禁止し、安全な push ワークフローを強制する
 # bash / zsh 両対応
 #
