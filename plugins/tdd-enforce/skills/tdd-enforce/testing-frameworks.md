@@ -325,3 +325,134 @@ class CalculatorTest {
     }
 }
 ```
+
+## Kotlin
+
+### Kotest（旧 KotlinTest）
+
+Kotlin ネイティブのテストフレームワーク（旧称 KotlinTest）。
+
+```kotlin
+// build.gradle.kts
+dependencies {
+    testImplementation("io.kotest:kotest-runner-junit5:5.8.0")
+    testImplementation("io.kotest:kotest-assertions-core:5.8.0")
+}
+```
+
+```kotlin
+// CalculatorTest.kt
+import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.shouldBe
+
+class CalculatorTest : StringSpec({
+    "add two numbers" {
+        Calculator().add(2, 3) shouldBe 5
+    }
+
+    "handle negative numbers" {
+        Calculator().add(-1, 1) shouldBe 0
+    }
+})
+```
+
+**スタイル例（FunSpec）**:
+```kotlin
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
+
+class CalculatorTest : FunSpec({
+    test("add returns sum") {
+        Calculator().add(2, 3) shouldBe 5
+    }
+
+    context("edge cases") {
+        test("negative numbers") {
+            Calculator().add(-1, 1) shouldBe 0
+        }
+    }
+})
+```
+
+### JUnit 5 for Kotlin
+
+```kotlin
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvSource
+
+class CalculatorTest {
+    @Test
+    fun `add two numbers returns sum`() {
+        assertEquals(5, Calculator().add(2, 3))
+    }
+
+    @ParameterizedTest
+    @CsvSource("1, 2, 3", "-1, 1, 0")
+    fun `add various`(a: Int, b: Int, expected: Int) {
+        assertEquals(expected, Calculator().add(a, b))
+    }
+}
+```
+
+### MockK（モック）
+
+Kotlin 専用モックライブラリ。Mockito より Kotlin フレンドリー。
+
+```kotlin
+// build.gradle.kts
+dependencies {
+    testImplementation("io.mockk:mockk:1.13.8")
+}
+```
+
+```kotlin
+import io.mockk.*
+import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
+
+class OrderServiceTest {
+    @Test
+    fun `process order calls repository`() {
+        val repository = mockk<OrderRepository>()
+        every { repository.save(any()) } returns Unit
+
+        val service = OrderService(repository)
+        service.processOrder(Order(id = 1))
+
+        verify { repository.save(any()) }
+    }
+}
+```
+
+**実行コマンド**:
+```bash
+./gradlew test              # 全テスト
+./gradlew test --tests "com.example.*Test"  # フィルタ
+./gradlew test --info       # 詳細出力
+```
+
+### Kotlin テスト選定ガイド
+
+| ユースケース | 推奨 |
+|---|---|
+| 新規 Kotlin プロジェクト | Kotest |
+| 既存 JUnit 5 プロジェクト | JUnit 5 + Kotlin |
+| モック | MockK |
+| Android | JUnit 4/5 + Robolectric |
+| Coroutines テスト | Kotest + kotlinx-coroutines-test |
+
+### Kotlin テストファイル構成
+
+```
+src/
+├── main/
+│   └── kotlin/
+│       └── com/example/
+│           └── Calculator.kt
+└── test/
+    └── kotlin/
+        └── com/example/
+            └── CalculatorTest.kt
+```
