@@ -129,6 +129,48 @@ E2E テスト:
   - Mockito: デファクトスタンダード
 ```
 
+#### Kotlin
+
+```
+テストフレームワーク提案:
+
+✅ 推奨: Kotest (KotlinTest)
+  - Kotlin ネイティブ設計、表現力の高い DSL
+  - StringSpec, FunSpec, BehaviorSpec など多様なスタイル
+  - Coroutines ネイティブサポート
+
+代替:
+  - JUnit 5 + Kotlin: 既存 JUnit 環境との互換性
+  - JUnit 4: Android プロジェクト向け
+
+モック:
+  - MockK: Kotlin 専用、suspend 関数対応
+  - Mockito-Kotlin: Mockito の Kotlin ラッパー
+```
+
+**build.gradle.kts 設定例:**
+```kotlin
+plugins {
+    kotlin("jvm") version "1.9.0"
+}
+
+dependencies {
+    // Kotest
+    testImplementation("io.kotest:kotest-runner-junit5:5.8.0")
+    testImplementation("io.kotest:kotest-assertions-core:5.8.0")
+
+    // MockK
+    testImplementation("io.mockk:mockk:1.13.8")
+
+    // Coroutines テスト
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+}
+
+tasks.test {
+    useJUnitPlatform()
+}
+```
+
 ### 3. インストールガイド
 
 ユーザーが選択したフレームワークのインストール手順を表示する。

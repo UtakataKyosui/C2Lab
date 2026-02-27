@@ -19,6 +19,10 @@ model: inherit
 - `package.json` → TypeScript / JavaScript
 - `go.mod` → Go
 - `pyproject.toml` / `setup.py` → Python
+- `Gemfile` → Ruby
+- `mix.exs` → Elixir
+- `Package.swift` → Swift
+- `build.gradle` / `build.gradle.kts` → Kotlin / Java
 
 ### 2. ソースファイルの走査
 
@@ -50,7 +54,27 @@ model: inherit
 - `__init__.py` は除外
 
 #### Go
-- `**/*.go` → `*_test.go`（同パッケージ内）
+- `**/*.go` → `*_test.go` または `*_integration_test.go`（同パッケージ内）
+
+#### C#
+- `src/**/*.cs` → `*Tests.cs` / `*Test.cs`（同ディレクトリ、または `*Tests/` / `*Test/` サブプロジェクト内）
+- `AssemblyInfo.cs`, `*.csproj` は除外
+
+#### Ruby
+- `lib/**/*.rb` → `spec/**/*_spec.rb`（RSpec）または `test/**/*_test.rb`（Minitest）
+- `Gemfile`, `Rakefile`, `*.gemspec` は除外
+
+#### Elixir
+- `lib/**/*.ex` → `test/**/*_test.exs`
+- `mix.exs` は除外
+
+#### Swift
+- `Sources/**/*.swift` → `Tests/**/*Tests.swift` / `Tests/**/*Test.swift`
+- `Package.swift` は除外
+
+#### Kotlin
+- `src/main/kotlin/**/*.kt` → `src/test/kotlin/**/*Test.kt` / `*Tests.kt`（Gradle 標準構成）
+- `build.gradle`, `build.gradle.kts`, `settings.gradle`, `settings.gradle.kts` は除外
 
 ### 4. レポート生成
 

@@ -6,7 +6,8 @@ Edit/Write ツール使用前に実行され、実装コードに対応するテ
 存在するかをチェックする。テストがない場合はブロックする。
 
 - 実装コードの変更時のみチェック（テストファイル・設定ファイルはスキップ）
-- テストファイルが存在しない場合は exit 1 でブロック
+- テストファイルが存在しない場合は exit 2 でブロック
+  （stderr を Claude にフィードバック）
 - 外部依存なし（stdlib のみ）
 """
 
@@ -97,6 +98,32 @@ def is_excluded_file(file_path):
     if basename == "mod.rs":
         return True
 
+    # C# バレル的な役割・プロジェクト設定
+    if basename in ("AssemblyInfo.cs",) or basename.endswith(".csproj"):
+        return True
+
+    # Ruby プロジェクト設定
+    if basename in ("Gemfile", "Rakefile") or basename.endswith(".gemspec"):
+        return True
+
+    # Elixir プロジェクト設定
+    if basename == "mix.exs":
+        return True
+
+    # Swift プロジェクト設定
+    if basename == "Package.swift":
+        return True
+
+    # Kotlin/Java ビルド設定
+    gradle_files = (
+        "build.gradle",
+        "settings.gradle",
+        "build.gradle.kts",
+        "settings.gradle.kts",
+    )
+    if basename in gradle_files:
+        return True
+
     # CSS / HTML / 画像等
     non_code_ext = (
         ".css",
@@ -141,9 +168,34 @@ def is_test_file(file_path):
     if re.match(r".*Test\.java$", basename) or re.match(r".*Tests\.java$", basename):
         return True
 
-    # __tests__ ディレクトリ内
+    # C#
+    if re.match(r".*Tests?\.cs$", basename):
+        return True
+
+    # Ruby
+    if (
+        re.match(r".*_spec\.rb$", basename)
+        or re.match(r"^test_.*\.rb$", basename)
+        or re.match(r".*_test\.rb$", basename)
+    ):
+        return True
+
+    # Elixir
+    if re.match(r".*_test\.exs$", basename):
+        return True
+
+    # Swift
+    if re.match(r".*Tests?\.swift$", basename):
+        return True
+
+    # Kotlin
+    if re.match(r".*Tests?\.kt$", basename):
+        return True
+
+    # テストディレクトリ内
     path_parts = file_path.replace("\\", "/").split("/")
-    return "__tests__" in path_parts or "tests" in path_parts
+    test_dirs = {"__tests__", "tests", "spec", "test", "Tests"}
+    return bool(test_dirs & set(path_parts))
 
 
 def is_source_code(file_path):
@@ -162,8 +214,36 @@ def is_source_code(file_path):
         ".ex",
         ".exs",
         ".swift",
+        ".kt",
+        ".kts",
     )
     return any(file_path.endswith(ext) for ext in code_extensions)
+
+
+def find_project_root(file_path):
+    """プロジェクトルートを探す"""
+    current = os.path.dirname(file_path)
+    markers = [
+        "Cargo.toml",
+        "package.json",
+        "go.mod",
+        "pyproject.toml",
+        ".git",
+        "Gemfile",  # Ruby
+        "mix.exs",  # Elixir
+        "Package.swift",  # Swift
+        "build.gradle",  # Kotlin/Java
+        "build.gradle.kts",  # Kotlin
+    ]
+    for _ in range(10):  # 最大10階層
+        for marker in markers:
+            if os.path.exists(os.path.join(current, marker)):
+                return current
+        parent = os.path.dirname(current)
+        if parent == current:
+            break
+        current = parent
+    return None
 
 
 def find_test_file(file_path):
@@ -204,8 +284,11 @@ def find_test_file(file_path):
 
     # Go
     if ext == ".go":
-        test_file = os.path.join(dirname, f"{name_without_ext}_test.go")
-        return os.path.exists(test_file)
+        test_patterns = [
+            os.path.join(dirname, f"{name_without_ext}_test.go"),
+            os.path.join(dirname, f"{name_without_ext}_integration_test.go"),
+        ]
+        return any(os.path.exists(p) for p in test_patterns)
 
     # Java
     if ext == ".java":
@@ -225,13 +308,130 @@ def find_test_file(file_path):
             )
         return any(os.path.exists(p) for p in test_patterns)
 
+    # C#
+    if ext == ".cs":
+        test_patterns = [
+            os.path.join(dirname, f"{name_without_ext}Tests.cs"),
+            os.path.join(dirname, f"{name_without_ext}Test.cs"),
+        ]
+        # プロジェクトルートに *Tests/ や *Test/ ディレクトリを探す
+        project_root = find_project_root(file_path)
+        if project_root:
+            try:
+                for entry in os.scandir(project_root):
+                    if entry.is_dir() and ("Test" in entry.name):
+                        # 相対パスを保持しつつ test ディレクトリ内を検索
+                        rel = os.path.relpath(dirname, project_root)
+                        test_patterns.append(
+                            os.path.join(entry.path, rel, f"{name_without_ext}Tests.cs")
+                        )
+                        test_patterns.append(
+                            os.path.join(entry.path, rel, f"{name_without_ext}Test.cs")
+                        )
+            except OSError:
+                pass
+        return any(os.path.exists(p) for p in test_patterns)
+
+    # Ruby
+    if ext == ".rb":
+        project_root = find_project_root(file_path)
+        test_patterns = [
+            os.path.join(dirname, f"{name_without_ext}_spec.rb"),
+            os.path.join(dirname, f"test_{basename}"),
+            os.path.join(dirname, f"{name_without_ext}_test.rb"),
+        ]
+        if project_root:
+            rel = os.path.relpath(file_path, project_root).replace("\\", "/")
+            # lib/foo/bar.rb → spec/foo/bar_spec.rb
+            if rel.startswith("lib/"):
+                spec_path = rel.replace("lib/", "spec/", 1).replace(".rb", "_spec.rb")
+                test_patterns.append(os.path.join(project_root, spec_path))
+                # lib/foo/bar.rb → test/foo/bar_test.rb
+                test_path = rel.replace("lib/", "test/", 1).replace(".rb", "_test.rb")
+                test_patterns.append(os.path.join(project_root, test_path))
+        return any(os.path.exists(p) for p in test_patterns)
+
+    # Elixir
+    if ext in (".ex", ".exs"):
+        project_root = find_project_root(file_path)
+        test_patterns = [
+            os.path.join(dirname, f"{name_without_ext}_test.exs"),
+        ]
+        if project_root:
+            rel = os.path.relpath(file_path, project_root).replace("\\", "/")
+            # lib/my_app/foo.ex → test/my_app/foo_test.exs
+            if rel.startswith("lib/"):
+                test_path = rel.replace("lib/", "test/", 1)
+                test_path_base, _ = os.path.splitext(test_path)
+                test_path = test_path_base + "_test.exs"
+                test_patterns.append(os.path.join(project_root, test_path))
+        return any(os.path.exists(p) for p in test_patterns)
+
+    # Swift
+    if ext == ".swift":
+        project_root = find_project_root(file_path)
+        test_patterns = [
+            os.path.join(dirname, f"{name_without_ext}Tests.swift"),
+            os.path.join(dirname, f"{name_without_ext}Test.swift"),
+        ]
+        if project_root:
+            try:
+                # Sources/MyTarget/Foo.swift → Tests/MyTargetTests/FooTests.swift
+                # サブディレクトリ構造を保持して対応するテストパスを生成
+                rel = os.path.relpath(dirname, project_root)
+                for entry in os.scandir(project_root):
+                    if entry.is_dir() and (
+                        "Tests" in entry.name or "Test" in entry.name
+                    ):
+                        test_patterns.append(
+                            os.path.join(
+                                entry.path, rel, f"{name_without_ext}Tests.swift"
+                            )
+                        )
+                        test_patterns.append(
+                            os.path.join(
+                                entry.path, rel, f"{name_without_ext}Test.swift"
+                            )
+                        )
+            except OSError:
+                pass
+        return any(os.path.exists(p) for p in test_patterns)
+
+    # Kotlin
+    if ext in (".kt", ".kts"):
+        test_patterns = [
+            os.path.join(dirname, f"{name_without_ext}Test.kt"),
+            os.path.join(dirname, f"{name_without_ext}Tests.kt"),
+        ]
+        # src/main/kotlin → src/test/kotlin 変換 (Gradle 標準構成)
+        # パス区切り文字を正規化してWindows環境でも正しく動作させる
+        file_path_fwd = file_path.replace("\\", "/")
+        for src_marker in ("/src/main/kotlin/", "/src/main/java/"):
+            if src_marker in file_path_fwd:
+                test_dir_path = file_path_fwd.replace(src_marker, "/src/test/kotlin/")
+                test_dir = os.path.dirname(test_dir_path)
+                test_patterns.extend(
+                    [
+                        os.path.join(test_dir, f"{name_without_ext}Test.kt"),
+                        os.path.join(test_dir, f"{name_without_ext}Tests.kt"),
+                    ]
+                )
+        return any(os.path.exists(p) for p in test_patterns)
+
     return True  # 未対応言語はパス
 
 
 def check_rust_inline_test(file_path):
     """Rust ファイル内にインラインテストがあるかチェック"""
     if not os.path.isfile(file_path):
-        return True  # ファイルが存在しない/通常ファイルでない場合はスキップ
+        # 新規ファイル作成時: 対応する統合テストファイルがあればOK
+        name_without_ext = os.path.splitext(os.path.basename(file_path))[0]
+        project_root = find_project_root(file_path)
+        if project_root:
+            tests_dir = os.path.join(project_root, "tests")
+            if os.path.isfile(os.path.join(tests_dir, f"{name_without_ext}.rs")):
+                return True
+        return False
     name_without_ext = os.path.splitext(os.path.basename(file_path))[0]
     try:
         with open(file_path, encoding="utf-8") as f:
@@ -251,21 +451,6 @@ def check_rust_inline_test(file_path):
         return False
     except OSError:
         return True  # 読めない場合はパス
-
-
-def find_project_root(file_path):
-    """プロジェクトルートを探す"""
-    current = os.path.dirname(file_path)
-    markers = ["Cargo.toml", "package.json", "go.mod", "pyproject.toml", ".git"]
-    for _ in range(10):  # 最大10階層
-        for marker in markers:
-            if os.path.exists(os.path.join(current, marker)):
-                return current
-        parent = os.path.dirname(current)
-        if parent == current:
-            break
-        current = parent
-    return None
 
 
 def main():
@@ -298,7 +483,7 @@ def main():
             f"[TDD] まず対応するテストファイルを作成してください。",
             file=sys.stderr,
         )
-        sys.exit(1)  # ブロック
+        sys.exit(2)  # Blocking: stderr is fed back to Claude
 
     sys.exit(0)
 
