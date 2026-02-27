@@ -7,6 +7,7 @@ plugins/ 配下の全プラグインを走査し、構造・参照・フォー�
 from __future__ import annotations
 
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -47,6 +48,10 @@ COMPONENT_PATH_FIELDS = {
 
 KEBAB_CASE_RE = re.compile(r"^[a-z][a-z0-9]*(-[a-z0-9]+)*$")
 SEMVER_RE = re.compile(r"^\d+\.\d+\.\d+$")
+
+IS_GITHUB_ACTIONS = os.environ.get("GITHUB_ACTIONS") == "true"
+# ${CLAUDE_PLUGIN_ROOT}/relative/path を抽出するパターン
+PLUGIN_ROOT_RE = re.compile(r"\$\{CLAUDE_PLUGIN_ROOT\}/([^\s\"'\\]+)")
 
 
 class ValidationError:
@@ -202,6 +207,11 @@ class PluginValidator:
                 if resolved.exists() and resolved.suffix == ".md":
                     self._validate_command_md(name, resolved)
 
+        # .mcp.json 検証
+        mcp_json_path = plugin_dir / ".mcp.json"
+        if mcp_json_path.exists():
+            self._validate_mcp_json(name, mcp_json_path)
+
     def _validate_path_ref(
         self, plugin: str, plugin_dir: Path, field: str, ref_path: str
     ) -> None:
@@ -235,6 +245,8 @@ class PluginValidator:
     # ── hooks.json ───────────────────────────────────────────────
 
     def _validate_hooks_json(self, plugin: str, hooks_path: Path) -> None:
+        plugin_dir = hooks_path.parent.parent
+
         try:
             data = json.loads(hooks_path.read_text(encoding="utf-8"))
         except json.JSONDecodeError as e:
@@ -291,10 +303,16 @@ class PluginValidator:
                     continue
 
                 for j, hook in enumerate(hooks_list):
-                    self._validate_hook_entry(plugin, event_name, i, j, hook)
+                    self._validate_hook_entry(plugin, plugin_dir, event_name, i, j, hook)
 
     def _validate_hook_entry(
-        self, plugin: str, event: str, entry_idx: int, hook_idx: int, hook: object
+        self,
+        plugin: str,
+        plugin_dir: Path,
+        event: str,
+        entry_idx: int,
+        hook_idx: int,
+        hook: object,
     ) -> None:
         prefix = f"'{event}[{entry_idx}].hooks[{hook_idx}]'"
 
@@ -326,6 +344,18 @@ class PluginValidator:
                 "hooks.json",
                 f"{prefix} type=command に command がありません",
             )
+        elif hook_type == "command":
+            # ${CLAUDE_PLUGIN_ROOT}/... で参照されるスクリプトの実在確認
+            command = hook.get("command", "")
+            for match in PLUGIN_ROOT_RE.finditer(command):
+                rel = match.group(1)
+                script_path = plugin_dir / rel
+                if not script_path.exists():
+                    self.error(
+                        plugin,
+                        "hooks.json",
+                        f"{prefix} command スクリプトが存在しません: {rel}",
+                    )
 
         if hook_type == "prompt" and "prompt" not in hook:
             self.error(
@@ -503,6 +533,23 @@ class PluginValidator:
                     ".claude-plugin/plugin.json がありません",
                 )
 
+    # ── .mcp.json ─────────────────────────────────────────────────
+
+    def _validate_mcp_json(self, plugin: str, mcp_path: Path) -> None:
+        try:
+            data = json.loads(mcp_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as e:
+            self.error(plugin, ".mcp.json", f"JSON パースエラー: {e}")
+            return
+
+        if not isinstance(data, dict):
+            self.error(plugin, ".mcp.json", "トップレベルがオブジェクトではありません")
+            return
+
+        mcp_servers = data.get("mcpServers")
+        if mcp_servers is not None and not isinstance(mcp_servers, dict):
+            self.error(plugin, ".mcp.json", "mcpServers はオブジェクトである必要があります")
+
     # ── ユーティリティ ────────────────────────────────────────────
 
     @staticmethod
@@ -567,6 +614,8 @@ def main() -> None:
             print(f"{plugin_name}:")
             for err in errors:
                 print(f"  [{err.category}] {err.message}")
+                if IS_GITHUB_ACTIONS:
+                    print(f"::error title={err.category}::{plugin_name}: {err.message}")
             print()
 
     sys.exit(0 if success else 1)

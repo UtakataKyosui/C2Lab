@@ -1,7 +1,4 @@
 {
-  "enabledPlugins": {
-    "plugin-dev@claude-plugins-official": true
-  },
   "permissions": {
     "allow": [
       "Bash(jj:*)",
@@ -14,5 +11,9 @@
     "deny": [
       "Bash(git:*)"
     ]
+  },
+  "enabledPlugins": {
+    "plugin-dev@claude-plugins-official": true,
+    "plugin-dev@claude-code-plugins": true
   }
 }

@@ -14,10 +14,30 @@ on:
 
 jobs:
   validate:
+    name: Validate plugin structure
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: python scripts/validate-plugins.py
+      - name: Install dependencies
+        run: pip install pyyaml
+      - name: Run plugin validation
+        run: python scripts/validate-plugins.py
+
+  shellcheck:
+    name: Shellcheck hook scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install shellcheck
+        run: sudo apt-get install -y shellcheck
+      - name: Check shell scripts
+        run: |
+          scripts=$(find plugins -name "*.sh" -print)
+          if [ -n "$scripts" ]; then
+            echo "$scripts" | xargs shellcheck
+          else
+            echo "No shell scripts found, skipping"
+          fi
