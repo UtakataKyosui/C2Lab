@@ -1,0 +1,9 @@
+{
+  "name": "tauri-app-dev",
+  "version": "0.1.0",
+  "description": "Tauri v2 アプリケーション開発を支援するプラグイン。プロジェクト構造・IPC通信・セキュリティモデル（capabilities）・モバイル対応（iOS/Android）・公式プラグイン活用の知識をエージェントに提供する。",
+  "author": { "name": "taiki.amo" },
+  "keywords": ["tauri", "desktop", "mobile", "rust", "frontend", "cross-platform"],
+  "license": "MIT",
+  "repository": "https://github.com/UtakataKyosui/C2Lab"
+}

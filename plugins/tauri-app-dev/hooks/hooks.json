@@ -1,0 +1,22 @@
+{
+  "description": "Tauri v2 アプリ開発のバリデーションフック。capabilities/*.json と tauri.conf.json の変更時に構造を検証します。",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write | Edit",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "You are a Tauri v2 capabilities file validator. Analyze the file write/edit operation and determine if it requires validation.\n\nTool input: $TOOL_INPUT\n\nSTEP 1: Check if this operation is writing to a Tauri capabilities JSON file.\n- The file path must contain 'capabilities/' and end with '.json'\n- The content (new_string or content) must look like a JSON object\n- If this is NOT a capabilities JSON file, output: {\"decision\": \"approve\", \"reason\": \"Not a capabilities JSON file\"}\n\nSTEP 2: If this IS a capabilities JSON file, validate these REQUIRED elements:\n1. identifier field: The JSON must contain an \"identifier\" field with a non-empty string value - this is the unique identifier for this capability set\n2. permissions field: If present, it must be an array (not an object or string)\n3. windows field: If present, it must be an array of strings representing window labels\n4. platforms field: If present, it must be an array containing only valid values: \"linux\", \"macos\", \"windows\", \"android\", \"ios\"\n\nSTEP 3: If all present fields are valid:\n- Output: {\"decision\": \"approve\", \"reason\": \"Capabilities JSON structure is valid\"}\n\nSTEP 4: If any required elements are MISSING or INVALID:\n- Identify specifically what is wrong\n- Output: {\"decision\": \"deny\", \"reason\": \"Invalid capabilities JSON structure: [specific issue]\", \"systemMessage\": \"The capabilities file has issues: [detailed explanation of what needs to be fixed. The 'identifier' field is required and must be a unique string. The 'permissions' field must be an array. The 'windows' field must be an array of window label strings matching labels defined in tauri.conf.json app.windows[].label]\"}\n\nIMPORTANT: Only deny writes where the file is clearly a capabilities JSON AND has structural errors. Never deny partial edits that are clearly work-in-progress or valid capabilities files.",
+            "timeout": 30
+          },
+          {
+            "type": "prompt",
+            "prompt": "You are a Tauri v2 configuration validator. Analyze the file write/edit operation and determine if it requires validation.\n\nTool input: $TOOL_INPUT\n\nSTEP 1: Check if this operation is writing to tauri.conf.json.\n- The file path must end with 'tauri.conf.json'\n- If this is NOT tauri.conf.json, output: {\"decision\": \"approve\", \"reason\": \"Not tauri.conf.json\"}\n\nSTEP 2: If this IS tauri.conf.json, validate these elements:\n1. productName or identifier: The config must have either a 'productName' or 'identifier' field at the top level for app identification\n2. build section: If present, check that 'devUrl' is a valid URL format (starts with http:// or https://) or 'frontendDist' is a relative path\n3. app.windows: If present, each window entry must have a 'label' field\n\nSTEP 3: If validation passes:\n- Output: {\"decision\": \"approve\", \"reason\": \"tauri.conf.json structure is valid\"}\n\nSTEP 4: If validation fails:\n- Output: {\"decision\": \"deny\", \"reason\": \"Invalid tauri.conf.json: [specific issue]\", \"systemMessage\": \"tauri.conf.json has issues: [detailed explanation. Common required fields: productName (app display name), identifier (bundle ID like com.example.app), build.devUrl (development server URL), build.frontendDist (relative path to frontend build output). Each window in app.windows must have a unique 'label' field.]\"}\n\nIMPORTANT: Only deny when there are clear structural errors. Do not deny valid partial configurations or work-in-progress edits.",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
