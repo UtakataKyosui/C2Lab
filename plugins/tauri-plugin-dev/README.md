@@ -46,7 +46,7 @@ Skill が Tauri v2 プラグインのパターンと実装方法を提供しま�
 ## ディレクトリ構造
 
 ```
-plugins/tauri-dev/
+plugins/tauri-plugin-dev/
 ├── .claude-plugin/
 │   └── plugin.json
 ├── skills/
@@ -56,7 +56,8 @@ plugins/tauri-dev/
 │           ├── plugin-structure.md
 │           ├── rust-patterns.md
 │           ├── typescript-bindings.md
-│           └── testing-debugging.md
+│           ├── testing-debugging.md
+│           └── mobile-support.md
 ├── agents/
 │   ├── tauri-plugin-creator.md
 │   └── tauri-plugin-researcher.md

@@ -1,0 +1,11 @@
+{
+  "name": "obs-plugin-dev",
+  "version": "0.1.0",
+  "description": "OBS Studio プラグイン開発支援。C/C++でのソース・フィルター・出力プラグインの実装ガイド、CMake設定、テスト・デバッグ方法を提供。Rustでの FFI アプローチも対応。",
+  "author": {
+    "name": "UtakataKyosui"
+  },
+  "keywords": ["obs", "obs-studio", "plugin", "c", "c++", "cmake", "streaming"],
+  "license": "MIT",
+  "repository": "https://github.com/UtakataKyosui/C2Lab"
+}
