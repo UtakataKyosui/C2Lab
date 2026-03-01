@@ -7,7 +7,8 @@ globs:
   - "**/tests/**/*.c"
   - "**/*_test.c"
   - "**/test_*.c"
-  - "**/*.rs"
+  - "**/obs-*/src/**/*.rs"
+  - "**/plugins/obs-*/src/**/*.rs"
   - "**/*.supp"
 ---
 

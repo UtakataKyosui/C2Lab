@@ -56,6 +56,12 @@ pub enum ObsData {}
 pub enum GsEffect {}
 
 /// OBS C 構造体（ABI互換）
+///
+/// ⚠️ **WARNING**: This manual struct definition is NOT guaranteed to match the actual OBS `obs_source_info` layout across versions.
+/// Using `_padding` arrays is a brittle workaround and can break with OBS updates or across different build configurations.
+///
+/// **Recommended approach**: Use `bindgen` or an `obs-sys` style crate to auto-generate bindings from OBS headers.
+/// This ensures ABI compatibility and catches layout changes automatically.
 #[repr(C)]
 pub struct ObsSourceInfo {
     pub id: *const c_char,

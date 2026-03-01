@@ -134,7 +134,7 @@ OBS プロセスを起動せずにテストする方法:
 void test_create_destroy(void)
 {
     // モック設定データ
-    mock_obs_data_t settings = {0};
+    mock_obs_data settings = {0};
     mock_obs_data_set_int(&settings, "width", 1920);
     mock_obs_data_set_int(&settings, "height", 1080);
 

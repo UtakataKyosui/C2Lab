@@ -13,6 +13,7 @@ OBS をインストールせずにテストするため、必要な関数をモ�
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdarg.h>
 
 // 型定義
 typedef void obs_source_t;
@@ -79,9 +80,19 @@ typedef struct {
 
 static inline void mock_obs_data_set_int(mock_obs_data *d, const char *name, long long val)
 {
+    if (d->count >= MAX_MOCK_ENTRIES) return;
     d->entries[d->count].name    = name;
     d->entries[d->count].int_val = val;
     d->entries[d->count].type    = 0;
+    d->count++;
+}
+
+static inline void mock_obs_data_set_double(mock_obs_data *d, const char *name, double val)
+{
+    if (d->count >= MAX_MOCK_ENTRIES) return;
+    d->entries[d->count].name       = name;
+    d->entries[d->count].double_val = val;
+    d->entries[d->count].type       = 1;
     d->count++;
 }
 
@@ -106,6 +117,64 @@ static inline void obs_data_set_default_int(obs_data_t *data, const char *name, 
 static inline void *bzalloc(size_t size) { return calloc(1, size); }
 static inline void bfree(void *ptr)       { free(ptr); }
 static inline char *bstrdup(const char *s) { return s ? strdup(s) : NULL; }
+```
+
+### test_utils.h のマクロ定義
+
+```c
+// test/test_utils.h
+#pragma once
+#include <stdio.h>
+#include <stdlib.h>
+
+static int _test_count = 0, _test_passed = 0;
+
+#define ASSERT_NOT_NULL(ptr) \
+    do { \
+        if ((ptr) == NULL) { \
+            fprintf(stderr, "FAIL: %s is NULL\n", #ptr); \
+            exit(1); \
+        } \
+    } while (0)
+
+#define ASSERT_EQ(actual, expected) \
+    do { \
+        if ((actual) != (expected)) { \
+            fprintf(stderr, "FAIL: %s == %s (got %lld, expected %lld)\n", \
+                    #actual, #expected, (long long)(actual), (long long)(expected)); \
+            exit(1); \
+        } \
+    } while (0)
+
+#define ASSERT_EQ_FLOAT(actual, expected) \
+    do { \
+        double _diff = ((actual) - (expected)); \
+        if (_diff < -0.0001f || _diff > 0.0001f) { \
+            fprintf(stderr, "FAIL: %s == %s (got %f, expected %f)\n", \
+                    #actual, #expected, (double)(actual), (double)(expected)); \
+            exit(1); \
+        } \
+    } while (0)
+
+#define ASSERT_TRUE(cond) \
+    do { \
+        if (!(cond)) { \
+            fprintf(stderr, "FAIL: %s is false\n", #cond); \
+            exit(1); \
+        } \
+    } while (0)
+
+#define RUN_TEST(func) \
+    do { \
+        _test_count++; \
+        func(); \
+        _test_passed++; \
+    } while (0)
+
+#define PRINT_RESULTS() \
+    do { \
+        printf("Tests: %d/%d passed\n", _test_passed, _test_count); \
+    } while (0)
 ```
 
 ### テストファイルの構成例
@@ -227,8 +296,8 @@ void test_filter_intensity_clamp(void)
     ASSERT_NOT_NULL(data);
 
     struct my_filter_data *filter = data;
-    // クランプが機能しているか確認
-    ASSERT_TRUE(filter->intensity >= 0.0f && filter->intensity <= 1.0f);
+    // クランプが機能しているか確認（上限 1.0f に固定されていることを期待）
+    ASSERT_EQ_FLOAT(filter->intensity, 1.0f);
 
     my_filter_destroy(data);
 }

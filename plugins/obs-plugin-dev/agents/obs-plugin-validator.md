@@ -1,24 +1,6 @@
 ---
 name: obs-plugin-validator
-description: "OBSプラグインのソースコードを検証し、必須エントリーポイント・メモリ管理・obs_source_info の実装が正しいかレポートする。C/C++とRust両対応。プラグインコードのレビュー、検証を依頼された時に使用する。 Examples:
-
-<example>
-Context: User wants to review OBS plugin source code.
-user: \"OBSプラグインのコードをレビューしてください。エントリーポイントとメモリ管理が正しいか確認したい\"
-assistant: \"OBSプラグインのソースコードを検証します。obs-plugin-validator エージェントで静的解析を進めます。\"
-<commentary>
-ユーザーが OBS プラグインのコード検証を要求しており、必須 API・メモリ管理・構造的な問題の検出が必要なため、このエージェントを起動する。
-</commentary>
-</example>
-
-<example>
-Context: User wants to validate obs_source_info implementation.
-user: \"obs_source_info の実装が正しいか確認してください\"
-assistant: \"obs_source_info の実装を検証します。\"
-<commentary>
-obs_source_info のフィールド・構造が正しいかの検証が必要なため起動。
-</commentary>
-</example>"
+description: Statically analyzes OBS plugin source code (C/C++/Rust) and reports on entry points, memory management, and obs_source_info implementation correctness.
 tools: inherit
 model: inherit
 ---
