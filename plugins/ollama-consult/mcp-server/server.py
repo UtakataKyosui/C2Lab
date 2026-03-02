@@ -92,7 +92,9 @@ async def consult_local_llm(question: str, context: str = "") -> str:
     except httpx.ConnectError:
         return build_connection_error(OLLAMA_HOST)
     except httpx.HTTPStatusError as e:
-        return f"エラー: Ollama API エラー ({e.response.status_code}): {e.response.text}"
+        return (
+            f"エラー: Ollama API エラー ({e.response.status_code}): {e.response.text}"
+        )
     except Exception as e:
         return f"エラー: {e}"
 
