@@ -34,11 +34,11 @@ def build_not_configured_error() -> str:
     return (
         "エラー: Ollama のモデルが設定されていません。\n\n"
         ".claude/settings.local.json に以下を追加してください:\n\n"
-        '{\n'
+        "{\n"
         '  "env": {\n'
         '    "OLLAMA_HOST": "http://localhost:11434",\n'
         '    "OLLAMA_MODEL": "llama3.2"\n'
-        '  }\n'
+        "  }\n"
         "}\n\n"
         "利用可能なモデルは list_models ツールで確認できます。\n"
         "設定後は Claude Code を再起動してください。"
