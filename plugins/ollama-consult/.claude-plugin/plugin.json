@@ -1,0 +1,12 @@
+{
+  "name": "ollama-consult",
+  "version": "0.1.0",
+  "description": "ローカルLLM（Ollama）をClaudeの相談相手として活用し、計画・方針の壁打ちによる意思決定を支援するプラグイン",
+  "author": {
+    "name": "UtakataKyosui",
+    "email": "UtakataKyosui@users.noreply.github.com"
+  },
+  "repository": "https://github.com/UtakataKyosui/C2Lab",
+  "keywords": ["ollama", "local-llm", "consultation", "planning", "brainstorming"],
+  "license": "MIT"
+}

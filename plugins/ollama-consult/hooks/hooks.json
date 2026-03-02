@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "pip3 install -q -r \"${CLAUDE_PLUGIN_ROOT}/mcp-server/requirements.txt\" && echo '{}'",
+            "timeout": 60
+          }
+        ]
+      }
+    ]
+  }
+}
