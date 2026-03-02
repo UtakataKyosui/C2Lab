@@ -308,6 +308,24 @@
         "streaming"
       ],
       "category": "development"
+    },
+    {
+      "name": "ollama-consult",
+      "source": "./plugins/ollama-consult",
+      "description": "ローカルLLM（Ollama）をClaudeの相談相手として活用し、計画・方針の壁打ちによる意思決定を支援するプラグイン。MCP経由でOllamaと通信し、Claude APIの負荷を軽減しながら高速な意思決定を実現。",
+      "version": "0.1.0",
+      "author": {
+        "name": "UtakataKyosui"
+      },
+      "keywords": [
+        "ollama",
+        "local-llm",
+        "consultation",
+        "planning",
+        "brainstorming",
+        "mcp"
+      ],
+      "category": "ai"
     }
   ]
 }
