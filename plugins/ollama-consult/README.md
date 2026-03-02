@@ -28,7 +28,7 @@ ollama serve
 
 ```bash
 ollama pull llama3.2   # 軽量・高速（壁打ち用に推奨）
-ollama pull gemma3     # 日本語性能が高い
+ollama pull gemma2     # 日本語性能が高い
 ```
 
 ### 3. 設定する

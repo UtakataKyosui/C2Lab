@@ -6,7 +6,7 @@ description: >
   "壁打ちしたい", "ローカルLLMに相談", "アプローチを比較したい", "方針を確認したい",
   "ローカルで検討", or when brainstorming is needed before committing to an approach.
   Also activates when offloading lightweight reasoning to reduce Claude API usage.
-version: 1.0.0
+version: 0.1.0
 ---
 
 # Ollama Consult
@@ -71,7 +71,7 @@ The local LLM provides a **perspective**, not a verdict:
 
 Before consulting, verify Ollama is running and configured:
 1. Call `list_models` to confirm connection and available models
-2. Ensure `.claude/ollama-consult.local.md` has `OLLAMA_MODEL` set
+2. Ensure `.claude/settings.local.json` has `env.OLLAMA_MODEL` set to your desired model
 3. If Ollama is not running: `ollama serve`
 
 ## Example Workflow

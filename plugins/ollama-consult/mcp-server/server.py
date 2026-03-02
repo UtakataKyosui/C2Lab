@@ -54,7 +54,7 @@ def build_connection_error(host: str) -> str:
 
 
 @mcp.tool()
-def consult_local_llm(question: str, context: str = "") -> str:
+async def consult_local_llm(question: str, context: str = "") -> str:
     """ローカルLLMに計画・方針・設計について相談する。
 
     計画の壁打ち、複数アプローチの比較、方針の是非確認など、
@@ -75,8 +75,8 @@ def consult_local_llm(question: str, context: str = "") -> str:
         user_message = f"背景情報:\n{context}\n\n質問:\n{question}"
 
     try:
-        with httpx.Client(timeout=120.0) as client:
-            response = client.post(
+        async with httpx.AsyncClient(timeout=120.0) as client:
+            response = await client.post(
                 f"{OLLAMA_HOST}/api/chat",
                 json={
                     "model": OLLAMA_MODEL,
@@ -98,7 +98,7 @@ def consult_local_llm(question: str, context: str = "") -> str:
 
 
 @mcp.tool()
-def list_models() -> str:
+async def list_models() -> str:
     """Ollama で利用可能なモデルの一覧を返す。
 
     接続確認やモデル選択時に使用する。
@@ -107,8 +107,8 @@ def list_models() -> str:
         モデル名とサイズの一覧。
     """
     try:
-        with httpx.Client(timeout=10.0) as client:
-            response = client.get(f"{OLLAMA_HOST}/api/tags")
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            response = await client.get(f"{OLLAMA_HOST}/api/tags")
             response.raise_for_status()
             data = response.json()
 
