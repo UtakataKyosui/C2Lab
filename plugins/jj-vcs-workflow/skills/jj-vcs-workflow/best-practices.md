@@ -47,13 +47,16 @@ jj op restore <operation_id>
 
 ### パターン1: 機能開発（PR を出す場合）
 
-**重要**: PR を出す予定がある場合、作業開始前に必ず feature bookmark を作成する。作業後に `jj bookmark set main` で main を進めてしまうと、`origin/main` のブランチ保護により巻き戻しができなくなる。
+**重要**: PR を出す予定がある場合、`jj git push` する前に必ず feature bookmark を作成する。`jj bookmark set main` で main を進めてから push してしまうと、`origin/main` のブランチ保護により巻き戻しができなくなる。
 
 ```bash
-# 1. mainから新しいチェンジを作成（@ が main より1つ上になる）
-jj new main -m "feat: 新機能Xを実装"
+# 0. リモートの最新を取得
+jj git fetch
 
-# 2. ★ 作業開始前に feature bookmark を作成する（重要）
+# 1. main@originから新しいチェンジを作成（@ が main より1つ上になる）
+jj new main@origin -m "feat: 新機能Xを実装"
+
+# 2. ★ push前に feature bookmark を作成する（重要）
 jj bookmark create feat/feature-x
 
 # 3. 作業する（ファイル編集はそのまま行うだけ）
@@ -70,8 +73,9 @@ gh pr create --base main --head feat/feature-x
 **アンチパターン（やってはいけない）**:
 
 ```bash
-# ❌ main bookmark を進めてから push してしまうとPRが作れない
-jj bookmark set main        # main を進める
+# ❌ 作業後に main bookmark を直接進めてしまうとPRが作れない
+jj new main@origin -m "feat: 新機能Xを実装" # 作業コミットを作成
+jj bookmark set main        # 本来 feat/xxx を作るべきところで main を進めてしまう
 jj git push                 # origin/main に直接 push される
 # → origin/main にブランチ保護があると巻き戻し不可
 ```
