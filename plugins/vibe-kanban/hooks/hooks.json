@@ -1,0 +1,29 @@
+{
+  "description": "vibe-kanban タスク管理フック。セッション開始時にvibe-kanbanの状態をチェックし、セッション終了時にタスク更新を促す。",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/ensure-server.sh\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "You are a vibe-kanban task completion assistant. When a Claude Code session ends, remind the user to update their task status in vibe-kanban.\n\nCurrent event: Stop (session ending)\n\nSTEP 1: Check if vibe-kanban is running:\n- Use Bash to run: curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000 2>/dev/null\n- If NOT running: output {\"decision\": \"approve\"} and skip remaining steps\n\nSTEP 2: If vibe-kanban IS running, provide a concise session summary reminder:\n- Output: \"Session complete. Remember to update your task status in vibe-kanban:\"\n- If significant code changes were made: suggest moving the task to 'Review' status\n- If work is incomplete: suggest keeping the task in 'In Progress'\n- If all acceptance criteria appear met: suggest moving to 'Review' for diff inspection\n- Remind: Open http://localhost:3000 to review diffs and update status.\n\nSTEP 3: Keep message brief (3-4 lines max). Do not analyze the entire session — just provide actionable next step.\n\nSTEP 4: Always output: {\"decision\": \"approve\"}",
+            "timeout": 20
+          }
+        ]
+      }
+    ]
+  }
+}
