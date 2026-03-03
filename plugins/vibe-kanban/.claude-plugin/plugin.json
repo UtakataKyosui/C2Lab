@@ -1,0 +1,9 @@
+{
+  "name": "vibe-kanban",
+  "version": "0.1.0",
+  "description": "vibe-kanbanを使ったローカルAIエージェントのタスク管理を最適化するプラグイン。Claude Codeセッションとカンバンボードのシームレスな連携ワークフローを提供する。",
+  "author": { "name": "taiki.amo" },
+  "keywords": ["vibe-kanban", "kanban", "task-management", "workflow", "ai-agents", "productivity"],
+  "license": "MIT",
+  "repository": "https://github.com/UtakataKyosui/C2Lab"
+}
