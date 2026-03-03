@@ -17,8 +17,8 @@ vibe-kanban はローカルファーストのカンバンボードで、Claude C
 ## インストール
 
 ```bash
-# C2Lab マーケットプレイス経由でインストール
-cc --plugin-dir /path/to/C2Lab/plugins/vibe-kanban
+# ローカルからインストール（C2Lab をクローン済みの場合）
+claude plugins add ./plugins/vibe-kanban
 ```
 
 または `.claude/settings.json` に追加:

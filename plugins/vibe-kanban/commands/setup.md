@@ -3,8 +3,6 @@ name: vibe-kanban:setup
 description: vibe-kanbanのインストール・初期設定・Claude Code連携を対話形式でガイドする
 allowed-tools:
   - Bash
-  - Read
-  - Write
 ---
 
 vibe-kanban の初期セットアップをステップバイステップでガイドしてください。
@@ -27,7 +25,7 @@ vibe-kanban
 
 ## Step 2: 起動確認
 
-Bash ツールで `curl -s -o /dev/null -w "%{http_code}" http://localhost:3000 2>/dev/null` を実行して確認してください。
+Bash ツールで `curl -s -o /dev/null -w "%{http_code}" http://localhost:${VK_PORT:-3000} 2>/dev/null` を実行して確認してください。
 
 - `200` または `301`: vibe-kanban が起動中 → Step 3 へ
 - 接続失敗: 以下を案内する

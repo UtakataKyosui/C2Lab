@@ -55,6 +55,11 @@ Enables GitHub API access for PR creation and issue management.
 }
 ```
 
+> **セキュリティ注意**: `npx -y` はパッケージを固定バージョンなしで実行するため、サプライチェーン攻撃のリスクがあります。本番環境では以下を推奨します:
+> - バージョンをピン留め（例: `@modelcontextprotocol/server-github@0.6.2`）してローカルインストール
+> - GitHub トークンは最小スコープ（必要なリポジトリのみ）で作成し、定期的にローテーション
+> - `npx -y` の代わりに `npm install` 後にローカルバイナリを使用
+
 ### PostgreSQL (Database Access)
 
 Provides read-only database access for schema inspection.
