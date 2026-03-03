@@ -344,6 +344,47 @@
         "productivity"
       ],
       "category": "workflow"
+    },
+    {
+      "name": "typescript-react-standards",
+      "source": "./plugins/typescript-react-standards",
+      "description": "TypeScript・React コーディング標準ガイド。型定義・コンポーネント設計・DRY・null 安全性・フォームバリデーション・セキュリティ・アクセシビリティ・Figma 準拠ルールを提供。.ts/.tsx ファイルを開くと自動ロードされる。",
+      "version": "0.1.0",
+      "author": {
+        "name": "UtakataKyosui"
+      },
+      "keywords": [
+        "typescript",
+        "react",
+        "nextjs",
+        "coding-standards",
+        "accessibility",
+        "figma",
+        "null-safety",
+        "form-validation",
+        "security",
+        "dry"
+      ],
+      "category": "development"
+    },
+    {
+      "name": "testing-and-mocking",
+      "source": "./plugins/testing-and-mocking",
+      "description": "TypeScript・React プロジェクトのテストと MSW モックのベストプラクティスガイド。テスト設計・アサーション方針・MSW ハンドラーパターン・モックデータ規約を提供。テスト・モック関連ファイルを開くと自動ロードされる。",
+      "version": "0.1.0",
+      "author": {
+        "name": "UtakataKyosui"
+      },
+      "keywords": [
+        "testing",
+        "msw",
+        "mocking",
+        "vitest",
+        "jest",
+        "react-testing-library",
+        "unit-test"
+      ],
+      "category": "development"
     }
   ]
 }
