@@ -326,24 +326,6 @@
         "mcp"
       ],
       "category": "ai"
-    },
-    {
-      "name": "vibe-kanban",
-      "source": "./plugins/vibe-kanban",
-      "description": "vibe-kanbanを使ったローカルAIエージェントのタスク管理を最適化するプラグイン。Claude Codeセッションとカンバンボードのシームレスな連携ワークフロー、タスク設計パターン、並列実行戦略を提供する。",
-      "version": "0.1.0",
-      "author": {
-        "name": "taiki.amo"
-      },
-      "keywords": [
-        "vibe-kanban",
-        "kanban",
-        "task-management",
-        "workflow",
-        "ai-agents",
-        "productivity"
-      ],
-      "category": "workflow"
     }
   ]
 }
