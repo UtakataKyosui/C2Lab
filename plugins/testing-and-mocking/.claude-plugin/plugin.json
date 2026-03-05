@@ -1,0 +1,20 @@
+{
+  "name": "testing-and-mocking",
+  "description": "TypeScript・React プロジェクトのテストと MSW モックのベストプラクティスガイド。テスト設計・アサーション方針・MSW ハンドラーパターン・モックデータ規約を提供。以下の場合に使用: (1) テストを書くとき (2) MSW モックハンドラーを追加するとき (3) テストのアサーション方針を確認したいとき (4) モックデータの規約を確認したいとき",
+  "version": "0.1.0",
+  "author": {
+    "name": "UtakataKyosui"
+  },
+  "keywords": [
+    "testing",
+    "msw",
+    "mocking",
+    "vitest",
+    "jest",
+    "react-testing-library",
+    "unit-test",
+    "integration-test"
+  ],
+  "license": "MIT",
+  "repository": "https://github.com/UtakataKyosui/C2Lab"
+}
