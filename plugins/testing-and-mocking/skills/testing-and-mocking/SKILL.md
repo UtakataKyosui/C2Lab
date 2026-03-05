@@ -26,7 +26,8 @@ globs:
   - 完全一致を期待する場合は `toEqual` を使う
   - `toMatchObject`（部分一致）は意図的にサブセットだけ検証したい場合に限定する
 - テストコードでも non-null assertion（`!`）は避ける
-  - `querySelector() as HTMLElement` や `getAllByText()[0] as HTMLElement` を使う
+  - `getBy*` / `findBy*` 系のクエリを使い、要素の存在をテストのアサーションに含める
+  - 要素が存在しないことを表明したい場合は `queryBy*` 系のクエリと `.not.toBeInTheDocument()` を組み合わせる
   - `@typescript-eslint/no-non-null-assertion` の lint warning を出さない
 
 ## MSW モック
