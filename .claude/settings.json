@@ -14,6 +14,7 @@
   },
   "enabledPlugins": {
     "plugin-dev@claude-plugins-official": true,
-    "plugin-dev@claude-code-plugins": true
+    "plugin-dev@claude-code-plugins": true,
+    "typescript-react-standards@utakata-plugins": true
   }
 }

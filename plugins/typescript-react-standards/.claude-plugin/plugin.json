@@ -1,0 +1,22 @@
+{
+  "name": "typescript-react-standards",
+  "description": "TypeScript・React コーディング標準ガイド。型定義・コンポーネント設計・DRY・null 安全性・フォームバリデーション・セキュリティ・アクセシビリティ・Figma 準拠ルールを提供。以下の場合に使用: (1) TypeScript の型定義方針に迷ったとき (2) React コンポーネントの設計パターンを確認したいとき (3) アクセシビリティ要件を確認したいとき (4) Figma デザインとの一致を確認したいとき",
+  "version": "0.1.0",
+  "author": {
+    "name": "UtakataKyosui"
+  },
+  "keywords": [
+    "typescript",
+    "react",
+    "nextjs",
+    "coding-standards",
+    "accessibility",
+    "figma",
+    "null-safety",
+    "form-validation",
+    "security",
+    "dry"
+  ],
+  "license": "MIT",
+  "repository": "https://github.com/UtakataKyosui/C2Lab"
+}
