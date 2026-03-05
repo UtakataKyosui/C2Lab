@@ -15,6 +15,6 @@
   "enabledPlugins": {
     "plugin-dev@claude-plugins-official": true,
     "plugin-dev@claude-code-plugins": true,
-    "jj-vcs-workflow@utakata-plugins": true
+    "typescript-react-standards@utakata-plugins": true
   }
 }
