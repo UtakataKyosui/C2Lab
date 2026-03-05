@@ -250,7 +250,14 @@
       "author": {
         "name": "UtakataKyosui"
       },
-      "keywords": ["code-review", "pr-review", "workflow", "jj", "git", "automation"],
+      "keywords": [
+        "code-review",
+        "pr-review",
+        "workflow",
+        "jj",
+        "git",
+        "automation"
+      ],
       "category": "workflow"
     },
     {
@@ -382,7 +389,8 @@
         "vitest",
         "jest",
         "react-testing-library",
-        "unit-test"
+        "unit-test",
+        "integration-test"
       ],
       "category": "development"
     }
