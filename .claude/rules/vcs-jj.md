@@ -2,7 +2,7 @@
 
 ## 基本ルール
 
-- ユーザーが指定したときは `jj` を運用する。`jj` を使う場合、Push は必ず `jj-safe-push` skill を使う
+- このリポジトリでは常に `jj` を使用する（`.claude/settings.json` で git コマンドは禁止されている）。Push は必ず `jj-safe-push` skill を使う
 - レビューに対応したら Push する
 - 単一のコミットのみでの Push は原則行わない
 

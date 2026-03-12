@@ -1,0 +1,20 @@
+{
+  "name": "pr-lifecycle",
+  "description": "PR ライフサイクル全体を管理するプラグイン。PR作成・CI検証・レビュー対応・マージまでのワークフローを標準化する。以下の場合に使用: (1) PR を作成するとき (2) push 前に CI を検証したいとき (3) PR のマージ準備を確認するとき (4) プロジェクトの CI コマンドを確認したいとき",
+  "version": "0.1.0",
+  "author": {
+    "name": "taiki.amo"
+  },
+  "keywords": [
+    "pr",
+    "pull-request",
+    "ci",
+    "workflow",
+    "lifecycle",
+    "lint",
+    "format",
+    "pre-push"
+  ],
+  "license": "MIT",
+  "repository": "https://github.com/UtakataKyosui/C2Lab"
+}

@@ -14,9 +14,9 @@
 plugins/<plugin-name>/
 ├── .claude-plugin/
 │   └── plugin.json           # マニフェスト (name が必須)
-├── commands/                  # スキル Markdown (レガシー、新規は skills/ 推奨)
+├── commands/                  # /command-name で呼び出せるスラッシュコマンド .md（レガシー、新規は skills/ 推奨）
 ├── agents/                    # サブエージェント .md
-├── skills/                    # <name>/SKILL.md 構造
+├── skills/                    # ナレッジベース用スキル Markdown (<name>/SKILL.md 構造)
 ├── hooks/
 │   └── hooks.json             # フック設定
 ├── .mcp.json                  # MCP サーバー定義 (任意)

@@ -328,6 +328,26 @@
       "category": "ai"
     },
     {
+      "name": "pr-lifecycle",
+      "source": "./plugins/pr-lifecycle",
+      "description": "PR ライフサイクル全体を管理するプラグイン。PR 作成・CI ローカル検証（TypeScript/Python/Rust 自動検出）・レビュー対応・マージ準備のワークフローを標準化する。push 前の CI 漏れによる複数ラウンド修正を防ぐ。",
+      "version": "0.1.0",
+      "author": {
+        "name": "taiki.amo"
+      },
+      "keywords": [
+        "pr",
+        "pull-request",
+        "ci",
+        "workflow",
+        "lifecycle",
+        "lint",
+        "format",
+        "pre-push"
+      ],
+      "category": "workflow"
+    },
+    {
       "name": "vibe-kanban",
       "source": "./plugins/vibe-kanban",
       "description": "vibe-kanbanを使ったローカルAIエージェントのタスク管理を最適化するプラグイン。Claude Codeセッションとカンバンボードのシームレスな連携ワークフロー、タスク設計パターン、並列実行戦略を提供する。",
