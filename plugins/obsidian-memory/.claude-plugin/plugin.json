@@ -1,0 +1,16 @@
+{
+  "name": "obsidian-memory",
+  "description": "Claude Code のメモリファイルを Obsidian Vault に自動同期するプラグイン。Write ツール使用時とセッション終了時に ~/.claude/projects/*/memory/*.md を、環境変数 OBSIDIAN_VAULT_NAME（推奨）または OBSIDIAN_VAULT_PATH（フォールバック）で解決された Vault パス配下の Claude-Memory/ へ同期する。",
+  "version": "0.1.0",
+  "author": {
+    "name": "taiki.amo"
+  },
+  "keywords": [
+    "obsidian",
+    "memory",
+    "knowledge-base",
+    "sync",
+    "pkm"
+  ],
+  "license": "MIT"
+}
