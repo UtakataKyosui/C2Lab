@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # SessionStart hook: otel-env.json から環境変数を読み込み、
-# 動的な project.name を追加して JSON を出力する。
+# CLAUDE_ENV_FILE に export 文を追記して Claude Code セッションに反映する。
 # otel-env.json が未生成の場合は setup.sh を自動実行する。
 # フックスクリプトのため、エラー時も必ず exit 0 する。
 
@@ -12,17 +12,21 @@ if [ ! -f "$OTEL_ENV_FILE" ]; then
   bash "$PLUGIN_ROOT/infra/setup.sh" >&2 || true
 fi
 
-# otel-env.json が存在しない場合はフォールバック（空 env）
+# otel-env.json が存在しない場合はスキップ
 if [ ! -f "$OTEL_ENV_FILE" ]; then
-  echo '{"env": {}}'
+  exit 0
+fi
+
+# CLAUDE_ENV_FILE が設定されていなければ環境変数を注入できない
+if [ -z "$CLAUDE_ENV_FILE" ]; then
   exit 0
 fi
 
 PROJECT_NAME="$(basename "$PWD")"
 
-# otel-env.json を読み込み、project.name を追加して出力
-OTEL_ENV_FILE="$OTEL_ENV_FILE" PROJECT_NAME="$PROJECT_NAME" python3 - << 'PY' || echo '{"env": {}}'
-import json, sys, os
+# otel-env.json を読み込み、project.name を追加して CLAUDE_ENV_FILE に書き込む
+OTEL_ENV_FILE="$OTEL_ENV_FILE" PROJECT_NAME="$PROJECT_NAME" CLAUDE_ENV_FILE="$CLAUDE_ENV_FILE" python3 - << 'PY' || true
+import json, os
 
 with open(os.environ['OTEL_ENV_FILE']) as f:
     env = json.load(f)
@@ -34,5 +38,7 @@ if existing_attrs:
 else:
     env['OTEL_RESOURCE_ATTRIBUTES'] = project_attr
 
-json.dump({'env': env}, sys.stdout)
+with open(os.environ['CLAUDE_ENV_FILE'], 'a') as f:
+    for key, value in env.items():
+        f.write(f'export {key}={value}\n')
 PY
