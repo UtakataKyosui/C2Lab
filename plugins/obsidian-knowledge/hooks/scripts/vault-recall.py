@@ -7,8 +7,7 @@ additionalContext — making past knowledge surface automatically, without
 the user having to ask.
 
 Requires:
-  OBSIDIAN_VAULT_NAME   Vault name (preferred; resolved by Obsidian CLI)
-  OBSIDIAN_VAULT_PATH   Vault root path (fallback for path-based search)
+  OBSIDIAN_VAULT_NAME   Vault name (required; resolved by Obsidian CLI)
 
 Obsidian must be running for CLI commands to succeed.
 If Obsidian is unavailable, the hook exits silently (non-blocking).
@@ -62,7 +61,7 @@ def extract_keywords(text: str) -> list[str]:
     keywords: list[str] = []
     seen: set[str] = set()
 
-    tokens = re.split(r"[\s\u3000、。，．「」『』【】・\-\\/,.:;!?()\[\]{}\"']+", text)  # noqa: RUF001
+    tokens = re.split(r"[\s\u3000、。，．「」『』【】・\\/,.:;!?()\[\]{}\"']+", text)  # noqa: RUF001
 
     for token in tokens:
         if not token:
