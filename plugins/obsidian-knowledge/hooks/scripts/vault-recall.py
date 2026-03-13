@@ -33,17 +33,106 @@ CLI_TIMEOUT = 10
 
 STOPWORDS = {
     # English
-    "the", "a", "an", "is", "are", "was", "were", "be", "been", "being",
-    "have", "has", "had", "do", "does", "did", "will", "would", "could",
-    "should", "may", "might", "shall", "can", "need", "dare", "ought",
-    "to", "of", "in", "on", "at", "by", "for", "with", "about", "as",
-    "into", "through", "during", "before", "after", "above", "below",
-    "from", "up", "down", "out", "off", "over", "under", "then", "once",
-    "here", "there", "when", "where", "why", "how", "all", "each", "both",
-    "this", "that", "these", "those", "and", "but", "or", "nor", "not",
-    "no", "so", "yet", "if", "it", "its", "i", "me", "my", "we", "you",
-    "your", "he", "she", "they", "them", "their", "what", "which", "who",
-    "just", "more", "also", "very", "get", "use", "new", "one", "any",
+    "the",
+    "a",
+    "an",
+    "is",
+    "are",
+    "was",
+    "were",
+    "be",
+    "been",
+    "being",
+    "have",
+    "has",
+    "had",
+    "do",
+    "does",
+    "did",
+    "will",
+    "would",
+    "could",
+    "should",
+    "may",
+    "might",
+    "shall",
+    "can",
+    "need",
+    "dare",
+    "ought",
+    "to",
+    "of",
+    "in",
+    "on",
+    "at",
+    "by",
+    "for",
+    "with",
+    "about",
+    "as",
+    "into",
+    "through",
+    "during",
+    "before",
+    "after",
+    "above",
+    "below",
+    "from",
+    "up",
+    "down",
+    "out",
+    "off",
+    "over",
+    "under",
+    "then",
+    "once",
+    "here",
+    "there",
+    "when",
+    "where",
+    "why",
+    "how",
+    "all",
+    "each",
+    "both",
+    "this",
+    "that",
+    "these",
+    "those",
+    "and",
+    "but",
+    "or",
+    "nor",
+    "not",
+    "no",
+    "so",
+    "yet",
+    "if",
+    "it",
+    "its",
+    "i",
+    "me",
+    "my",
+    "we",
+    "you",
+    "your",
+    "he",
+    "she",
+    "they",
+    "them",
+    "their",
+    "what",
+    "which",
+    "who",
+    "just",
+    "more",
+    "also",
+    "very",
+    "get",
+    "use",
+    "new",
+    "one",
+    "any",
 }
 
 
@@ -124,7 +213,7 @@ def format_context(query: str, raw: str) -> str:
         truncated += "\n... (結果を省略)"
     return (
         "<!-- obsidian-knowledge: Vault から関連ノートが自動想起されました -->\n"
-        f"## Vault 想起（クエリ: {query}）\n\n"
+        f"## Vault 想起（クエリ: {query}）\n\n"  # noqa: RUF001
         f"{truncated}"
     )
 
@@ -154,15 +243,17 @@ def main() -> None:
             sys.exit(0)
 
         context = format_context(query, raw)
-        print(json.dumps(
-            {
-                "hookSpecificOutput": {
-                    "hookEventName": "UserPromptSubmit",
-                    "additionalContext": context,
-                }
-            },
-            ensure_ascii=False,
-        ))
+        print(
+            json.dumps(
+                {
+                    "hookSpecificOutput": {
+                        "hookEventName": "UserPromptSubmit",
+                        "additionalContext": context,
+                    }
+                },
+                ensure_ascii=False,
+            )
+        )
         sys.exit(0)
 
     except Exception as exc:
