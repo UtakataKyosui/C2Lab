@@ -16,6 +16,7 @@ Encoding Specificity:
   context in which a memory was encoded improves recall precision.
 """
 
+import datetime
 import glob
 import json
 import os
@@ -23,7 +24,6 @@ import re
 import shutil
 import subprocess
 import sys
-import datetime
 from pathlib import Path
 
 # Allowlist for mem_type directory names to prevent path traversal
@@ -107,7 +107,7 @@ def inject_encoding_context(content: str, src: Path) -> str:
     memory file is never modified.
     """
     project = extract_project_from_path(src)
-    synced_at = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    synced_at = datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     ctx = (
         f"context_project: {project}\n"
@@ -118,7 +118,7 @@ def inject_encoding_context(content: str, src: Path) -> str:
     match = re.match(r"^(---\n)(.*?)(\n---\n?)", content, re.DOTALL)
     if match:
         before, body, closing = match.group(1), match.group(2), match.group(3)
-        rest = content[match.end():]
+        rest = content[match.end() :]
         return before + body + "\n" + ctx + closing + rest
     else:
         return f"---\n{ctx}---\n{content}"

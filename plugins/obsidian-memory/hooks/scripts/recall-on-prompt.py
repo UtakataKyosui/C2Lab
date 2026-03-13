@@ -23,17 +23,106 @@ MIN_SCORE = 1
 # Words to ignore in keyword extraction
 STOPWORDS = {
     # English
-    "the", "a", "an", "is", "are", "was", "were", "be", "been", "being",
-    "have", "has", "had", "do", "does", "did", "will", "would", "could",
-    "should", "may", "might", "shall", "can", "need", "dare", "ought",
-    "to", "of", "in", "on", "at", "by", "for", "with", "about", "as",
-    "into", "through", "during", "before", "after", "above", "below",
-    "from", "up", "down", "out", "off", "over", "under", "then", "once",
-    "here", "there", "when", "where", "why", "how", "all", "each", "both",
-    "this", "that", "these", "those", "and", "but", "or", "nor", "not",
-    "no", "so", "yet", "if", "it", "its", "i", "me", "my", "we", "you",
-    "your", "he", "she", "they", "them", "their", "what", "which", "who",
-    "just", "more", "also", "very", "get", "use", "new", "one", "any",
+    "the",
+    "a",
+    "an",
+    "is",
+    "are",
+    "was",
+    "were",
+    "be",
+    "been",
+    "being",
+    "have",
+    "has",
+    "had",
+    "do",
+    "does",
+    "did",
+    "will",
+    "would",
+    "could",
+    "should",
+    "may",
+    "might",
+    "shall",
+    "can",
+    "need",
+    "dare",
+    "ought",
+    "to",
+    "of",
+    "in",
+    "on",
+    "at",
+    "by",
+    "for",
+    "with",
+    "about",
+    "as",
+    "into",
+    "through",
+    "during",
+    "before",
+    "after",
+    "above",
+    "below",
+    "from",
+    "up",
+    "down",
+    "out",
+    "off",
+    "over",
+    "under",
+    "then",
+    "once",
+    "here",
+    "there",
+    "when",
+    "where",
+    "why",
+    "how",
+    "all",
+    "each",
+    "both",
+    "this",
+    "that",
+    "these",
+    "those",
+    "and",
+    "but",
+    "or",
+    "nor",
+    "not",
+    "no",
+    "so",
+    "yet",
+    "if",
+    "it",
+    "its",
+    "i",
+    "me",
+    "my",
+    "we",
+    "you",
+    "your",
+    "he",
+    "she",
+    "they",
+    "them",
+    "their",
+    "what",
+    "which",
+    "who",
+    "just",
+    "more",
+    "also",
+    "very",
+    "get",
+    "use",
+    "new",
+    "one",
+    "any",
     # Japanese particles / auxiliary verbs (single/double chars filtered by length)
 }
 
@@ -126,14 +215,16 @@ def load_memories() -> list[dict]:
         try:
             content = src.read_text(encoding="utf-8")
             fm = parse_frontmatter(content)
-            memories.append({
-                "path": src,
-                "project": extract_project_from_memory_path(src),
-                "name": fm.get("name", src.stem),
-                "description": fm.get("description", ""),
-                "type": fm.get("type", "misc"),
-                "content": content,
-            })
+            memories.append(
+                {
+                    "path": src,
+                    "project": extract_project_from_memory_path(src),
+                    "name": fm.get("name", src.stem),
+                    "description": fm.get("description", ""),
+                    "type": fm.get("type", "misc"),
+                    "content": content,
+                }
+            )
         except OSError:
             continue
     return memories
@@ -174,10 +265,7 @@ def find_relevant_memories(
     current_project: str,
 ) -> list[dict]:
     """Return top-scored memories above MIN_SCORE, up to MAX_RESULTS."""
-    scored = [
-        (score_memory(m, keywords, current_project), m)
-        for m in memories
-    ]
+    scored = [(score_memory(m, keywords, current_project), m) for m in memories]
     scored.sort(key=lambda x: x[0], reverse=True)
     return [m for score, m in scored if score >= MIN_SCORE][:MAX_RESULTS]
 
@@ -192,10 +280,12 @@ def format_context(matches: list[dict], current_project: str) -> str:
         f"## 関連記憶 (プロジェクト: {current_project})\n",
     ]
     for m in matches:
-        project_note = "" if m["project"] == current_project else f" _(from {m["project"]})_"  # noqa: E501
-        lines.append(f"### [{m["type"]}] {m["name"]}{project_note}")
+        project_note = (
+            "" if m["project"] == current_project else f" _(from {m['project']})_"
+        )
+        lines.append(f"### [{m['type']}] {m['name']}{project_note}")
         if m["description"]:
-            lines.append(f"> {m["description"]}\n")
+            lines.append(f"> {m['description']}\n")
         # Include full content (memories are small)
         lines.append(m["content"])
         lines.append("")
@@ -232,15 +322,17 @@ def main() -> None:
             sys.exit(0)
 
         context = format_context(matches, current_project)
-        print(json.dumps(
-            {
-                "hookSpecificOutput": {
-                    "hookEventName": "UserPromptSubmit",
-                    "additionalContext": context,
-                }
-            },
-            ensure_ascii=False,
-        ))
+        print(
+            json.dumps(
+                {
+                    "hookSpecificOutput": {
+                        "hookEventName": "UserPromptSubmit",
+                        "additionalContext": context,
+                    }
+                },
+                ensure_ascii=False,
+            )
+        )
         sys.exit(0)
 
     except Exception as exc:
