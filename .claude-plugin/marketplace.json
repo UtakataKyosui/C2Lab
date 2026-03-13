@@ -365,6 +365,24 @@
       "category": "workflow"
     },
     {
+      "name": "obsidian-knowledge",
+      "source": "./plugins/obsidian-knowledge",
+      "description": "Obsidian Vault をコーディングセッションの長期記憶として活用するプラグイン。知識の記録（capture）・想起（recall）・固定化（consolidate）・修正（update）の4スキルで、エピソード記憶・意味記憶・手続き記憶を Vault に蓄積する。",
+      "version": "0.1.0",
+      "author": {
+        "name": "taiki.amo"
+      },
+      "keywords": [
+        "obsidian",
+        "knowledge-base",
+        "long-term-memory",
+        "pkm",
+        "recall",
+        "capture"
+      ],
+      "category": "workflow"
+    },
+    {
       "name": "vibe-kanban",
       "source": "./plugins/vibe-kanban",
       "description": "vibe-kanbanを使ったローカルAIエージェントのタスク管理を最適化するプラグイン。Claude Codeセッションとカンバンボードのシームレスな連携ワークフロー、タスク設計パターン、並列実行戦略を提供する。",
