@@ -1,0 +1,46 @@
+name: Claude Plugin Auto-Create
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  create-plugin:
+    # PRコメントを除外、@claude メンション、かつ信頼済みユーザー（OWNER/MEMBER/COLLABORATOR）のみ
+    if: |
+      github.event.issue.pull_request == null &&
+      contains(github.event.comment.body, '@claude') &&
+      contains(fromJson('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install validation dependencies
+        run: pip install pyyaml
+
+      - name: Run Claude Code
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          plugins: "plugin-dev@claude-code-plugins"
+          claude_args: |
+            --max-turns 15
+            --model claude-sonnet-4-6
+            --allowedTools Read,Write,Edit,Glob,Grep,Skill,WebSearch,WebFetch,TodoWrite,EnterPlanMode,ExitPlanMode
+            --append-system-prompt "C2Lab plugin creation rules: (1) Read the issue body to understand the plugin requirements. (2) Call the Skill tool with plugin-dev:create-plugin to follow the guided workflow (agent-creator, plugin-validator, skill-reviewer agents are also available). (3) Create the plugin under plugins/<plugin-name>/. (4) Add an entry to .claude-plugin/marketplace.json plugins array: {name, source: ./plugins/<name>, description, version: 0.1.0, author: {name: UtakataKyosui}, keywords: [...], category: development}. IMPORTANT: Do NOT add './hooks/hooks.json' to the hooks field in plugin.json (it is auto-detected and causes a validation error). File creation and editing only - no shell commands needed (validation runs automatically after this step)."
+
+      - name: Validate plugins
+        run: python scripts/validate-plugins.py
