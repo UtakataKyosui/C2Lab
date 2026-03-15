@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Obsidian Vault をコーディングセッションの長期記憶として活用するプラグイン。知識の記録・想起・固定化・修正の4スキルで、エピソード記憶・意味記憶・手続き記憶を Vault に蓄積する。",
   "author": {
-    "name": "taiki.amo"
+    "name": "UtakataKyosui"
   },
   "keywords": [
     "obsidian",
