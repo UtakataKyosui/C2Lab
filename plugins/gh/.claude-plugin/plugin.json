@@ -1,0 +1,9 @@
+{
+  "name": "gh",
+  "description": "GitHub CLI (gh) permission rules for repository management and PR workflows",
+  "version": "1.0.0",
+  "author": { "name": "UtakataKyosui" },
+  "keywords": ["gh", "github", "cli", "pr", "issue"],
+  "license": "MIT",
+  "repository": "https://github.com/UtakataKyosui/C2Lab"
+}

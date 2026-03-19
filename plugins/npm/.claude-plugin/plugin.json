@@ -1,0 +1,9 @@
+{
+  "name": "npm",
+  "description": "npm/npx permission rules for Node.js package management",
+  "version": "1.0.0",
+  "author": { "name": "UtakataKyosui" },
+  "keywords": ["npm", "npx", "node", "package-manager"],
+  "license": "MIT",
+  "repository": "https://github.com/UtakataKyosui/C2Lab"
+}

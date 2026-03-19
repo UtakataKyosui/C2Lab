@@ -1,0 +1,9 @@
+{
+  "name": "mise",
+  "description": "mise permission rules for dev tools version management",
+  "version": "1.0.0",
+  "author": { "name": "UtakataKyosui" },
+  "keywords": ["mise", "dev-tools", "version-manager", "toolchain"],
+  "license": "MIT",
+  "repository": "https://github.com/UtakataKyosui/C2Lab"
+}

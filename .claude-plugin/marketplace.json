@@ -399,6 +399,83 @@
         "productivity"
       ],
       "category": "workflow"
+    },
+    {
+      "name": "gh",
+      "source": "./plugins/gh",
+      "description": "GitHub CLI (gh) permission rules for repository management and PR workflows",
+      "version": "1.0.0",
+      "author": {
+        "name": "UtakataKyosui"
+      },
+      "keywords": ["gh", "github", "cli", "pr", "issue"],
+      "category": "workflow"
+    },
+    {
+      "name": "npm",
+      "source": "./plugins/npm",
+      "description": "npm/npx permission rules for Node.js package management",
+      "version": "1.0.0",
+      "author": {
+        "name": "UtakataKyosui"
+      },
+      "keywords": ["npm", "npx", "node", "package-manager"],
+      "category": "development"
+    },
+    {
+      "name": "pnpm",
+      "source": "./plugins/pnpm",
+      "description": "pnpm/pnpx permission rules for fast Node.js package management",
+      "version": "1.0.0",
+      "author": {
+        "name": "UtakataKyosui"
+      },
+      "keywords": ["pnpm", "pnpx", "node", "package-manager"],
+      "category": "development"
+    },
+    {
+      "name": "yarn",
+      "source": "./plugins/yarn",
+      "description": "yarn permission rules for Node.js package management",
+      "version": "1.0.0",
+      "author": {
+        "name": "UtakataKyosui"
+      },
+      "keywords": ["yarn", "node", "package-manager"],
+      "category": "development"
+    },
+    {
+      "name": "bun",
+      "source": "./plugins/bun",
+      "description": "bun/bunx permission rules for fast JavaScript runtime and package manager",
+      "version": "1.0.0",
+      "author": {
+        "name": "UtakataKyosui"
+      },
+      "keywords": ["bun", "bunx", "javascript", "runtime", "package-manager"],
+      "category": "development"
+    },
+    {
+      "name": "mise",
+      "source": "./plugins/mise",
+      "description": "mise permission rules for dev tools version management",
+      "version": "1.0.0",
+      "author": {
+        "name": "UtakataKyosui"
+      },
+      "keywords": ["mise", "dev-tools", "version-manager", "toolchain"],
+      "category": "development"
+    },
+    {
+      "name": "uv",
+      "source": "./plugins/uv",
+      "description": "uv/uvx permission rules for Python package and tool management",
+      "version": "1.0.0",
+      "author": {
+        "name": "UtakataKyosui"
+      },
+      "keywords": ["uv", "uvx", "python", "package-manager"],
+      "category": "development"
     }
   ]
 }

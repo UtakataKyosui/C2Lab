@@ -1,0 +1,9 @@
+{
+  "name": "pnpm",
+  "description": "pnpm/pnpx permission rules for fast Node.js package management",
+  "version": "1.0.0",
+  "author": { "name": "UtakataKyosui" },
+  "keywords": ["pnpm", "pnpx", "node", "package-manager"],
+  "license": "MIT",
+  "repository": "https://github.com/UtakataKyosui/C2Lab"
+}
