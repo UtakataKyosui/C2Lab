@@ -85,6 +85,64 @@ npm info <package>                 # パッケージ情報を表示
 npm search <keyword>               # パッケージを検索
 ```
 
+## ワークスペース操作
+
+npm v7 以降でネイティブのワークスペースをサポートします。
+
+```bash
+# 全ワークスペースに依存関係をインストール
+npm install
+
+# 特定ワークスペースで操作
+npm run build --workspace=packages/ui
+npm run build -w packages/ui       # 短縮形
+npm run build -ws                  # 全ワークスペースで実行（--workspaces）
+
+# 特定ワークスペースにパッケージを追加
+npm install lodash -w packages/utils
+```
+
+## npm link（ローカルパッケージのリンク）
+
+```bash
+# 開発中のパッケージをグローバルにリンク
+cd my-library && npm link
+
+# 別のプロジェクトからリンク
+cd my-app && npm link my-library
+
+# リンクを解除
+npm unlink my-library
+```
+
+## ライフサイクルフック（pre/post）
+
+`package.json` の `scripts` に `pre*` / `post*` を追加すると、スクリプト実行前後に自動実行されます。
+
+```json
+{
+  "scripts": {
+    "prebuild": "echo 'before build'",
+    "build": "tsc",
+    "postbuild": "echo 'after build'",
+    "pretest": "lint",
+    "test": "jest"
+  }
+}
+```
+
+## semver パターン早見表
+
+| 記法 | 意味 | 例 |
+|------|------|------|
+| `1.2.3` | 完全固定 | `1.2.3` のみ |
+| `^1.2.3` | マイナー以下を許容 | `1.2.3` ～ `<2.0.0` |
+| `~1.2.3` | パッチのみ許容 | `1.2.3` ～ `<1.3.0` |
+| `>=1.2.3` | 下限指定 | `1.2.3` 以上 |
+| `1.2.x` | x を任意に | `1.2.0` ～ `<1.3.0` |
+| `*` | 全バージョン | 最新版 |
+| `latest` | 最新の安定版 | — |
+
 ## .npmrc 設定
 
 ```ini

@@ -16,7 +16,7 @@ uv init --lib                      # ライブラリとして初期化
 # パッケージの追加
 uv add <package>                   # 依存関係を追加
 uv add <package>==<version>        # バージョン指定
-uv add <package>>=<version>        # バージョン範囲指定
+uv add "<package>>=<version>"      # バージョン範囲指定（シェルのリダイレクトを避けるためクォートが必要）
 uv add --dev <package>             # 開発用依存関係に追加
 
 # パッケージの削除
@@ -74,6 +74,64 @@ uv pip uninstall <package>
 uv pip list                        # インストール済みパッケージ一覧
 uv pip freeze                      # pip freeze 相当
 uv pip compile requirements.in     # pip-tools 相当
+```
+
+## ワークスペース管理
+
+uv はモノレポ向けのワークスペース機能をサポートします。
+
+```toml
+# ルート pyproject.toml
+[tool.uv.workspace]
+members = ["packages/*", "apps/*"]
+```
+
+```bash
+# ワークスペース全体の操作
+uv sync                            # 全メンバーを同期
+uv run --package <member> <cmd>    # 特定メンバーでコマンド実行
+
+# メンバー間の依存
+uv add --editable ./packages/utils # ローカルパッケージをリンク
+```
+
+## 依存グループ（extras / optional-dependencies）
+
+```toml
+# pyproject.toml
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "ruff>=0.1"]
+docs = ["sphinx>=7.0", "sphinx-rtd-theme"]
+```
+
+```bash
+# extras を含めてインストール
+uv sync --extra dev
+uv sync --extra dev --extra docs
+uv sync --all-extras              # 全 extras を含めてインストール
+
+uv pip install -e ".[dev,docs]"   # pip 互換形式
+```
+
+## プレリリース対応
+
+```bash
+# プレリリースを許可して追加
+uv add --prerelease allow <package>
+
+# 全パッケージのプレリリースを許可
+uv sync --prerelease allow
+```
+
+```toml
+# pyproject.toml でプレリリース設定
+[tool.uv]
+prerelease = "allow"
+
+# 特定パッケージのみ許可
+[[tool.uv.dependency-metadata]]
+name = "some-package"
+prerelease = "allow"
 ```
 
 ## pyproject.toml の例

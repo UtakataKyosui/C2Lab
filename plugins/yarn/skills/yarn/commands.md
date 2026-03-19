@@ -83,6 +83,63 @@ yarn cache clean                   # キャッシュをクリア
 yarn patch <package>               # パッケージをパッチ（ローカル修正）
 ```
 
+## Yarn Constraints（v2+ / Berry）
+
+Constraints はワークスペース間の一貫性をルールで強制します。
+
+```javascript
+// yarn.config.cjs の例
+module.exports = defineConfig({
+  async constraints({ Yarn }) {
+    // 全ワークスペースで React のバージョンを統一
+    for (const dep of Yarn.dependencies({ ident: 'react' })) {
+      dep.update('^18.0.0');
+    }
+    // 全パッケージに同じライセンスを要求
+    for (const workspace of Yarn.workspaces()) {
+      workspace.set('license', 'MIT');
+    }
+  },
+});
+```
+
+```bash
+yarn constraints                   # ルールに違反がないか確認
+yarn constraints --fix             # 自動修正
+```
+
+## yarn patch 詳細（v2+）
+
+```bash
+# パッケージをパッチ（一時ディレクトリに展開）
+yarn patch <package>
+
+# 編集後にパッチを確定
+yarn patch-commit <tmp-dir>
+
+# 適用済みパッチの確認
+cat .yarnrc.yml | grep patches
+```
+
+パッチは `.yarn/patches/` に保存され、`package.json` の `resolutions` に登録されます。
+
+## PnP（Plug'n'Play）トラブルシュート
+
+```bash
+# PnP が有効かどうか確認
+yarn node -e "console.log(process.versions.pnp)"
+
+# 互換性のないパッケージを診断
+yarn dlx @yarnpkg/doctor
+
+# 特定パッケージをアンプラグ（node_modules に展開）
+echo '"packageName@*": unplugged: true' >> .yarnrc.yml
+
+# node_modules モードに切り替え（PnP を無効化）
+echo 'nodeLinker: node-modules' >> .yarnrc.yml
+yarn install
+```
+
 ## .yarnrc.yml (v2+ 設定)
 
 ```yaml

@@ -1,11 +1,13 @@
 {
   "permissions": {
-    "allow": ["Bash(pnpm *)", "Bash(pnpx *)"],
+    "allow": ["Bash(pnpm *)"],
     "ask": [
+      "Bash(pnpx *)",
       "Bash(pnpm add *)",
       "Bash(pnpm install *)",
       "Bash(pnpm remove *)",
-      "Bash(pnpm update *)"
+      "Bash(pnpm update *)",
+      "Bash(pnpm publish *)"
     ]
   }
 }

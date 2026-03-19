@@ -83,6 +83,46 @@ packages:
   - '!**/test/**'    # テストディレクトリを除外
 ```
 
+## pnpm why（依存関係の解析）
+
+```bash
+pnpm why <package>                 # パッケージがなぜインストールされているか表示
+pnpm why lodash                    # 直接依存か、間接依存かを確認
+pnpm why --recursive <package>    # 全ワークスペースで確認
+```
+
+## ストア管理（pnpm store）
+
+pnpm はグローバルコンテンツアドレスストアでパッケージを共有します。
+
+```bash
+pnpm store path                    # ストアのパスを表示
+pnpm store status                  # ストアの整合性を確認
+pnpm store prune                   # 未使用のパッケージをストアから削除
+pnpm store add <package>           # パッケージをストアにキャッシュ（インストールせず）
+```
+
+## pnpm-workspace.yaml 高度設定
+
+```yaml
+# pnpm-workspace.yaml の高度な例
+packages:
+  - 'packages/*'
+  - 'apps/*'
+  - '!**/test/**'                  # テストディレクトリを除外
+
+# カタログ機能（pnpm v9+）: バージョンを一元管理
+catalog:
+  react: ^18.3.0
+  typescript: ^5.5.0
+  vitest: ^2.0.0
+```
+
+```bash
+# カタログからインストール
+pnpm add react                     # catalog: の react バージョンが使用される
+```
+
 ## .npmrc (pnpm 設定)
 
 ```ini

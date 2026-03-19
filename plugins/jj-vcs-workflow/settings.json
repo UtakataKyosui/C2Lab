@@ -1,17 +1,10 @@
 {
   "permissions": {
-    "allow": ["Bash(jj *)", "Bash(git *)"],
+    "allow": ["Bash(jj *)"],
     "ask": [
-      "Bash(git add *)",
-      "Bash(git commit *)",
-      "Bash(git push *)",
-      "Bash(git pull *)",
-      "Bash(git checkout *)",
-      "Bash(git merge *)",
-      "Bash(git rebase *)",
-      "Bash(git reset *)",
-      "Bash(git clean *)",
-      "Bash(git stash *)"
+      "Bash(jj git push *)",
+      "Bash(jj abandon *)",
+      "Bash(jj rebase *)"
     ]
   }
 }

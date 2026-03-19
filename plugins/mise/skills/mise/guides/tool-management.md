@@ -53,6 +53,53 @@ mise uninstall node@20             # 特定バージョンを削除
 mise prune                         # 使用されていないバージョンを削除
 ```
 
+## シェル統合のセットアップ
+
+mise を使うには、シェル起動スクリプトへの統合が必要です。
+
+```bash
+# bash
+echo 'eval "$(mise activate bash)"' >> ~/.bashrc
+
+# zsh
+echo 'eval "$(mise activate zsh)"' >> ~/.zshrc
+
+# fish
+echo 'mise activate fish | source' >> ~/.config/fish/config.fish
+
+# 統合の確認
+mise doctor                        # 診断情報を表示（PATH・シェル統合・ツール状態）
+```
+
+## バージョン優先順位
+
+mise がバージョンを決定する優先順位（高い順）:
+
+1. `mise shell` で設定した一時バージョン（`MISE_<TOOL>_VERSION` 環境変数）
+2. カレントディレクトリの `.mise.toml`
+3. 親ディレクトリを遡って見つかった `.mise.toml`
+4. `~/.config/mise/config.toml`（グローバル設定）
+5. `.tool-versions`（asdf 互換）
+
+```bash
+# どのバージョンが使われているか確認
+mise current
+mise which node                    # 実行ファイルのパスを確認
+mise env                           # 現在の環境変数を表示
+```
+
+## mise doctor（診断）
+
+```bash
+mise doctor                        # 設定・PATH・ツールの問題を診断
+mise doctor --json                 # JSON 形式で出力
+```
+
+`mise doctor` が報告する主な問題:
+- シェル統合が未設定（PATH が通っていない）
+- ツールバージョンが古い
+- プラグインが壊れている
+
 ## asdf プラグインとの互換性
 
 mise は asdf プラグインを利用できます。

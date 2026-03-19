@@ -23,6 +23,42 @@ description: GitHub CLI (gh) の総合ガイド。PR 作成・レビュー・マ
    - リリースの作成と管理
    - GitHub Actions ワークフロー操作
 
+## 認証セットアップ
+
+```bash
+# ブラウザ経由でログイン（推奨）
+gh auth login
+
+# トークンでログイン（CI 環境向け）
+gh auth login --with-token <<< "$GITHUB_TOKEN"
+
+# 認証状態を確認
+gh auth status
+
+# ログアウト
+gh auth logout
+
+# 複数アカウントの切り替え（v2.40+）
+gh auth switch
+```
+
+## gh search（コード・Issue・PR を検索）
+
+```bash
+# Issue を検索
+gh search issues "memory leak" --repo owner/repo
+gh search issues --assignee @me --state open
+
+# PR を検索
+gh search prs "fix: auth" --state merged --limit 10
+
+# コードを検索
+gh search code "TODO" --repo owner/repo
+
+# レポジトリを検索
+gh search repos "mise plugin" --language shell --sort stars
+```
+
 ## クイックリファレンス
 
 ```bash

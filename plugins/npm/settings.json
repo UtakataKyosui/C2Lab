@@ -1,10 +1,12 @@
 {
   "permissions": {
-    "allow": ["Bash(npm *)", "Bash(npx *)"],
+    "allow": ["Bash(npm *)"],
     "ask": [
+      "Bash(npx *)",
       "Bash(npm install *)",
       "Bash(npm uninstall *)",
-      "Bash(npm update *)"
+      "Bash(npm update *)",
+      "Bash(npm publish *)"
     ]
   }
 }

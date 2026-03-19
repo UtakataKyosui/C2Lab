@@ -5,9 +5,17 @@
       "Bash(gh pr create *)",
       "Bash(gh pr merge *)",
       "Bash(gh pr edit *)",
+      "Bash(gh pr close *)",
+      "Bash(gh pr reopen *)",
       "Bash(gh issue create *)",
       "Bash(gh issue edit *)",
-      "Bash(gh issue close *)"
+      "Bash(gh issue close *)",
+      "Bash(gh issue reopen *)",
+      "Bash(gh repo create *)",
+      "Bash(gh repo delete *)",
+      "Bash(gh repo edit *)",
+      "Bash(gh release create *)",
+      "Bash(gh secret set *)"
     ]
   }
 }

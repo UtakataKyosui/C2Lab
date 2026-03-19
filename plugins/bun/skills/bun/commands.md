@@ -84,6 +84,64 @@ bun create react my-app
 bun create next my-app
 ```
 
+## ワークスペース（monorepo）
+
+```bash
+# --filter で対象ワークスペースを指定
+bun run --filter <workspace> <script>
+bun run --filter './packages/*' build  # glob 指定
+bun run --filter '!./packages/ui' test # 除外
+
+# ワークスペース全体に依存を追加
+bun add <package> --filter ./packages/utils
+```
+
+```json
+// package.json（ルート）
+{
+  "workspaces": ["packages/*", "apps/*"]
+}
+```
+
+## TypeScript / JSX ネイティブ設定
+
+bun は TypeScript・JSX をトランスパイルなしで直接実行します。
+
+```bash
+# tsconfig.json を自動検出して実行
+bun run app.tsx
+
+# JSX ファクトリの変更（デフォルトは React.createElement）
+bun build --jsx-factory h --jsx-fragment Fragment ./app.tsx
+```
+
+```json
+// tsconfig.json（bun 推奨設定）
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true
+  }
+}
+```
+
+## Node.js 互換性
+
+```bash
+# Node.js 互換モードで実行
+bun --bun run <script>             # bun ランタイムを明示
+bun --smol run <script>           # メモリ節約モード
+
+# Node.js との非互換を確認
+bun run --no-install <script>     # インストールせず実行
+```
+
+bun は多くの Node.js API と npm パッケージに互換性がありますが、ネイティブ拡張（`.node` ファイル）はサポートしていません。
+`node:` プレフィックスの組み込みモジュールはほぼ全てサポート済みです。
+
 ## その他
 
 ```bash
