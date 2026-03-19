@@ -1,10 +1,11 @@
 {
   "permissions": {
-    "allow": ["Bash(uv *)", "Bash(uvx *)"],
+    "allow": ["Bash(uv:*)"],
     "ask": [
-      "Bash(uv pip install *)",
-      "Bash(uv add *)",
-      "Bash(uv remove *)"
+      "Bash(uvx:*)",
+      "Bash(uv pip install:*)",
+      "Bash(uv add:*)",
+      "Bash(uv remove:*)"
     ]
   }
 }

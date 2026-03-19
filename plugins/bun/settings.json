@@ -1,10 +1,11 @@
 {
   "permissions": {
-    "allow": ["Bash(bun *)", "Bash(bunx *)"],
+    "allow": ["Bash(bun:*)"],
     "ask": [
-      "Bash(bun add *)",
-      "Bash(bun install *)",
-      "Bash(bun remove *)"
+      "Bash(bunx:*)",
+      "Bash(bun add:*)",
+      "Bash(bun install:*)",
+      "Bash(bun remove:*)"
     ]
   }
 }
