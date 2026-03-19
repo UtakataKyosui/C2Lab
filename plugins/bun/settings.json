@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": ["Bash(bun:*)"],
+    "ask": [
+      "Bash(bunx:*)",
+      "Bash(bun add:*)",
+      "Bash(bun install:*)",
+      "Bash(bun remove:*)"
+    ]
+  }
+}

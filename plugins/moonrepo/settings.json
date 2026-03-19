@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": ["Bash(moon:*)", "Bash(proto:*)"],
+    "ask": [
+      "Bash(moon setup:*)",
+      "Bash(proto install:*)",
+      "Bash(proto uninstall:*)"
+    ]
+  }
+}

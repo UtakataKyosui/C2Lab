@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": ["Bash(uv:*)"],
+    "ask": [
+      "Bash(uvx:*)",
+      "Bash(uv pip install:*)",
+      "Bash(uv pip uninstall:*)",
+      "Bash(uv pip sync:*)",
+      "Bash(uv add:*)",
+      "Bash(uv remove:*)"
+    ]
+  }
+}

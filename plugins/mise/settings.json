@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": ["Bash(mise:*)"],
+    "ask": [
+      "Bash(mise install:*)",
+      "Bash(mise uninstall:*)",
+      "Bash(mise implode:*)"
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": ["Bash(cargo:*)"],
+    "ask": [
+      "Bash(cargo install:*)",
+      "Bash(cargo uninstall:*)",
+      "Bash(cargo publish:*)",
+      "Bash(cargo add:*)",
+      "Bash(cargo remove:*)"
+    ]
+  }
+}

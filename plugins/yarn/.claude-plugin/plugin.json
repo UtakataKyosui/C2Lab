@@ -1,0 +1,9 @@
+{
+  "name": "yarn",
+  "description": "yarn permission rules for Node.js package management",
+  "version": "1.0.0",
+  "author": { "name": "UtakataKyosui" },
+  "keywords": ["yarn", "node", "package-manager"],
+  "license": "MIT",
+  "repository": "https://github.com/UtakataKyosui/C2Lab"
+}
