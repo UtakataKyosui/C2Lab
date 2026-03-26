@@ -1,0 +1,58 @@
+name: Plugin CLI Review
+
+on:
+  schedule:
+    # 月の 1,4,7,10,13,16,19,22,25,28 日 09:00 UTC（≒3日おき）
+    - cron: "0 9 1,4,7,10,13,16,19,22,25,28 * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run（Issue を実際に作成しない）"
+        type: boolean
+        default: false
+      max_issues:
+        description: "最大作成 Issue 数（デフォルト: 5）"
+        type: string
+        default: "5"
+
+jobs:
+  review:
+    name: Analyze plugins and create DevLab issues
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check required secrets
+        id: secrets-check
+        env:
+          CLAUDE_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          DEVLAB_TOKEN: ${{ secrets.DEVLAB_GITHUB_TOKEN }}
+        run: |
+          if [ -z "$CLAUDE_TOKEN" ] || [ -z "$DEVLAB_TOKEN" ]; then
+            echo "::notice::Required secrets (CLAUDE_CODE_OAUTH_TOKEN, DEVLAB_GITHUB_TOKEN) are not configured. Skipping."
+            echo "available=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-python@v5
+        if: steps.secrets-check.outputs.available == 'true'
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        if: steps.secrets-check.outputs.available == 'true'
+        run: pip install anthropic
+
+      - name: Run plugin CLI review
+        if: steps.secrets-check.outputs.available == 'true'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          DEVLAB_GH_TOKEN: ${{ secrets.DEVLAB_GITHUB_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+          MAX_ISSUES: ${{ inputs.max_issues || '5' }}
+        run: python scripts/plugin-cli-review.py

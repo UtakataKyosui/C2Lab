@@ -54,6 +54,10 @@ ignore = [
     "E501",
     "RUF001",
 ]
+# S603/S607: gh コマンドは allowlist で検証済み（issue/label のみ）、入力はエージェントが生成
+# E501: プロンプト文字列・ツール説明は行長制限を超える場合がある（意図的）
+# RUF001: 日本語文字列内の全角括弧は意図的
+"scripts/plugin-cli-review.py" = ["S603", "S607", "E501", "RUF001"]
 # S603: subprocess 呼び出しなし
 "plugins/dev-cost-tracker/hooks/scripts/stop_reminder.py" = ["S603"]
 # S101: テストファイルの assert は pytest の標準パターン
