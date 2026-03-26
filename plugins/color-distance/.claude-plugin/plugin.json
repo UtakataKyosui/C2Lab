@@ -1,0 +1,20 @@
+{
+  "name": "color-distance",
+  "description": "色と色の距離（視認性・可視性）を数値で測定するプラグイン。Delta E (CIE76/CIE94/CIEDE2000)・WCAG コントラスト比・RGB ユークリッド距離を計算し、アクセシビリティ基準との照合を支援する。",
+  "version": "0.1.0",
+  "author": {
+    "name": "UtakataKyosui"
+  },
+  "keywords": [
+    "color",
+    "accessibility",
+    "wcag",
+    "delta-e",
+    "contrast",
+    "color-distance",
+    "a11y",
+    "design"
+  ],
+  "license": "MIT",
+  "repository": "https://github.com/UtakataKyosui/C2Lab"
+}
