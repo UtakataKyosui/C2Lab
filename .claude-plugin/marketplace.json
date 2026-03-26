@@ -39,12 +39,7 @@
         "name": "UtakataKyosui",
         "email": "fill.ayaextech@gmail.com"
       },
-      "keywords": [
-        "development",
-        "rust",
-        "agent-skill",
-        "hooks"
-      ],
+      "keywords": ["development", "rust", "agent-skill", "hooks"],
       "category": "development"
     },
     {
@@ -56,11 +51,7 @@
         "name": "UtakataKyosui",
         "email": "fill.ayaextech@gmail.com"
       },
-      "keywords": [
-        "development",
-        "code-review",
-        "commands"
-      ],
+      "keywords": ["development", "code-review", "commands"],
       "category": "development"
     },
     {
@@ -198,13 +189,7 @@
       "author": {
         "name": "UtakataKyosui"
       },
-      "keywords": [
-        "poml",
-        "prompt-engineering",
-        "llm",
-        "markup",
-        "microsoft"
-      ],
+      "keywords": ["poml", "prompt-engineering", "llm", "markup", "microsoft"],
       "category": "development"
     },
     {
@@ -216,13 +201,7 @@
         "name": "UtakataKyosui",
         "email": "fill.ayaextech@gmail.com"
       },
-      "keywords": [
-        "cost",
-        "token-usage",
-        "tracking",
-        "budgeting",
-        "analytics"
-      ],
+      "keywords": ["cost", "token-usage", "tracking", "budgeting", "analytics"],
       "category": "workflow"
     },
     {
@@ -250,7 +229,14 @@
       "author": {
         "name": "UtakataKyosui"
       },
-      "keywords": ["code-review", "pr-review", "workflow", "jj", "git", "automation"],
+      "keywords": [
+        "code-review",
+        "pr-review",
+        "workflow",
+        "jj",
+        "git",
+        "automation"
+      ],
       "category": "workflow"
     },
     {
@@ -355,13 +341,7 @@
       "author": {
         "name": "taiki.amo"
       },
-      "keywords": [
-        "obsidian",
-        "memory",
-        "knowledge-base",
-        "sync",
-        "pkm"
-      ],
+      "keywords": ["obsidian", "memory", "knowledge-base", "sync", "pkm"],
       "category": "workflow"
     },
     {
@@ -475,6 +455,26 @@
         "name": "UtakataKyosui"
       },
       "keywords": ["uv", "uvx", "python", "package-manager"],
+      "category": "development"
+    },
+    {
+      "name": "color-distance",
+      "source": "./plugins/color-distance",
+      "description": "色と色の距離（視認性・可視性）を数値で測定するプラグイン。Delta E (CIE76/CIE94/CIEDE2000)・WCAG コントラスト比・RGB ユークリッド距離を計算し、アクセシビリティ基準との照合を支援する。",
+      "version": "0.1.0",
+      "author": {
+        "name": "UtakataKyosui"
+      },
+      "keywords": [
+        "color",
+        "accessibility",
+        "wcag",
+        "delta-e",
+        "contrast",
+        "color-distance",
+        "a11y",
+        "design"
+      ],
       "category": "development"
     }
   ]
