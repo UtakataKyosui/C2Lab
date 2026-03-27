@@ -1,0 +1,9 @@
+{
+  "name": "astro",
+  "description": "Astro フレームワークの総合ガイド。Island Architecture・Content Collections・SSG/SSR/Hybrid・OG画像生成・SEO・パフォーマンス最適化をカバー。",
+  "version": "1.0.0",
+  "author": { "name": "UtakataKyosui" },
+  "keywords": ["astro", "javascript", "web", "framework", "ssg", "ssr", "islands", "content-collections"],
+  "license": "MIT",
+  "repository": "https://github.com/UtakataKyosui/C2Lab"
+}
