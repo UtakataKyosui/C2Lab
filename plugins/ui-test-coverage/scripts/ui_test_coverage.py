@@ -31,7 +31,7 @@ from typing import Any
 COMPONENT_EXTENSIONS = {".tsx", ".jsx", ".vue", ".svelte"}
 TEST_EXTENSIONS = {".test.tsx", ".test.ts", ".test.jsx", ".test.js",
                    ".spec.tsx", ".spec.ts", ".spec.jsx", ".spec.js"}
-E2E_DIR_PATTERNS = {"e2e", "cypress", "playwright", "tests/e2e", "test/e2e"}
+E2E_DIR_PATTERNS = {"e2e", "cypress", "playwright"}
 
 # ─────────────────────────────────────────────
 # TypeScript型から値の数を推定
@@ -310,9 +310,7 @@ def extract_events_from_tsx(source: str) -> list[str]:
 
 def extract_events_from_vue(source: str) -> list[str]:
     """Vue テンプレートから @event / v-on:event を抽出する。"""
-    return list(set(
-        re.findall(r'@(\w+)|v-on:(\w+)', source)
-    ))
+    return list(set(re.findall(r'(?:@|v-on:)(\w+)', source)))
 
 
 def extract_events_from_svelte(source: str) -> list[str]:
@@ -368,8 +366,6 @@ def extract_component_name(source: str, file_path: Path) -> str:
 
 def analyze_component(file_path: Path) -> dict[str, Any]:
     """コンポーネントファイルを解析して特徴量を返す。"""
-    ext = "".join(file_path.suffixes)  # .test.tsx のような複合拡張子も考慮
-    # 最後の単一拡張子を使う
     ext = file_path.suffix
 
     try:
