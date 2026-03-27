@@ -476,6 +476,27 @@
         "design"
       ],
       "category": "development"
+    },
+    {
+      "name": "ui-test-coverage",
+      "source": "./plugins/ui-test-coverage",
+      "description": "UIコンポーネントの props・state・イベント・条件分岐を静的解析し、最低限必要なテスト数（全組み合わせ直積）を計算してカバレッジギャップをレポートする。.tsx/.jsx/.vue/.svelte に対応し、テストフレームワーク（Vitest/Jest/Playwright/Cypress）を package.json から自動検出する。",
+      "version": "0.1.0",
+      "author": {
+        "name": "UtakataKyosui"
+      },
+      "keywords": [
+        "testing",
+        "coverage",
+        "ui",
+        "frontend",
+        "react",
+        "vue",
+        "svelte",
+        "analysis",
+        "quality"
+      ],
+      "category": "testing"
     }
   ]
 }
