@@ -21,6 +21,7 @@ import re
 import json
 import sys
 import argparse
+import fnmatch
 import math
 from pathlib import Path
 from typing import Any
@@ -287,6 +288,8 @@ def extract_states_from_svelte(source: str) -> list[dict]:
 
     script_m = re.search(r'<script[^>]*>(.*?)</script>', source, re.DOTALL)
     if script_m:
+        # NOTE: lookbehind は固定長のため空白1文字のみ対応。"export  let"（複数空白）は
+        # 漏れるが、フォーマッタが強制する単一空白の慣例では実害は極小。
         for m in re.finditer(r'(?<!export\s)let\s+(\w+)\s*(?::\s*([^=;]+))?', script_m.group(1)):
             name = m.group(1)
             type_str = (m.group(2) or "any").strip()
@@ -391,6 +394,9 @@ def analyze_component(file_path: Path) -> dict[str, Any]:
         props, states, events = [], [], []
 
     conditional_branches = count_conditional_branches(source, ext)
+
+    # NOTE: events は出力 JSON に含まれるが minTests 計算には使わない。
+    # イベントハンドラのテストは単体テストより結合/E2E テストで検証するのが適切なため。
 
     # 全因子リスト（props + states）を正常系 / 異常系に分類
     all_factors = [
@@ -563,7 +569,6 @@ def run_analysis(project_dir: str, component_pattern: str | None = None) -> dict
     component_files = find_files(root, COMPONENT_EXTENSIONS, exclude_test=True)
 
     if component_pattern:
-        import fnmatch
         component_files = [f for f in component_files
                            if fnmatch.fnmatch(str(f), component_pattern)]
 
