@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "description": "UIコンポーネントのprops・state・イベント・条件分岐を静的解析し、最低限必要なテスト数を計算してカバレッジギャップをレポートするプラグイン",
   "author": {
-    "name": "C2Lab"
+    "name": "UtakataKyosui"
   },
-  "keywords": ["testing", "coverage", "ui", "frontend", "analysis"]
+  "repository": "https://github.com/UtakataKyosui/C2Lab",
+  "keywords": ["testing", "coverage", "ui", "frontend", "react", "vue", "svelte", "analysis", "quality"],
+  "license": "MIT"
 }
