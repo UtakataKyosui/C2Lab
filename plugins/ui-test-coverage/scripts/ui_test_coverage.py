@@ -16,13 +16,14 @@ UIコンポーネントを静的解析し、最低限必要なテスト数を計
   python ui_test_coverage.py [project_dir] [--output report.json] [--component <pattern>]
 """
 
+import argparse
+import contextlib
+import fnmatch
+import json
+import math
 import os
 import re
-import json
 import sys
-import argparse
-import fnmatch
-import math
 from pathlib import Path
 from typing import Any
 
@@ -537,7 +538,7 @@ def detect_test_frameworks(package_json: dict) -> dict[str, list[str]]:
 
     # scripts.test / scripts.e2e からも推定
     scripts: dict[str, str] = package_json.get("scripts", {})
-    for key, val in scripts.items():
+    for _key, val in scripts.items():
         if "vitest" in val and "vitest" not in unit:
             unit.append("vitest")
         if "jest" in val and "jest" not in unit:
@@ -558,10 +559,8 @@ def run_analysis(project_dir: str, component_pattern: str | None = None) -> dict
     pkg_path = root / "package.json"
     package_json: dict = {}
     if pkg_path.exists():
-        try:
+        with contextlib.suppress(json.JSONDecodeError):
             package_json = json.loads(pkg_path.read_text())
-        except json.JSONDecodeError:
-            pass
 
     frameworks = detect_test_frameworks(package_json)
 
@@ -584,10 +583,8 @@ def run_analysis(project_dir: str, component_pattern: str | None = None) -> dict
     for cf in sorted(component_files):
         data = analyze_component(cf)
         # ファイルパスを相対パスに変換
-        try:
+        with contextlib.suppress(ValueError):
             data["file"] = str(cf.relative_to(root))
-        except ValueError:
-            pass
         components_data.append(data)
 
     # テストカウント
