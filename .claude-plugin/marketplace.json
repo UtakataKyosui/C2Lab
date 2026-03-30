@@ -497,6 +497,24 @@
         "quality"
       ],
       "category": "testing"
+    },
+    {
+      "name": "playwright-e2e-tester",
+      "source": "./plugins/playwright-e2e-tester",
+      "description": "Playwright（ライブラリ）を使ったWebアプリのE2Eテスト自動化プラグイン。開発中の機能確認とPRレビュー時の変更確認の2つのSubAgentを提供。以下の場合に使用: (1) 実装した機能をPlaywrightで動作確認したいとき (2) PRレビュー中に変更内容をE2Eテストで検証したいとき",
+      "version": "0.1.0",
+      "author": {
+        "name": "UtakataKyosui"
+      },
+      "keywords": [
+        "playwright",
+        "e2e",
+        "testing",
+        "web",
+        "automation",
+        "review"
+      ],
+      "category": "testing"
     }
   ]
 }

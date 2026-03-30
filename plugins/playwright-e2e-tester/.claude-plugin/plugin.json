@@ -1,0 +1,18 @@
+{
+  "name": "playwright-e2e-tester",
+  "version": "0.1.0",
+  "description": "Playwright（ライブラリ）を使ったWebアプリのE2Eテスト自動化プラグイン。開発時の機能確認とPRレビュー時の変更確認の2つのAgentを提供。",
+  "author": {
+    "name": "UtakataKyosui",
+    "email": "fill.ayaextech@gmail.com"
+  },
+  "repository": "https://github.com/UtakataKyosui/C2Lab",
+  "keywords": [
+    "playwright",
+    "e2e",
+    "testing",
+    "web",
+    "automation",
+    "review"
+  ]
+}
