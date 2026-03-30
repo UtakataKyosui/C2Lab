@@ -193,18 +193,6 @@
       "category": "development"
     },
     {
-      "name": "dev-cost-tracker",
-      "source": "./plugins/dev-cost-tracker",
-      "description": "Claude Codeの開発コスト（トークン使用量・費用）を機能単位で記録するプラグイン。セッション終了時にコスト記録のリマインダーを表示し、/record-cost コマンドで詳細な費用情報を .dev-costs.json に保存する。",
-      "version": "1.0.0",
-      "author": {
-        "name": "UtakataKyosui",
-        "email": "fill.ayaextech@gmail.com"
-      },
-      "keywords": ["cost", "token-usage", "tracking", "budgeting", "analytics"],
-      "category": "workflow"
-    },
-    {
       "name": "zenn-review",
       "source": "./plugins/zenn-review",
       "description": "Zenn（技術記事プラットフォーム）の記事・書籍コンテンツに対するレビュープラグイン。内容レビュー・誤字脱字チェック・構文チェック・フロントマター検証・書籍の章間整合性チェックを個別コマンドとして提供し、統合レビューエージェントも備える。",
@@ -334,31 +322,22 @@
       "category": "workflow"
     },
     {
-      "name": "obsidian-memory",
-      "source": "./plugins/obsidian-memory",
-      "description": "Claude Code のメモリファイルを Obsidian Vault に自動同期するプラグイン。Write ツール使用時とセッション終了時に ~/.claude/projects/*/memory/*.md を、環境変数 OBSIDIAN_VAULT_NAME（推奨）または OBSIDIAN_VAULT_PATH（フォールバック）で解決された Vault パス配下の Claude-Memory/ へ同期する。",
+      "name": "obsidian-bridge",
+      "source": "./plugins/obsidian-bridge",
+      "description": "Obsidian Vault を Claude Code の長期記憶基盤として活用するプラグイン。Claude メモリファイルの Vault 自動同期（Write/SessionEnd フック）、符号化特異性を活用した Vault 検索によるリコール（UserPromptSubmit フック）、知識のキャプチャ・更新・固定化スキルを統合。",
       "version": "0.1.0",
       "author": {
-        "name": "taiki.amo"
-      },
-      "keywords": ["obsidian", "memory", "knowledge-base", "sync", "pkm"],
-      "category": "workflow"
-    },
-    {
-      "name": "obsidian-knowledge",
-      "source": "./plugins/obsidian-knowledge",
-      "description": "Obsidian Vault をコーディングセッションの長期記憶として活用するプラグイン。知識の記録（capture）・想起（recall）・固定化（consolidate）・修正（update）の4スキルで、エピソード記憶・意味記憶・手続き記憶を Vault に蓄積する。",
-      "version": "0.1.0",
-      "author": {
-        "name": "taiki.amo"
+        "name": "UtakataKyosui"
       },
       "keywords": [
         "obsidian",
+        "memory",
         "knowledge-base",
-        "long-term-memory",
-        "pkm",
+        "sync",
         "recall",
-        "capture"
+        "capture",
+        "pkm",
+        "long-term-memory"
       ],
       "category": "workflow"
     },
@@ -495,6 +474,24 @@
         "svelte",
         "analysis",
         "quality"
+      ],
+      "category": "testing"
+    },
+    {
+      "name": "playwright-e2e-tester",
+      "source": "./plugins/playwright-e2e-tester",
+      "description": "Playwright（ライブラリ）を使ったWebアプリのE2Eテスト自動化プラグイン。開発中の機能確認とPRレビュー時の変更確認の2つのSubAgentを提供。以下の場合に使用: (1) 実装した機能をPlaywrightで動作確認したいとき (2) PRレビュー中に変更内容をE2Eテストで検証したいとき",
+      "version": "0.1.0",
+      "author": {
+        "name": "UtakataKyosui"
+      },
+      "keywords": [
+        "playwright",
+        "e2e",
+        "testing",
+        "web",
+        "automation",
+        "review"
       ],
       "category": "testing"
     }

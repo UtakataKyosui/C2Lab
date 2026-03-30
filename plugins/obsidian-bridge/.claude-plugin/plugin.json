@@ -1,0 +1,19 @@
+{
+  "name": "obsidian-bridge",
+  "version": "0.1.0",
+  "description": "Obsidian Vault を Claude Code の長期記憶基盤として活用するプラグイン。Claude メモリファイルの Vault 自動同期、Vault 検索による想起（符号化特異性対応）、知識のキャプチャ・更新・固定化スキルを統合。",
+  "author": {
+    "name": "UtakataKyosui"
+  },
+  "keywords": [
+    "obsidian",
+    "memory",
+    "knowledge-base",
+    "sync",
+    "recall",
+    "capture",
+    "pkm",
+    "long-term-memory"
+  ],
+  "license": "MIT"
+}
