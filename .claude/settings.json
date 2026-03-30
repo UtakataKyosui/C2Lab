@@ -12,5 +12,18 @@
   "enabledPlugins": {
     "plugin-dev@claude-plugins-official": true,
     "plugin-dev@claude-code-plugins": true
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 scripts/pre-commit-lint.py"
+          }
+        ]
+      }
+    ]
   }
 }
