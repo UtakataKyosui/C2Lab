@@ -64,7 +64,7 @@ cat package.json | grep playwright
 - インストールされていなければ以下を案内してテストを中断する:
   ```
   npm install -D @playwright/test
-  npx playwright install
+  npx playwright install chromium
   ```
 - `playwright.config.ts` または `playwright.config.js` の存在を `Glob` で確認する
 - 設定ファイルがなければ、テストファイル内でベース URL を指定する
@@ -86,8 +86,11 @@ cat package.json
   ```bash
   npm run dev &
   DEV_PID=$!
-  # 数秒待ってから curl でヘルスチェック
-  sleep 3 && curl -s http://localhost:<PORT> > /dev/null
+  # サーバーが応答するまでポーリング（最大30秒）
+  for i in $(seq 1 30); do
+    curl -s http://localhost:<PORT> > /dev/null && break
+    sleep 1
+  done
   ```
 
 ### Step 4: テストファイルの作成

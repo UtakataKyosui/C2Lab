@@ -268,7 +268,11 @@ done
 ### Check if Already Running
 
 ```bash
+# lsof (macOS/多くのLinux環境で利用可能)
 lsof -i :<PORT> | grep LISTEN
+# lsof が使えない環境では ss (Linux) または netstat (Windows/Linux) を使用:
+# ss -tlnp | grep :<PORT>
+# netstat -an | grep :<PORT>
 ```
 
 If already running, skip startup.

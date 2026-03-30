@@ -91,7 +91,7 @@ cat package.json | grep playwright
 - インストールされていなければ以下を案内してテストを中断する:
   ```
   npm install -D @playwright/test
-  npx playwright install
+  npx playwright install chromium
   ```
 - `playwright.config.ts` の存在を `Glob` で確認する
 
@@ -109,7 +109,11 @@ cat package.json
 - 起動していなければバックグラウンドで起動:
   ```bash
   npm run dev &
-  sleep 3 && curl -s http://localhost:<PORT> > /dev/null
+  # サーバーが応答するまでポーリング（最大30秒）
+  for i in $(seq 1 30); do
+    curl -s http://localhost:<PORT> > /dev/null && break
+    sleep 1
+  done
   ```
 
 ### Step 5: テストファイルの作成
@@ -194,7 +198,7 @@ npx playwright test e2e/review-pr<PR_NUMBER>-<feature-name>.spec.ts --project=ch
 ## エラーハンドリング
 
 - **PR番号が不明**: ユーザーに確認する
-- **`gh` コマンドが使えない**: `git diff origin/main...HEAD` でローカル差分を使う代替フローに切り替える
+- **`gh` コマンドが使えない**: ローカルのVCS差分を使う代替フローに切り替える（例: `jj diff` または `git diff origin/main...HEAD`）
 - **Playwright 未インストール**: インストールコマンドを提示して終了する
 - **Dev サーバー起動失敗**: エラーを報告し、URL を手動で教えてもらう
 - **テスト失敗**: 失敗内容を詳しく報告する。コードの修正は行わない

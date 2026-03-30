@@ -23,6 +23,8 @@ setup('authenticate', async ({ page }) => {
 
 ```typescript
 // playwright.config.ts — reference the setup project
+import { defineConfig } from '@playwright/test';
+
 export default defineConfig({
   projects: [
     { name: 'setup', testMatch: /auth\.setup\.ts/ },
@@ -58,7 +60,7 @@ Mock slow or flaky APIs during E2E tests:
 ```typescript
 test('エラー状態を表示すること', async ({ page }) => {
   // Intercept API call before navigating
-  await page.route('/api/users', route => route.fulfill({
+  await page.route('**/api/users', route => route.fulfill({
     status: 500,
     body: JSON.stringify({ error: 'Internal Server Error' }),
   }));
@@ -68,7 +70,7 @@ test('エラー状態を表示すること', async ({ page }) => {
 });
 
 test('空のリストを表示すること', async ({ page }) => {
-  await page.route('/api/items', route => route.fulfill({
+  await page.route('**/api/items', route => route.fulfill({
     status: 200,
     contentType: 'application/json',
     body: JSON.stringify([]),
@@ -129,6 +131,8 @@ test('重要な処理のテスト', async ({ page }) => {
 Or configure globally in `playwright.config.ts`:
 
 ```typescript
+import { defineConfig } from '@playwright/test';
+
 export default defineConfig({
   use: {
     screenshot: 'only-on-failure',
