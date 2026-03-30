@@ -194,7 +194,7 @@ npx playwright test e2e/review-pr<PR_NUMBER>-<feature-name>.spec.ts --project=ch
 ## エラーハンドリング
 
 - **PR番号が不明**: ユーザーに確認する
-- **`gh` コマンドが使えない**: `git diff origin/main...HEAD` でローカル差分を使う代替フローに切り替える
+- **`gh` コマンドが使えない**: ユーザーにベースリビジョンを確認し、`jj diff <BASE_REV> @` などの `jj diff` を使ってローカル差分を取得する代替フローに切り替える
 - **Playwright 未インストール**: インストールコマンドを提示して終了する
 - **Dev サーバー起動失敗**: エラーを報告し、URL を手動で教えてもらう
 - **テスト失敗**: 失敗内容を詳しく報告する。コードの修正は行わない

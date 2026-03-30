@@ -15,10 +15,12 @@ Claude Code の長期記憶を Obsidian Vault と統合するプラグイン。
 | 機能 | スキル | 動作 |
 | --- | --- | --- |
 | Claude メモリ → Vault 自動同期 | — | 自動（Write / SessionEnd フック） |
-| Vault 検索によるリコール | obsidian-recall | 自動（UserPromptSubmit フック） |
+| 自動 Vault 検索によるリコール | — | 自動（UserPromptSubmit フック、`vault-recall.py`） |
 | 知識の記録 | obsidian-capture | 手動 |
 | セッション振り返り | obsidian-consolidate | 手動 |
 | ノートの修正・更新 | obsidian-update | 手動 |
+
+※ 自動リコールは UserPromptSubmit フック用スクリプト（`vault-recall.py`）が実行します。`obsidian-recall` スキルは、Vault を手動で検索したい場合に使用します。
 
 ## 前提条件
 

@@ -16,6 +16,7 @@ import glob
 import json
 import os
 import re
+import shlex
 import subprocess
 import sys
 from pathlib import Path
@@ -142,7 +143,7 @@ def extract_keywords(text: str) -> list[str]:
     keywords: list[str] = []
     seen: set[str] = set()
 
-    tokens = re.split(r"[\s\u3000、。，．「」『』【】・\-\\/,.:;!?()\[\]{}\"']+", text)
+    tokens = re.split(r"[\s\u3000、。，．「」『』【】・\\/,.:;!?()[\]{}\"']+", text)
 
     for token in tokens:
         if not token:
@@ -188,7 +189,12 @@ def _run_vault_search(vault_name: str, query: str) -> str | None:
     """Run `obsidian search:context` and return stdout, or None on failure."""
     try:
         result = subprocess.run(  # noqa: S603
-            ["obsidian", f"vault={vault_name}", "search:context", f"query={query}"],  # noqa: S607
+            [  # noqa: S607
+                "obsidian",
+                f"vault={vault_name}",
+                "search:context",
+                f"query={shlex.quote(query)}",
+            ],
             capture_output=True,
             text=True,
             timeout=CLI_TIMEOUT,
@@ -227,11 +233,8 @@ def _format_vault_context(query: str, raw: str, project: str) -> str:
     if len(raw) > MAX_CONTEXT_CHARS:
         truncated += "\n... (結果を省略)"
     project_note = f" (プロジェクト: {project})" if project else ""
-    return (
-        f"<!-- obsidian-bridge: Vault から関連ノートが自動想起されました{project_note} -->\n"
-        f"## Vault 想起（クエリ: {query}）\n\n"
-        f"{truncated}"
-    )
+    header = f"<!-- obsidian-bridge: Vault から関連ノートが自動想起されました{project_note} -->"
+    return f"{header}\n## Vault 想起（クエリ: {query}）\n\n{truncated}"
 
 
 # ── Local memory fallback ──────────────────────────────────────────────────
@@ -352,9 +355,8 @@ def main() -> None:
 
         if vault_name:
             context = recall_from_vault(vault_name, keywords, project)
-
-        if context is None:
-            # Vault unavailable or no results — fall back to local memory files
+        else:
+            # No Obsidian vault configured — fall back to local memory files
             context = recall_from_local(keywords, project)
 
         if not context:
