@@ -1,0 +1,13 @@
+{
+  "name": "harness-toolkit",
+  "version": "0.1.0",
+  "description": "Modern CLI harness for Claude Code: Jujutsu VCS, Rust-based code exploration, repomix context generation, security scanning, and dependency management.",
+  "author": {
+    "name": "UtakataKyosui",
+    "url": "https://github.com/UtakataKyosui"
+  },
+  "homepage": "https://github.com/UtakataKyosui/C2Lab/tree/main/plugins/harness-toolkit",
+  "repository": "https://github.com/UtakataKyosui/C2Lab",
+  "license": "MIT",
+  "keywords": ["jujutsu", "jj", "ripgrep", "fd", "repomix", "semgrep", "security", "cli", "harness"]
+}

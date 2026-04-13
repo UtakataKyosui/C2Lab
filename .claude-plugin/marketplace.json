@@ -524,6 +524,30 @@
         "atuin"
       ],
       "category": "development"
+    },
+    {
+      "name": "harness-toolkit",
+      "source": "./plugins/harness-toolkit",
+      "description": "ハーネスエンジニアリング用 CLI ツールキット。Jujutsu VCS・fd/ripgrep コード探索・repomix+rtk コンテキスト生成・Semgrep/ghasec セキュリティスキャン・依存関係管理（proto/Knip/dependency-cruiser/ncu）・rust-parallel 並列実行の知識と自動化フックを提供。",
+      "version": "0.1.0",
+      "author": {
+        "name": "UtakataKyosui"
+      },
+      "keywords": [
+        "jujutsu",
+        "jj",
+        "fd",
+        "ripgrep",
+        "repomix",
+        "rtk",
+        "semgrep",
+        "security",
+        "context-generation",
+        "dependency-management",
+        "parallel-execution",
+        "harness"
+      ],
+      "category": "workflow"
     }
   ]
 }
