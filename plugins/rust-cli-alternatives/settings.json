@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(eza:*)",
+      "Bash(lsd:*)",
+      "Bash(fd:*)",
+      "Bash(broot:*)",
+      "Bash(tre:*)",
+      "Bash(zoxide:*)",
+      "Bash(rg:*)",
+      "Bash(bat:*)",
+      "Bash(sd:*)",
+      "Bash(grex:*)",
+      "Bash(hexyl:*)",
+      "Bash(btm:*)",
+      "Bash(procs:*)",
+      "Bash(dust:*)",
+      "Bash(bandwhich:*)",
+      "Bash(delta:*)",
+      "Bash(gitui:*)",
+      "Bash(tokei:*)",
+      "Bash(hyperfine:*)",
+      "Bash(just:*)",
+      "Bash(watchexec:*)",
+      "Bash(xh:*)",
+      "Bash(miniserve:*)",
+      "Bash(starship:*)",
+      "Bash(nu:*)",
+      "Bash(tldr:*)",
+      "Bash(atuin:*)",
+      "Bash(yazi:*)",
+      "Bash(jaq:*)",
+      "Bash(ouch:*)"
+    ],
+    "ask": [
+      "Bash(cargo install:*)",
+      "Bash(brew install:*)",
+      "Bash(brew uninstall:*)"
+    ]
+  }
+}
