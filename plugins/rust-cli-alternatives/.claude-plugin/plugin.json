@@ -1,0 +1,30 @@
+{
+  "name": "rust-cli-alternatives",
+  "description": "Modern Rust-based CLI tools that replace classic Unix commands. Covers 30+ tools: eza (ls), fd (find), ripgrep (grep), bat (cat), sd (sed), dust (du), bottom (top), delta (diff), hyperfine (benchmarking), just (make), starship (prompt), atuin (history), and more.",
+  "version": "0.1.0",
+  "author": {
+    "name": "UtakataKyosui",
+    "email": "fill.ayaextech@gmail.com"
+  },
+  "repository": "https://github.com/UtakataKyosui/C2Lab",
+  "keywords": [
+    "rust",
+    "cli",
+    "terminal",
+    "modern-tools",
+    "eza",
+    "fd",
+    "ripgrep",
+    "bat",
+    "delta",
+    "bottom",
+    "dust",
+    "hyperfine",
+    "starship",
+    "atuin"
+  ],
+  "license": "MIT",
+  "agents": [
+    "./agents/tool-recommender.md"
+  ]
+}

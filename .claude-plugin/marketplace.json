@@ -497,6 +497,33 @@
         "quality"
       ],
       "category": "testing"
+    },
+    {
+      "name": "rust-cli-alternatives",
+      "source": "./plugins/rust-cli-alternatives",
+      "description": "Rust製モダンCLIツールのナレッジベース。eza (ls), fd (find), ripgrep (grep), bat (cat), sd (sed), dust (du), bottom (top), delta (diff), hyperfine (benchmarking), just (make), starship (prompt), atuin (history) など30+ツールのインストールガイド・使用例・設定・移行チートシートを提供。",
+      "version": "0.1.0",
+      "author": {
+        "name": "UtakataKyosui",
+        "email": "fill.ayaextech@gmail.com"
+      },
+      "keywords": [
+        "rust",
+        "cli",
+        "terminal",
+        "modern-tools",
+        "eza",
+        "fd",
+        "ripgrep",
+        "bat",
+        "delta",
+        "bottom",
+        "dust",
+        "hyperfine",
+        "starship",
+        "atuin"
+      ],
+      "category": "development"
     }
   ]
 }
