@@ -29,7 +29,7 @@ rg "pattern" --type-not json # JSONを除外
 
 # 高度な使い方
 rg "pattern" --no-ignore     # .gitignore を無視
-rg "pattern" -H              # 隠しファイルも含む
+rg "pattern" --hidden        # 隠しファイルも含む
 rg "foo" -r "bar"            # foo を bar に置換（出力のみ）
 rg -U "foo\nbar"             # 複数行マッチ（-U: multiline）
 rg --json "pattern"          # JSON出力（パイプ処理に便利）
@@ -115,7 +115,7 @@ sd '(?P<y>\d{4})-(?P<m>\d{2})' '$m/$y' file  # 名前付きキャプチャ
 sd --preview 'foo' 'bar' file    # 変更内容を表示（変更しない）
 
 # フラグ
-sd -f i 'foo' 'bar' file         # 大文字小文字を無視
+sd '(?i)foo' 'bar' file          # 大文字小文字を無視（インライン記法）
 ```
 
 **sed との比較**:

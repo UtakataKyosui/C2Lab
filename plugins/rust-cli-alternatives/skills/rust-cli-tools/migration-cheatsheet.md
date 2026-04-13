@@ -1,6 +1,6 @@
 # Migration Cheatsheet: Classic → Rust CLI
 
-詳細なコマンド対応表は [skills/rust-cli-migration/SKILL.md](../../rust-cli-migration/SKILL.md) を参照。
+詳細なコマンド対応表は [rust-cli-migration/SKILL.md](../rust-cli-migration/SKILL.md) を参照。
 
 ## 一覧（ツール名と置き換え対象）
 

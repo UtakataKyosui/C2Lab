@@ -34,6 +34,7 @@
     ],
     "ask": [
       "Bash(cargo install:*)",
+      "Bash(cargo binstall:*)",
       "Bash(brew install:*)",
       "Bash(brew uninstall:*)"
     ]

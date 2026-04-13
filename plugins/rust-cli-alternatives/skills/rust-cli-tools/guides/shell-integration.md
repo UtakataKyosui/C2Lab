@@ -22,14 +22,12 @@ if command -v bat &>/dev/null; then
 fi
 
 # fd（find の代替）
-if command -v fd &>/dev/null; then
-  alias find='fd'
-fi
+# 注意: find を fd で上書きすると、オプションの違いで既存スクリプトが壊れることがある
+# 代わりにそのまま fd コマンドを使用するか、別名（例: fdfind）を設定する
 
 # ripgrep（grep の代替）
-if command -v rg &>/dev/null; then
-  alias grep='rg'
-fi
+# 注意: grep を rg で上書きすると、オプションの違いで既存スクリプトが壊れることがある
+# 代わりにそのまま rg コマンドを使用するか、別名（例: rggrep）を設定する
 
 # dust（du の代替）
 if command -v dust &>/dev/null; then

@@ -81,7 +81,7 @@ brew install fd
 # 基本使用
 fd foo                       # "foo" を含むファイル名を検索（現在ディレクトリ以下）
 fd "\.rs$"                   # .rs で終わるファイル
-fd -e rs                     # 拡張子 rs のファイル（fd -e rs と同等）
+fd -e rs                     # 拡張子 rs のファイル（fd "\.rs$" と同等）
 fd -t f foo                  # ファイルのみ (-t f)
 fd -t d foo                  # ディレクトリのみ (-t d)
 fd -H foo                    # 隠しファイルも含む
